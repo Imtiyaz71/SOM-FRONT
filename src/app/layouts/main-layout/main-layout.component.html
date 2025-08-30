@@ -1,0 +1,189 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-laugh-wink"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">Admin <sup>2</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+
+<li *ngFor="let menu of childMenus; let i = index" class="nav-item">
+  <a class="nav-link collapsed" href="#"
+     data-toggle="collapse"
+     [attr.data-target]="'#collapse' + i"
+     aria-expanded="false"
+     [attr.aria-controls]="'collapse' + i">
+    <i class="fas fa-fw fa-cog"></i>
+    <span>{{ menu.menuName }}</span>
+  </a>
+
+  <div [id]="'collapse' + i" class="collapse"
+       [attr.aria-labelledby]="'heading' + i"
+       data-parent="#accordionSidebar">
+    <div *ngIf="menu.id==1" class="bg-white py-2 collapse-inner rounded">
+      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
+     <a class="collapse-item" [routerLink]="['/dashboard']">
+
+    <span>Dashboard</span>
+  </a>
+
+    </div>
+     <div *ngIf="menu.id==2" class="bg-white py-2 collapse-inner rounded">
+      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
+     <a class="collapse-item" [routerLink]="['usermanage/add-user']">
+
+    <span>Add User</span>
+  </a>
+   <a class="collapse-item" [routerLink]="['usermanage/user-mapping-role']">
+
+    <span>User Mapping</span>
+  </a>
+    </div>
+    <div *ngIf="menu.id==3" class="bg-white py-2 collapse-inner rounded">
+      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
+     <a class="collapse-item" [routerLink]="['staffs/add-staff']">
+
+    <span>Add Staff</span>
+  </a>
+   <a class="collapse-item" [routerLink]="['staffs/staff-info']">
+
+    <span>Staff Info</span>
+  </a>
+    </div>
+    <div *ngIf="menu.id==4" class="bg-white py-2 collapse-inner rounded">
+      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
+     <a class="collapse-item" [routerLink]="['advisory/add-advisory']">
+
+    <span>Add Advisory</span>
+  </a>
+   <a class="collapse-item" [routerLink]="['advisory/active-advisory']">
+
+    <span>Active Advisory Info</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['advisory/all-advisory']">
+
+    <span>All Advisory Info</span>
+  </a>
+    </div>
+    <div *ngIf="menu.id==5" class="bg-white py-2 collapse-inner rounded">
+
+     <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-info']">
+
+    <span>Kisti Info</span>
+  </a>
+   <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-due']">
+
+    <span>Kisti Due</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-paid-info']">
+
+    <span>Paid Info</span>
+  </a>
+   <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-info']">
+
+    <span>Subscription Info</span>
+  </a>
+  <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-due']">
+
+    <span>Subscription Due</span>
+  </a>
+  <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-paid']">
+
+    <span>Subscription Paid</span>
+  </a>
+    </div>
+     <div *ngIf="menu.id==6" class="bg-white py-2 collapse-inner rounded">
+
+     <a class="collapse-item" [routerLink]="['report']">
+
+    <span>Report</span>
+  </a>
+
+    </div>
+    <div *ngIf="menu.id==7" class="bg-white py-2 collapse-inner rounded">
+
+     <a class="collapse-item" [routerLink]="['expense/add-expense']">
+
+    <span>Add Expense</span>
+  </a>
+<a class="collapse-item" [routerLink]="['expense/expense-history']">
+
+    <span>Expense History</span>
+  </a>
+    </div>
+     <div *ngIf="menu.id==8" class="bg-white py-2 collapse-inner rounded">
+
+     <a class="collapse-item" [routerLink]="['meeting/add-biboroni']">
+
+    <span>Add Biboroni</span>
+  </a>
+<a class="collapse-item" [routerLink]="['meeting/meeting-history']">
+
+    <span>Meeting History</span>
+  </a>
+    </div>
+    <div *ngIf="menu.id==9" class="bg-white py-2 collapse-inner rounded">
+
+     <a class="collapse-item" [routerLink]="['accounts/balance']">
+
+    <span>Balance</span>
+  </a>
+<a class="collapse-item" [routerLink]="['accounts/debit']">
+
+    <span>Debit</span>
+  </a>
+  <a class="collapse-item" [routerLink]="['accounts/credit']">
+
+    <span>Credit</span>
+  </a>
+    </div>
+  </div>
+</li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block" />
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+      <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    <!-- Sidebar Message -->
+    <div class="sidebar-card d-none d-lg-flex">
+      <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="..." />
+      <p class="text-center mb-2">
+        <strong>SB Admin Pro</strong> is packed with premium features, components, and more!
+      </p>
+      <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+    </div>
+
+  </ul>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <router-outlet></router-outlet>
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright &copy; Your Website 2021</span>
+        </div>
+      </div>
+    </footer>
+    <!-- End of Footer -->
+  </div>
+  <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
