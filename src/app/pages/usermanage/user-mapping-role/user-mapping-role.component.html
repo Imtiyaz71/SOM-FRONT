@@ -1,1 +1,71 @@
-<p>user-mapping-role works!</p>
+   <div class="row">
+
+                        <div class="col-lg-6">
+
+
+
+                            <!-- Dropdown No Arrow -->
+                           <div class="card shadow mb-4 border-0">
+  <div class="card-header py-3 bg-primary text-white d-flex justify-content-between align-items-center">
+    <h5 class="m-0 font-weight-bold">User Mapping</h5>
+  </div>
+  <div class="card-body">
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="font-weight-bold text-secondary">Select User</label>
+        <select class="form-control" [(ngModel)]="newmapper.username">
+          <option *ngFor="let user of users" [value]="user.username">{{ user.fullName }}</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="font-weight-bold text-secondary">Select Role</label>
+        <select class="form-control" [(ngModel)]="newmapper.auth">
+          <option *ngFor="let user of auth" [value]="user.id">{{ user.designation }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="text-right mt-4">
+      <button class="btn btn-success px-4" (click)="savemap()">
+        <i class="fas fa-save"></i> Save Mapping
+      </button>
+    </div>
+
+  </div>
+</div>
+
+                        </div>
+
+                        <div class="col-lg-6">
+
+                            <!-- Roitation Utilities -->
+                            <div class="card">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Mapping Details</h6>
+                                </div>
+                                <div class="card-body text-center">
+                                   <table class="table table-bordered">
+                                       <thead>
+                                        <tr>
+                                          <th>Name</th>
+                                            <th>User Name</th>
+                                              <th>Role</th>
+                                        </tr>
+                                       </thead>
+                                       <tbody>
+                                        <tr *ngFor="let user of mapdetails">
+                                          <td>{{user.fullName}}</td>
+                                                   <td>{{user.userName}}</td>
+                                                            <td>{{user.auth}}</td>
+                                        </tr>
+                                       </tbody>
+                                   </table>>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+

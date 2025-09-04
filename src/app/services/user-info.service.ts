@@ -37,7 +37,20 @@ export interface UserPhoto {
   createDate: string | null;
   updateDate: string | null;
 }
-
+export interface authorizer {
+  id: number;
+  designation: string;
+}
+export interface Mapper {
+  username: string;
+  auth: number;
+}
+export interface MapperDetails {
+  id:number
+  fullName: string;
+  userName: string;
+  auth: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -48,6 +61,9 @@ export class UserInfoService {
   private savePhotoUrl = environment.apiBaseUrl + '/UserInfo/uploadphoto';
   private getUserUrl = environment.apiBaseUrl + '/UserInfo/userinfoall';
   private getPhotoUrl = environment.apiBaseUrl + '/UserInfo/userphotobyusername';
+  private getauthorizer = environment.apiBaseUrl + '/SelectedValue/authorizerlist';
+private saveusermap = environment.apiBaseUrl + '/UserInfo/savemapper';
+private getusermap = environment.apiBaseUrl + '/UserInfo/mapdetails';
 
   constructor(private http: HttpClient) { }
 
@@ -55,6 +71,12 @@ export class UserInfoService {
     return this.http.get<UserInfoBasic[]>(this.basic);
   }
 
+  getauthorizerdata(): Observable<authorizer[]> {
+    return this.http.get<authorizer[]>(this.getauthorizer);
+  }
+    getusermapdetails(): Observable<MapperDetails[]> {
+    return this.http.get<MapperDetails[]>(this.getusermap);
+  }
   addUser(user: UserInfoBasic) {
     return this.http.post(this.saveUrl, user, { responseType: 'text' });
   }
@@ -62,7 +84,9 @@ export class UserInfoService {
   addEducation(edu: UserInfoEducation) {
     return this.http.post(this.saveEducationUrl, edu, { responseType: 'text' });
   }
-
+ SaveMapper(au: Mapper) {
+    return this.http.post(this.saveusermap, au, { responseType: 'text' });
+  }
   // Updated addPhoto to match backend [FromForm] IFormFile 'file'
   addPhoto(file: File, username: string): Observable<any> {
     const formData = new FormData();
