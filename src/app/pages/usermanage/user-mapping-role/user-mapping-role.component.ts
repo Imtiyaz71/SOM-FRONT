@@ -38,6 +38,7 @@ savemap() {
     next: (res: any) => {
       alert(res);   // ekhane backend response show hobe
       this.newmapper = this.getemptymapper();
+      this.loadUsers();
     },
     error: (err: any) => {
       console.error(err);

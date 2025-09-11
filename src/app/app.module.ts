@@ -35,6 +35,8 @@ import { DebitComponent } from './pages/accounts/debit/debit.component';
 import { CreditComponent } from './pages/accounts/credit/credit.component';
 import { BalanceComponent } from './pages/accounts/balance/balance.component';
 import { ReportComponent } from './report/report.component';
+import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +64,10 @@ import { ReportComponent } from './report/report.component';
     DebitComponent,
     CreditComponent,
     BalanceComponent,
-    ReportComponent
+    ReportComponent,
+    MemberinfoComponent,
+
+
   ],
   imports: [
     BrowserModule,

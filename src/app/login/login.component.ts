@@ -63,8 +63,9 @@ export class LoginComponent implements OnInit {
         if (res && res.token && res.token.token) {
           const jwtToken = res.token.token;
           const role = res.token.role;
-
-          this.authService.saveAuthData(jwtToken, role);
+          const username = res.token.username;
+          const fullname = res.token.fullname;
+          this.authService.saveAuthData(jwtToken, role,fullname,username);
 
           if (role === 'Admin' || role === 'User') {
             alert('Login successful!');

@@ -27,6 +27,7 @@ import { DebitComponent } from './pages/accounts/debit/debit.component';
 import { CreditComponent } from './pages/accounts/credit/credit.component';
 import { BalanceComponent } from './pages/accounts/balance/balance.component';
 import { ReportComponent } from './report/report.component';
+import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
 
 const routes: Routes = [
   {
@@ -75,6 +76,7 @@ const routes: Routes = [
       { path: 'accounts/debit', component: DebitComponent },
       { path: 'accounts/credit', component: CreditComponent },
       { path: 'accounts/balance', component: BalanceComponent },
+      { path: 'member/memberinfo', component: MemberinfoComponent },
     ]
   }
 ];

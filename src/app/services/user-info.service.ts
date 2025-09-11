@@ -64,7 +64,7 @@ export class UserInfoService {
   private getauthorizer = environment.apiBaseUrl + '/SelectedValue/authorizerlist';
 private saveusermap = environment.apiBaseUrl + '/UserInfo/savemapper';
 private getusermap = environment.apiBaseUrl + '/UserInfo/mapdetails';
-
+private deleteuser = environment.apiBaseUrl + '/UserInfo/delete-userinfo';
   constructor(private http: HttpClient) { }
 
   getuserbasicinfo(): Observable<UserInfoBasic[]> {
@@ -86,6 +86,12 @@ private getusermap = environment.apiBaseUrl + '/UserInfo/mapdetails';
   }
  SaveMapper(au: Mapper) {
     return this.http.post(this.saveusermap, au, { responseType: 'text' });
+  }
+
+  deleteUser(username: string, deleteby: string): Observable<any> {
+    return this.http.delete(`${this.deleteuser}`, {
+      params: { username, deleteby }
+    });
   }
   // Updated addPhoto to match backend [FromForm] IFormFile 'file'
   addPhoto(file: File, username: string): Observable<any> {

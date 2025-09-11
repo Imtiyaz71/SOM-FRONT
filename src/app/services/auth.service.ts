@@ -16,9 +16,11 @@ export class AuthService {
   }
 
   // Save token and role in localStorage
-  saveAuthData(token: string, role: string) {
+  saveAuthData(token: string, role: string,fullname: string,username: string) {
     localStorage.setItem('jwtToken', token);
     localStorage.setItem('userRole', role);
+    localStorage.setItem('fullname', fullname);
+    localStorage.setItem('username', username);
   }
 
   getToken(): string | null {
@@ -28,7 +30,12 @@ export class AuthService {
   getRole(): string | null {
     return localStorage.getItem('userRole');
   }
-
+ getusername(): string | null {
+    return localStorage.getItem('username');
+  }
+  getfullnamename(): string | null {
+    return localStorage.getItem('fullname');
+  }
   logout() {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('userRole');

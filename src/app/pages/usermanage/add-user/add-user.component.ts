@@ -46,7 +46,8 @@ showEditUserModal: boolean = false;
   newEducation: UserInfoEducation = this.getEmptyEducation();
   newPhoto: UserPhoto = { iD: 0, username: '', photo: '', createDate: '', updateDate: '' };
   role: string = '';
-
+  fullname: string = '';
+  username: string = '';
   // Modal flags
   showAddUserModal: boolean = false;
   showAddEducationModal: boolean = false;
@@ -61,6 +62,8 @@ showEditUserModal: boolean = false;
   ngOnInit(): void {
     this.loadUsers();
     this.role = this.authService.getRole() || 'User';
+    this.fullname = this.authService.getfullnamename() || '--';
+    this.username = this.authService.getusername() || '--';
     this.searchSubject.pipe(debounceTime(300), distinctUntilChanged())
       .subscribe(username => this.performSearch(username));
   }
@@ -71,7 +74,19 @@ showEditUserModal: boolean = false;
       error: err => console.error(err)
     });
   }
-
+  onDelete(username: string, deleteby: string) {
+   this.userInfoService.deleteUser(username, deleteby).subscribe({
+    next: (res) => {
+      // if backend returns just string
+      alert(res.message || res || 'User deleted successfully');
+      this.loadUsers();
+    },
+    error: (err) => {
+      console.error(err);
+      alert(err.error?.message || 'Failed to delete user');
+    }
+  });
+  }
   onSearchInput() { this.searchSubject.next(this.searchText.trim()); }
 
   performSearch(username: string) {
@@ -102,6 +117,7 @@ showEditUserModal: boolean = false;
         this.selectedUser = data;
         if (data.username) {
           this.photoPreview = `${this.apiBaseUrl}/userphotobyusername?Username=${data.username}`;
+
         }
       },
       error: (err) => console.error('Error loading user details', err)
@@ -217,6 +233,7 @@ saveEditUser() {
       console.warn('No photo selected');
       return;
     }
+
 
     this.userInfoService.addPhoto(this.selectedFile, this.newPhoto.username).subscribe({
       next: () => {
