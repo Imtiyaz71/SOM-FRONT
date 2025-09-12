@@ -1,1 +1,382 @@
-<p>memberinfo works!</p>
+  <div class="row">
+
+                        <div class="col-lg-4">
+
+
+
+                            <!-- Progress Small -->
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h3 class="m-0 font-weight-bold text-primary">Member Entry Form</h3>
+                                </div>
+                                <div class="card-body">
+                                  <div class="row mb-3">
+                                     <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">Given Name</label>
+                                            <input type="text" class="form-control" name="GivenName"/>
+
+                                          </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Sure Name</label>
+                                            <input type="text" class="form-control" name="SureName"/>
+
+                                     </div>
+                                     <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">Phone</label>
+                                            <input type="text" class="form-control" name="Phone"/>
+
+                                          </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Email</label>
+                                            <input type="text" class="form-control" name="Email"/>
+
+                                     </div>
+                                     <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">NID</label>
+                                            <input type="text" class="form-control" name="Nid"/>
+
+                                          </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Birth C-No</label>
+                                            <input type="text" class="form-control" name="BIcNo"/>
+
+                                     </div>
+                                     <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">Passport No</label>
+                                            <input type="text" class="form-control" name="Passport"/>
+
+                                          </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Nationality</label>
+                                            <input type="text" class="form-control" name="Nationality"/>
+
+                                     </div>
+                                      <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">Father</label>
+                                            <input type="text" class="form-control" name="Father"/>
+
+                                          </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Mother</label>
+                                            <input type="text" class="form-control" name="Mother"/>
+
+                                     </div>
+                                      <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">Gender</label>
+                                           <select class="form-control">
+
+                                            </select>
+                                      </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Address</label>
+                                           <textarea class="form-control">
+
+                                            </textarea>
+
+                                     </div>
+                                    <div class="col-md-6">
+                                            <label class="font-weight-bold text-secondary">Photo</label>
+                                            <input type="file" class="form-control" name="photo"/>
+
+                                          </div>
+                                     <div class="col-md-6">
+                                           <label class="font-weight-bold text-secondary">Identity Document</label>
+                                            <input type="file" class="form-control" name="idendocu"/>
+
+                                     </div>
+                                  </div>
+                                     <div class="text-right mt-4">
+                        <button class="btn btn-success px-4">
+                             <i class="fas fa-save"></i> Save
+                                   </button>
+                                     </div>
+                                  </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="col-lg-8">
+
+                            <!-- Roitation Utilities -->
+                            <div class="card">
+                                <div class="card-header py-3">
+                                    <h3 class="m-0 font-weight-bold text-primary">Current Active Member</h3>
+                                </div>
+                                <div class="card-body text-center overflow">
+                                    <table class="table table-bordered">
+                                           <thead>
+                                            <tr>
+                                              <th>Member No</th>
+                                              <th>FullName</th>
+                                              <th>Phone</th>
+                                              <th>Email</th>
+                                              <th>Photo</th>
+                                              <th>Identity</th>
+                                              <th></th>
+                                            </tr>
+                                           </thead>
+                                           <tbody>
+                                            <tr *ngFor="let m of mem">
+                                            <td>{{m.memNo}}</td>
+                                            <td>{{m.givenName}} {{m.sureName}}</td>
+                                            <td>{{m.phone}}</td>
+                                             <td>{{m.email}}</td>
+                                            <td>
+
+                                               <img src="{{apiBaseUrl}}/memberphoto?memno={{m.memNo}}" alt="User Photo" class="img-thumbnail" width="80"/>
+
+                                            </td>
+                                               <td>
+
+                                               <a href="{{apiBaseUrl}}/memberdocument?memno={{m.memNo}}" target="_blank">Download</a>
+
+                                            </td>
+                                            <td>
+                             <button type="button"
+        class="btn btn-primary btn-icon-split me-2"
+        (click)="openAddUserModal(m.memNo)">
+  <span class="icon text-white-50">
+    <i class="fas fa-eye"></i>
+  </span>
+</button>
+
+                                      <!-- <a href="#" class="btn btn-success btn-icon-split">
+                                         <span class="icon text-white-50">
+                                       <i class="fas fa-edit"></i>
+                                         </span>
+                                            </a> -->
+
+                                            </td>
+                                            </tr>
+                                           </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+<!-- Modal -->
+
+
+<!-- Modal -->
+<div *ngIf="showUserDetailsModal" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog custom-width">
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3 class="modal-title">Member Info</h3>
+        <button type="button" class="btn-close" (click)="closeAddUserModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+  <button type="button" class="btn btn-primary btn-icon-split me-2 mb-2" (click)="OpenMemberEditModel(selectedUser?.memNo)">
+  Edit Member Information
+</button>
+      <div class="row">
+     <div class="col-md-6">
+      <table class="table table-bordered">
+    <thead>
+      <th>Member No</th>
+         <th>Given Name</th>
+            <th>Sure Name</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.memNo}}</td>
+          <td>{{selectedUser?.givenName}}</td>
+            <td>{{selectedUser?.sureName}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+      <div class="col-md-6">
+ <table class="table table-bordered">
+    <thead>
+      <th>NID</th>
+         <th>Passport</th>
+            <th>Birth C-No</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.niD}}</td>
+          <td>{{selectedUser?.passportNo}}</td>
+            <td>{{selectedUser?.biCNo}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+      <div class="col-md-6">
+ <table class="table table-bordered">
+    <thead>
+      <th>Father</th>
+         <th>Mother</th>
+            <th>Gender</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.father}}</td>
+          <td>{{selectedUser?.mother}}</td>
+            <td>{{selectedUser?.gender}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+       <div class="col-md-6">
+ <table class="table table-bordered">
+    <thead>
+      <th>Phone</th>
+         <th>Email</th>
+            <th>Nationality</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.phone}}</td>
+          <td>{{selectedUser?.email}}</td>
+            <td>{{selectedUser?.nationality}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+     <div class="col-md-6">
+<table class="table table-bordered">
+<thead>
+<tr>
+    <th>Identity Docu</th>
+  <th>Photo</th>
+</tr>
+</thead>
+<tbody>
+  <tr>
+<td><a href="{{docuPreview}}" target="_blank">Download Pdf</a></td>
+<td>
+   <div *ngIf="photoPreview">
+          <img [src]="photoPreview" alt="User Photo" class="img-thumbnail" width="200"/>
+        </div>
+
+
+</td>
+  </tr>
+</tbody>
+</table>
+     </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeAddUserModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div *ngIf="showUserDetailsModal" class="modal-backdrop fade show"></div>
+
+<div *ngIf="MemberEditModel" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog custom-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Member Info</h3>
+        <button type="button" class="btn-close" (click)="closeeditmodel()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+     <div class="col-md-6">
+      <table class="table table-bordered">
+    <thead>
+      <th>Member No</th>
+         <th>Given Name</th>
+            <th>Sure Name</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.memNo}}</td>
+          <td>{{selectedUser?.givenName}}</td>
+            <td>{{selectedUser?.sureName}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+      <div class="col-md-6">
+ <table class="table table-bordered">
+    <thead>
+      <th>NID</th>
+         <th>Passport</th>
+            <th>Birth C-No</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.niD}}</td>
+          <td>{{selectedUser?.passportNo}}</td>
+            <td>{{selectedUser?.biCNo}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+      <div class="col-md-6">
+ <table class="table table-bordered">
+    <thead>
+      <th>Father</th>
+         <th>Mother</th>
+            <th>Gender</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.father}}</td>
+          <td>{{selectedUser?.mother}}</td>
+            <td>{{selectedUser?.gender}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+       <div class="col-md-6">
+ <table class="table table-bordered">
+    <thead>
+      <th>Phone</th>
+         <th>Email</th>
+            <th>Nationality</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{selectedUser?.phone}}</td>
+          <td>{{selectedUser?.email}}</td>
+            <td>{{selectedUser?.nationality}}</td>
+      </tr>
+    </tbody>
+      </table>
+     </div>
+     <div class="col-md-6">
+<table class="table table-bordered">
+<thead>
+<tr>
+    <th>Identity Docu</th>
+  <th>Photo</th>
+</tr>
+</thead>
+<tbody>
+  <tr>
+<td><a href="{{docuPreview}}" target="_blank">Download Pdf</a></td>
+<td>
+   <div *ngIf="photoPreview">
+          <img [src]="photoPreview" alt="User Photo" class="img-thumbnail" width="200"/>
+        </div>
+
+
+</td>
+  </tr>
+</tbody>
+</table>
+     </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeeditmodel()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div *ngIf="MemberEditModel" class="modal-backdrop fade show"></div>

@@ -14,7 +14,8 @@ export class UserMappingRoleComponent implements OnInit{
      mapdetails: MapperDetails[] = [];
     newmapper: Mapper = this.getemptymapper();
     constructor(private userInfoService: UserInfoService, private authService: AuthService) {}
-  ngOnInit(): void {
+  
+    ngOnInit(): void {
     this.loadUsers();
 
   }
