@@ -1,268 +1,222 @@
-  <div class="row">
+<div class="row">
 
-                        <div class="col-lg-4">
+  <!-- Member Entry Form -->
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">Member Entry Form</h3>
+      </div>
+      <div class="card-body">
+        <form #memberForm="ngForm" (ngSubmit)="saveMember()">
 
+          <div class="row mb-3">
 
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Given Name</label>
+              <input type="text" class="form-control" name="givenName" [(ngModel)]="savemem.givenName"/>
+            </div>
 
-                            <!-- Progress Small -->
-                            <div class="card mb-4">
-                                <div class="card-header py-3">
-                                    <h3 class="m-0 font-weight-bold text-primary">Member Entry Form</h3>
-                                </div>
-                                <div class="card-body">
-                                  <div class="row mb-3">
-                                     <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">Given Name</label>
-                                            <input type="text" class="form-control" name="GivenName"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Sure Name</label>
+              <input type="text" class="form-control" name="sureName" [(ngModel)]="savemem.sureName"/>
+            </div>
 
-                                          </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Sure Name</label>
-                                            <input type="text" class="form-control" name="SureName"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Phone</label>
+              <input type="text" class="form-control" name="phone" [(ngModel)]="savemem.phone"/>
+            </div>
 
-                                     </div>
-                                     <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">Phone</label>
-                                            <input type="text" class="form-control" name="Phone"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Email</label>
+              <input type="text" class="form-control" name="email" [(ngModel)]="savemem.email"/>
+            </div>
 
-                                          </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Email</label>
-                                            <input type="text" class="form-control" name="Email"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">NID</label>
+              <input type="text" class="form-control" name="NiD" [(ngModel)]="savemem.NiD"/>
+            </div>
 
-                                     </div>
-                                     <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">NID</label>
-                                            <input type="text" class="form-control" name="Nid"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Birth C-No</label>
+              <input type="text" class="form-control" name="BiCNo" [(ngModel)]="savemem.BiCNo"/>
+            </div>
 
-                                          </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Birth C-No</label>
-                                            <input type="text" class="form-control" name="BIcNo"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Passport No</label>
+              <input type="text" class="form-control" name="passportNo" [(ngModel)]="savemem.passportNo"/>
+            </div>
 
-                                     </div>
-                                     <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">Passport No</label>
-                                            <input type="text" class="form-control" name="Passport"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Nationality</label>
+              <input type="text" class="form-control" name="nationality" [(ngModel)]="savemem.nationality"/>
+            </div>
 
-                                          </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Nationality</label>
-                                            <input type="text" class="form-control" name="Nationality"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Father</label>
+              <input type="text" class="form-control" name="father" [(ngModel)]="savemem.father"/>
+            </div>
 
-                                     </div>
-                                      <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">Father</label>
-                                            <input type="text" class="form-control" name="Father"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Mother</label>
+              <input type="text" class="form-control" name="mother" [(ngModel)]="savemem.mother"/>
+            </div>
 
-                                          </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Mother</label>
-                                            <input type="text" class="form-control" name="Mother"/>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Gender</label>
+              <select class="form-control" name="Gender" [(ngModel)]="savemem.gender">
+                <option *ngFor="let m of gen" [value]="m.id">{{m.genders}}</option>
+              </select>
+            </div>
 
-                                     </div>
-                                      <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">Gender</label>
-                                           <select class="form-control">
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Address</label>
+              <textarea class="form-control" name="address" [(ngModel)]="savemem.address"></textarea>
+            </div>
 
-                                            </select>
-                                      </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Address</label>
-                                           <textarea class="form-control">
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Photo</label>
+              <input type="file" class="form-control" (change)="onPhotoSelected($event)">
+            </div>
 
-                                            </textarea>
+            <div class="col-md-6">
+              <label class="font-weight-bold text-secondary">Identity Document</label>
+              <input type="file" class="form-control" (change)="onIdenSelected($event)">
+            </div>
 
-                                     </div>
-                                    <div class="col-md-6">
-                                            <label class="font-weight-bold text-secondary">Photo</label>
-                                            <input type="file" class="form-control" name="photo"/>
+          </div>
 
-                                          </div>
-                                     <div class="col-md-6">
-                                           <label class="font-weight-bold text-secondary">Identity Document</label>
-                                            <input type="file" class="form-control" name="idendocu"/>
+          <button type="submit" class="btn btn-primary">Save Member</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
-                                     </div>
-                                  </div>
-                                     <div class="text-right mt-4">
-                        <button class="btn btn-success px-4">
-                             <i class="fas fa-save"></i> Save
-                                   </button>
-                                     </div>
-                                  </div>
-                            </div>
+  <!-- Current Active Members -->
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">Current Active Members</h3>
+      </div>
+      <div class="card-body text-center overflow">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Member No</th>
+              <th>Full Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Photo</th>
+              <th>Identity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of mem">
+              <td>{{m.memNo}}</td>
+              <td>{{m.givenName}} {{m.sureName}}</td>
+              <td>{{m.phone}}</td>
+              <td>{{m.email}}</td>
+              <td><img [src]="apiBaseUrl + '/memberphoto?memno=' + m.memNo" alt="User Photo" class="img-thumbnail" width="80"/></td>
+              <td><a [href]="apiBaseUrl + '/memberdocument?memno=' + m.memNo" target="_blank">Download</a></td>
+              <td>
+                <button type="button" class="btn btn-primary btn-icon-split me-2" (click)="openAddUserModal(m.memNo)">
+                  <span class="icon text-white-50"><i class="fas fa-eye"></i></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
+</div>
 
-
-                        </div>
-
-                        <div class="col-lg-8">
-
-                            <!-- Roitation Utilities -->
-                            <div class="card">
-                                <div class="card-header py-3">
-                                    <h3 class="m-0 font-weight-bold text-primary">Current Active Member</h3>
-                                </div>
-                                <div class="card-body text-center overflow">
-                                    <table class="table table-bordered">
-                                           <thead>
-                                            <tr>
-                                              <th>Member No</th>
-                                              <th>FullName</th>
-                                              <th>Phone</th>
-                                              <th>Email</th>
-                                              <th>Photo</th>
-                                              <th>Identity</th>
-                                              <th></th>
-                                            </tr>
-                                           </thead>
-                                           <tbody>
-                                            <tr *ngFor="let m of mem">
-                                            <td>{{m.memNo}}</td>
-                                            <td>{{m.givenName}} {{m.sureName}}</td>
-                                            <td>{{m.phone}}</td>
-                                             <td>{{m.email}}</td>
-                                            <td>
-
-                                               <img src="{{apiBaseUrl}}/memberphoto?memno={{m.memNo}}" alt="User Photo" class="img-thumbnail" width="80"/>
-
-                                            </td>
-                                               <td>
-
-                                               <a href="{{apiBaseUrl}}/memberdocument?memno={{m.memNo}}" target="_blank">Download</a>
-
-                                            </td>
-                                            <td>
-                             <button type="button"
-        class="btn btn-primary btn-icon-split me-2"
-        (click)="openAddUserModal(m.memNo)">
-  <span class="icon text-white-50">
-    <i class="fas fa-eye"></i>
-  </span>
-</button>
-
-                                      <!-- <a href="#" class="btn btn-success btn-icon-split">
-                                         <span class="icon text-white-50">
-                                       <i class="fas fa-edit"></i>
-                                         </span>
-                                            </a> -->
-
-                                            </td>
-                                            </tr>
-                                           </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-<!-- Modal -->
-
-
-<!-- Modal -->
+<!-- Member Details Modal -->
 <div *ngIf="showUserDetailsModal" class="modal fade show d-block" tabindex="-1">
   <div class="modal-dialog custom-width">
     <div class="modal-content">
-
       <div class="modal-header">
-
         <h3 class="modal-title">Member Info</h3>
         <button type="button" class="btn-close" (click)="closeAddUserModal()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-  <button type="button" class="btn btn-primary btn-icon-split me-2 mb-2" (click)="OpenMemberEditModel(selectedUser?.memNo)">
-  Edit Member Information
-</button>
-      <div class="row">
-     <div class="col-md-6">
-      <table class="table table-bordered">
-    <thead>
-      <th>Member No</th>
-         <th>Given Name</th>
-            <th>Sure Name</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.memNo}}</td>
-          <td>{{selectedUser?.givenName}}</td>
-            <td>{{selectedUser?.sureName}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-      <div class="col-md-6">
- <table class="table table-bordered">
-    <thead>
-      <th>NID</th>
-         <th>Passport</th>
-            <th>Birth C-No</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.niD}}</td>
-          <td>{{selectedUser?.passportNo}}</td>
-            <td>{{selectedUser?.biCNo}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-      <div class="col-md-6">
- <table class="table table-bordered">
-    <thead>
-      <th>Father</th>
-         <th>Mother</th>
-            <th>Gender</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.father}}</td>
-          <td>{{selectedUser?.mother}}</td>
-            <td>{{selectedUser?.gender}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-       <div class="col-md-6">
- <table class="table table-bordered">
-    <thead>
-      <th>Phone</th>
-         <th>Email</th>
-            <th>Nationality</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.phone}}</td>
-          <td>{{selectedUser?.email}}</td>
-            <td>{{selectedUser?.nationality}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-     <div class="col-md-6">
-<table class="table table-bordered">
-<thead>
-<tr>
-    <th>Identity Docu</th>
-  <th>Photo</th>
-</tr>
-</thead>
-<tbody>
-  <tr>
-<td><a href="{{docuPreview}}" target="_blank">Download Pdf</a></td>
-<td>
-   <div *ngIf="photoPreview">
-          <img [src]="photoPreview" alt="User Photo" class="img-thumbnail" width="200"/>
+        <button type="button" class="btn btn-primary mb-2" (click)="OpenMemberEditModel(selectedUser?.memNo)">Edit Member Information</button>
+
+        <div class="row">
+          <div class="col-md-6" *ngIf="selectedUser">
+            <table class="table table-bordered">
+              <thead>
+                <tr><th>Member No</th><th>Given Name</th><th>Sure Name</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{selectedUser.memNo}}</td>
+                  <td>{{selectedUser.givenName}}</td>
+                  <td>{{selectedUser.sureName}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6" *ngIf="selectedUser">
+            <table class="table table-bordered">
+              <thead>
+                <tr><th>NID</th><th>Passport</th><th>Birth C-No</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{selectedUser.niD}}</td>
+                  <td>{{selectedUser.passportNo}}</td>
+                  <td>{{selectedUser.biCNo}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6" *ngIf="selectedUser">
+            <table class="table table-bordered">
+              <thead>
+                <tr><th>Father</th><th>Mother</th><th>Gender</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{selectedUser.father}}</td>
+                  <td>{{selectedUser.mother}}</td>
+                  <td>{{selectedUser.gender}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6" *ngIf="selectedUser">
+            <table class="table table-bordered">
+              <thead>
+                <tr><th>Phone</th><th>Email</th><th>Nationality</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{selectedUser.phone}}</td>
+                  <td>{{selectedUser.email}}</td>
+                  <td>{{selectedUser.nationality}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6" *ngIf="selectedUser">
+            <table class="table table-bordered">
+              <thead><tr><th>Identity Docu</th><th>Photo</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a [href]="docuPreview" target="_blank">Download Pdf</a></td>
+                  <td><img *ngIf="photoPreview" [src]="photoPreview" alt="User Photo" class="img-thumbnail" width="200"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
-
-
-</td>
-  </tr>
-</tbody>
-</table>
-     </div>
-      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeAddUserModal()">Close</button>
@@ -270,106 +224,100 @@
     </div>
   </div>
 </div>
-
-<!-- Modal Backdrop -->
 <div *ngIf="showUserDetailsModal" class="modal-backdrop fade show"></div>
 
+<!-- Edit Member Modal -->
 <div *ngIf="MemberEditModel" class="modal fade show d-block" tabindex="-1">
   <div class="modal-dialog custom-width">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Member Info</h3>
+        <h3 class="modal-title">Edit Member Info</h3>
         <button type="button" class="btn-close" (click)="closeeditmodel()" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-      <div class="row">
-     <div class="col-md-6">
-      <table class="table table-bordered">
-    <thead>
-      <th>Member No</th>
-         <th>Given Name</th>
-            <th>Sure Name</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.memNo}}</td>
-          <td>{{selectedUser?.givenName}}</td>
-            <td>{{selectedUser?.sureName}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-      <div class="col-md-6">
- <table class="table table-bordered">
-    <thead>
-      <th>NID</th>
-         <th>Passport</th>
-            <th>Birth C-No</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.niD}}</td>
-          <td>{{selectedUser?.passportNo}}</td>
-            <td>{{selectedUser?.biCNo}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-      <div class="col-md-6">
- <table class="table table-bordered">
-    <thead>
-      <th>Father</th>
-         <th>Mother</th>
-            <th>Gender</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.father}}</td>
-          <td>{{selectedUser?.mother}}</td>
-            <td>{{selectedUser?.gender}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-       <div class="col-md-6">
- <table class="table table-bordered">
-    <thead>
-      <th>Phone</th>
-         <th>Email</th>
-            <th>Nationality</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{selectedUser?.phone}}</td>
-          <td>{{selectedUser?.email}}</td>
-            <td>{{selectedUser?.nationality}}</td>
-      </tr>
-    </tbody>
-      </table>
-     </div>
-     <div class="col-md-6">
-<table class="table table-bordered">
-<thead>
-<tr>
-    <th>Identity Docu</th>
-  <th>Photo</th>
-</tr>
-</thead>
-<tbody>
-  <tr>
-<td><a href="{{docuPreview}}" target="_blank">Download Pdf</a></td>
-<td>
-   <div *ngIf="photoPreview">
-          <img [src]="photoPreview" alt="User Photo" class="img-thumbnail" width="200"/>
+      <div class="modal-body" *ngIf="selectedUser">
+        <div class="row">
+
+          <div class="col-md-6">
+            <table class="table table-bordered">
+              <thead><tr><th>Member No</th><th>Given Name</th><th>Sure Name</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.memNo" readonly/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.givenName"/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.sureName"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <table class="table table-bordered">
+              <thead><tr><th>NID</th><th>Passport</th><th>Birth C-No</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.niD"/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.passportNo"/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.biCNo"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <table class="table table-bordered">
+              <thead><tr><th>Father</th><th>Mother</th><th>Gender</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.father"/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.mother"/></td>
+                  <td>
+                    <select class="form-control" [(ngModel)]="selectedUser.gender">
+                      <option *ngFor="let g of gen" [value]="g.id">{{g.genders}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <table class="table table-bordered">
+              <thead><tr><th>Phone</th><th>Email</th><th>Nationality</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.phone"/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.email"/></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.nationality"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <table class="table table-bordered">
+              <thead><tr><th>Identity Docu</th><th>Photo</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a [href]="docuPreview" target="_blank">Download Pdf</a>
+                    <input type="file" class="form-control" (change)="onIdenSelected($event)">
+                  </td>
+                  <td>
+                    <img *ngIf="photoPreview" [src]="photoPreview" class="img-thumbnail" width="200"/>
+                    <input type="file" class="form-control" (change)="onPhotoSelected($event)">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <button class="btn btn-success px-4" (click)="saveMember()">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
+
         </div>
-
-
-</td>
-  </tr>
-</tbody>
-</table>
-     </div>
-      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeeditmodel()">Close</button>
@@ -377,6 +325,4 @@
     </div>
   </div>
 </div>
-
-<!-- Modal Backdrop -->
 <div *ngIf="MemberEditModel" class="modal-backdrop fade show"></div>
