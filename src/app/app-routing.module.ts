@@ -28,6 +28,8 @@ import { CreditComponent } from './pages/accounts/credit/credit.component';
 import { BalanceComponent } from './pages/accounts/balance/balance.component';
 import { ReportComponent } from './report/report.component';
 import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
+import { MembertrnsComponent } from './pages/membertrns/membertrns.component';
+import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.component';
 
 const routes: Routes = [
   {
@@ -77,6 +79,8 @@ const routes: Routes = [
       { path: 'accounts/credit', component: CreditComponent },
       { path: 'accounts/balance', component: BalanceComponent },
       { path: 'member/memberinfo', component: MemberinfoComponent },
+       { path: 'member/membertrns', component: MembertrnsComponent },
+              { path: 'member/memberdeactive', component: MemberdeactiveComponent },
     ]
   }
 ];

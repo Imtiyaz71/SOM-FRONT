@@ -36,7 +36,9 @@ import { CreditComponent } from './pages/accounts/credit/credit.component';
 import { BalanceComponent } from './pages/accounts/balance/balance.component';
 import { ReportComponent } from './report/report.component';
 import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MembertrnsComponent } from './pages/membertrns/membertrns.component';
+import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,6 +68,8 @@ import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
     BalanceComponent,
     ReportComponent,
     MemberinfoComponent,
+    MembertrnsComponent,
+    MemberdeactiveComponent,
 
 
   ],
@@ -80,6 +84,7 @@ import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxPaginationModule   
   ],
  providers: [
     {
