@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-
+export interface companyinfo { id: number;cName:string;cPhone:string;cEmail:string;cAddress:string;cWebsite:string;cLogo:string;createAt:string; }
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   private apiUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
@@ -14,6 +15,7 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/Log/login`, { username, password });
   }
+  getcompanyinfo(): Observable<companyinfo[]> { return this.http.get<companyinfo[]>(this.apiUrl + '/Log/cominfo'); }
 
   // Save token and role in localStorage
   saveAuthData(token: string, role: string,fullname: string,username: string) {
