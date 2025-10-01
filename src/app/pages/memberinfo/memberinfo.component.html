@@ -124,7 +124,7 @@
       </thead>
       <tbody>
           <tr *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-            
+
           <td>{{m.memNo}}</td>
           <td>{{m.givenName}} {{m.sureName}}</td>
           <td>{{m.phone}}</td>
@@ -318,7 +318,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <img [src]="photoPreview" alt="Photo" class="img-thumbnail mb-2" width="200"/>
+                    <img [src]="photoPreview" alt="Photo" class="img-thumbnail mb-2" width="100" height="100"/>
                     <input type="file" class="form-control" (change)="onPhotoSelected($event)"/>
                   </td>
                   <td>

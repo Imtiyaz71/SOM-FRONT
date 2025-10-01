@@ -18,11 +18,12 @@ export class AuthService {
   getcompanyinfo(): Observable<companyinfo[]> { return this.http.get<companyinfo[]>(this.apiUrl + '/Log/cominfo'); }
 
   // Save token and role in localStorage
-  saveAuthData(token: string, role: string,fullname: string,username: string) {
+  saveAuthData(token: string, role: string,fullname: string,username: string,cId: string) {
     localStorage.setItem('jwtToken', token);
     localStorage.setItem('userRole', role);
     localStorage.setItem('fullname', fullname);
     localStorage.setItem('username', username);
+    localStorage.setItem('cId', cId);
   }
 
   getToken(): string | null {
@@ -37,6 +38,9 @@ export class AuthService {
   }
   getfullnamename(): string | null {
     return localStorage.getItem('fullname');
+  }
+    getcompanyid(): string | null {
+    return localStorage.getItem('cId');
   }
   logout() {
     localStorage.removeItem('jwtToken');

@@ -134,7 +134,8 @@ saveMember() {
     idenDocu: this.idenFile ? this.savemem.idenDocu : this.selectedUser?.idenDocu || '',
     createDate: this.selectedUser?.createDate || new Date().toISOString(),
     createBy: this.authService.getusername(),
-    updateDate: new Date().toISOString()
+    updateDate: new Date().toISOString(),
+    compId:this.authService.getcompanyid()
   };
 
   const headers = new HttpHeaders().set(

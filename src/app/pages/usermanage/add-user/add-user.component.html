@@ -14,7 +14,6 @@
   </div>
 
   <div class="card-body">
-
     <div class="table-responsive">
       <table class="table table-bordered table-striped" width="100%" cellspacing="0">
         <thead class="thead-dark">
@@ -36,12 +35,11 @@
             <td>{{ user.phone }}</td>
             <td>{{ user.niD }}</td>
             <td>{{ user.address }}</td>
-          <td>
-          <button class="btn btn-info btn-sm" (click)="openDetailsModal(user)">Details</button>
-         <button *ngIf="role=='Admin'" class="btn btn-primary btn-sm ml-1" (click)="openEditUserModal(user)">Edit</button>
-          <button *ngIf="role=='Admin'" class="btn btn-danger btn-sm ml-1" (click)="onDelete(user.username,username)">Delete</button>
-
-        </td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="openDetailsModal(user)">Details</button>
+              <button *ngIf="role=='Admin'" class="btn btn-primary btn-sm ml-1" (click)="openEditUserModal(user)">Edit</button>
+              <button *ngIf="role=='Admin'" class="btn btn-danger btn-sm ml-1" (click)="onDelete(user.username, username)">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -62,48 +60,48 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>Full Name</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.fullName" name="fullName" required>
+              <input type="text" class="form-control" [(ngModel)]="newUser.fullName" name="fullName" required>
             </div>
             <div class="form-group col-md-6">
-              <label>User Name</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.username" name="username" required>
+              <label>Username</label>
+              <input type="text" class="form-control" [(ngModel)]="newUser.username" name="username" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>Email</label>
-              <input type="email" class="form-control form-control-lg" [(ngModel)]="newUser.email" name="email">
+              <input type="email" class="form-control" [(ngModel)]="newUser.email" name="email">
             </div>
             <div class="form-group col-md-6">
               <label>Phone</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.phone" name="phone">
+              <input type="text" class="form-control" [(ngModel)]="newUser.phone" name="phone">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>NID</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.niD" name="niD">
+              <input type="text" class="form-control" [(ngModel)]="newUser.niD" name="niD">
             </div>
             <div class="form-group col-md-6">
               <label>Address</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.address" name="address">
+              <input type="text" class="form-control" [(ngModel)]="newUser.address" name="address">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>Father</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.father" name="father">
+              <input type="text" class="form-control" [(ngModel)]="newUser.father" name="father">
             </div>
             <div class="form-group col-md-6">
               <label>Mother</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newUser.mother" name="mother">
+              <input type="text" class="form-control" [(ngModel)]="newUser.mother" name="mother">
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-lg" (click)="closeAddUserModal()">Close</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="saveUser()">Save</button>
+        <button class="btn btn-secondary" (click)="closeAddUserModal()">Close</button>
+        <button class="btn btn-primary" (click)="saveUser()">Save</button>
       </div>
     </div>
   </div>
@@ -119,49 +117,47 @@
       </div>
       <div class="modal-body">
         <form #addEducationForm="ngForm">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label>User</label>
-              <select class="form-control form-control-lg" [(ngModel)]="newEducation.username" name="username" required>
-                <option *ngFor="let user of users" [value]="user.username">{{ user.username }}</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label>User</label>
+            <select class="form-control" [(ngModel)]="newEducation.username" name="username" required>
+              <option *ngFor="let user of users" [value]="user.username">{{ user.username }}</option>
+            </select>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>Degree</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newEducation.degree" name="degree" required>
+              <input type="text" class="form-control" [(ngModel)]="newEducation.degree" name="degree" required>
             </div>
             <div class="form-group col-md-6">
               <label>Field of Study</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newEducation.fieldOfStudy" name="fieldOfStudy">
+              <input type="text" class="form-control" [(ngModel)]="newEducation.fieldOfStudy" name="fieldOfStudy">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>School Name</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newEducation.schoolName" name="schoolName" required>
+              <input type="text" class="form-control" [(ngModel)]="newEducation.schoolName" name="schoolName" required>
             </div>
             <div class="form-group col-md-6">
               <label>Start Date</label>
-              <input type="date" class="form-control form-control-lg" [(ngModel)]="newEducation.startDate" name="startDate">
+              <input type="date" class="form-control" [(ngModel)]="newEducation.startDate" name="startDate">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label>End Date</label>
-              <input type="date" class="form-control form-control-lg" [(ngModel)]="newEducation.endDate" name="endDate">
+              <input type="date" class="form-control" [(ngModel)]="newEducation.endDate" name="endDate">
             </div>
             <div class="form-group col-md-6">
               <label>Description</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="newEducation.description" name="description">
+              <input type="text" class="form-control" [(ngModel)]="newEducation.description" name="description">
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-lg" (click)="closeEducationModal()">Close</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="saveEducation()">Save</button>
+        <button class="btn btn-secondary" (click)="closeEducationModal()">Close</button>
+        <button class="btn btn-primary" (click)="saveEducation()">Save</button>
       </div>
     </div>
   </div>
@@ -177,44 +173,38 @@
       </div>
       <div class="modal-body">
         <form #addPhotoForm="ngForm">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label>User</label>
-              <select class="form-control form-control-lg" [(ngModel)]="newPhoto.username" name="username" required>
-                <option *ngFor="let user of users" [value]="user.username">{{ user.username }}</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label>User</label>
+            <select class="form-control" [(ngModel)]="newPhoto.username" name="username" required>
+              <option *ngFor="let user of users" [value]="user.username">{{ user.username }}</option>
+            </select>
           </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label>Photo</label>
-              <input type="file" class="form-control form-control-lg" (change)="onPhotoSelected($event)" required>
-            </div>
+          <div class="form-group">
+            <label>Photo</label>
+            <input type="file" class="form-control" (change)="onPhotoSelected($event)" required>
           </div>
-          <div *ngIf="photoPreview" class="form-row mt-2">
-            <div class="col-md-6">
-              <img [src]="photoPreview" alt="Preview" class="img-thumbnail"/>
-            </div>
+          <div *ngIf="photoPreview" class="mt-2">
+            <img [src]="photoPreview" alt="Preview" style="height: 100px;" class="img-thumbnail" height="100"/>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-lg" (click)="closePhotoModal()">Close</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="savePhoto()">Upload</button>
+        <button class="btn btn-secondary" (click)="closePhotoModal()">Close</button>
+        <button class="btn btn-primary" (click)="savePhoto()">Upload</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- User Details Modal -->
-<div *ngIf="showUserDetailsModal" class="modal d-block" tabindex="-1">
+<div *ngIf="showUserDetailsModal && selectedUser" class="modal d-block" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">User Details</h5>
-        <button type="button" class="close" (click)="closeUserDetailsModal()">&times;</button>
+        <button class="close" (click)="closeUserDetailsModal()">&times;</button>
       </div>
-      <div class="modal-body" *ngIf="selectedUser">
+      <div class="modal-body">
         <p><strong>Full Name:</strong> {{ selectedUser.fullName }}</p>
         <p><strong>Username:</strong> {{ selectedUser.username }}</p>
         <p><strong>Email:</strong> {{ selectedUser.email }}</p>
@@ -235,23 +225,22 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-lg" (click)="closeUserDetailsModal()">Close</button>
+        <button class="btn btn-secondary" (click)="closeUserDetailsModal()">Close</button>
       </div>
     </div>
   </div>
 </div>
+
 <!-- Edit User Modal -->
-<!-- Edit User Modal -->
-<div *ngIf="showEditUserModal" class="modal d-block" tabindex="-1">
+<div *ngIf="showEditUserModal && editUser" class="modal d-block" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit User Info</h5>
-        <button type="button" class="close" (click)="closeEditUserModal()">&times;</button>
+        <button class="close" (click)="closeEditUserModal()">&times;</button>
       </div>
-      <div class="modal-body" *ngIf="editUser">
+      <div class="modal-body">
         <form #editUserForm="ngForm">
-          <!-- Row 1 -->
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>Full Name</label>
@@ -267,7 +256,6 @@
             </div>
           </div>
 
-          <!-- Row 2 -->
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>Address</label>
@@ -283,7 +271,6 @@
             </div>
           </div>
 
-          <!-- Row 3 -->
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>Mother</label>
@@ -299,7 +286,6 @@
             </div>
           </div>
 
-          <!-- Row 4 -->
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>School Name</label>
@@ -315,34 +301,16 @@
             </div>
           </div>
 
-          <!-- Row 5 -->
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label>Description</label>
-              <input type="text" class="form-control" [(ngModel)]="editUser.description" name="description">
-            </div>
-            <div class="form-group col-md-4">
-              <label>Photo (optional)</label>
-              <input type="file" class="form-control" (change)="onEditPhotoSelected($event)">
-            </div>
-          </div>
-
-          <div *ngIf="editPhotoPreview" class="form-row mt-2">
-            <div class="col-md-4">
-              <img [src]="editPhotoPreview" alt="Preview" class="img-thumbnail" width="150"/>
-            </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" [(ngModel)]="editUser.description" name="description" rows="2"></textarea>
           </div>
         </form>
       </div>
-
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeEditUserModal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveEditUser()">Save Changes</button>
+        <button class="btn btn-secondary" (click)="closeEditUserModal()">Close</button>
+        <button class="btn btn-primary" (click)="updateUser()">Update</button>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
