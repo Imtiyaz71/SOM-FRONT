@@ -30,6 +30,9 @@ import { ReportComponent } from './report/report.component';
 import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
 import { MembertrnsComponent } from './pages/membertrns/membertrns.component';
 import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.component';
+import { LoanInfoComponent } from './kisti-subscription/loan-info/loan-info.component';
+import { LoanDueComponent } from './kisti-subscription/loan-due/loan-due.component';
+import { LoanPaidComponent } from './kisti-subscription/loan-paid/loan-paid.component';
 
 const routes: Routes = [
   {
@@ -65,6 +68,9 @@ const routes: Routes = [
       { path: 'kisti-subscription/subscription-info', component: SubscriptionInfoComponent },
       { path: 'kisti-subscription/subscription-due', component: SubscriptionDueComponent },
       { path: 'kisti-subscription/subscription-paid', component: SubscriptionPaidComponent },
+      { path: 'kisti-subscription/loan-info', component: LoanInfoComponent },
+      { path: 'kisti-subscription/loan-due', component: LoanDueComponent },
+      { path: 'kisti-subscription/loan-paid', component: LoanPaidComponent },
 
       // Expense
       { path: 'expense/add-expense', component: AddExpenseComponent },

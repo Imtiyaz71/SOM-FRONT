@@ -23,7 +23,8 @@ export class KistiInfoComponent implements OnInit {
   selectedUser: kistitypeinfo | null = null;
 MemberEditModel: boolean = false;
  constructor(private KistiService: KistiService, private authService: AuthService) { }
-  ngOnInit(): void {
+  
+ ngOnInit(): void {
 this.loadUsers();
 
   }

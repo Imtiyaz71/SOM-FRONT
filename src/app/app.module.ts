@@ -39,6 +39,9 @@ import { MemberinfoComponent } from './pages/memberinfo/memberinfo.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MembertrnsComponent } from './pages/membertrns/membertrns.component';
 import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.component';
+import { LoanInfoComponent } from './kisti-subscription/loan-info/loan-info.component';
+import { LoanDueComponent } from './kisti-subscription/loan-due/loan-due.component';
+import { LoanPaidComponent } from './kisti-subscription/loan-paid/loan-paid.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +73,9 @@ import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.c
     MemberinfoComponent,
     MembertrnsComponent,
     MemberdeactiveComponent,
+    LoanInfoComponent,
+    LoanDueComponent,
+    LoanPaidComponent,
 
 
   ],
