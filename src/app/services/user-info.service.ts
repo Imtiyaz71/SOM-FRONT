@@ -16,6 +16,7 @@ export interface UserInfoBasic {
   username: string;
   createDate: string | null;
   updateDate: string | null;
+  cId:number;
 }
 
 export interface UserInfoEducation {
@@ -96,9 +97,11 @@ getuserbasicinfo(): Observable<UserInfoBasic[]> {
   // =====================
   // Mapper data
   // =====================
-  getusermapdetails(): Observable<MapperDetails[]> {
-    return this.http.get<MapperDetails[]>(this.getusermap);
-  }
+
+getusermapdetails(): Observable<MapperDetails[]> {
+  const cid = this.comped || '0';  // default if null
+  return this.http.get<MapperDetails[]>(`${environment.apiBaseUrl}/UserInfo/mapdetails?cId=${cid}`);
+}
 
   SaveMapper(au: Mapper) {
     return this.http.post(this.saveusermap, au, { responseType: 'text' });

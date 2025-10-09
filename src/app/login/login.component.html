@@ -1,12 +1,19 @@
-<div class="wrap-login">
-  <div class="container">
+<div class="wrap-login d-flex justify-content-center align-items-center">
+  <div class="container-sm">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <mat-card class="login-box">
-        <mat-card-header>
-          <img mat-card-avatar [src]="logoUrl" alt="Logo" />
+      <mat-card class="login-box shadow-lg rounded-4">
+        <mat-card-header class="justify-content-center">
+          <img
+            mat-card-avatar
+            [src]="logoUrl"
+            alt="Logo"
+            class="rounded-circle border p-1 bg-white"
+          />
         </mat-card-header>
         <mat-card-content>
-          <mat-form-field appearance="outline" class="full-width">
+          <h3 class="text-center mb-4 fw-bold text-primary">Welcome Back 👋</h3>
+
+          <mat-form-field appearance="outline" class="full-width mb-3">
             <mat-label>Username</mat-label>
             <input
               matInput
@@ -15,12 +22,10 @@
               formControlName="username"
               required
             />
-            <mat-error *ngIf="loginForm.get('username')?.hasError('required')"
-              >Username is required</mat-error
-            >
+            <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="full-width mb-3">
             <mat-label>Password</mat-label>
             <input
               matInput
@@ -29,18 +34,75 @@
               formControlName="password"
               required
             />
-            <mat-error *ngIf="loginForm.get('password')?.hasError('required')"
-              >Password is required</mat-error
-            >
-            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')"
-              >Password should be at least 3 characters long</mat-error
-            >
+            <mat-icon matSuffix>lock</mat-icon>
           </mat-form-field>
         </mat-card-content>
-        <mat-card-actions>
-          <button type="submit" mat-raised-button color="primary">Login</button>
+        <mat-card-actions class="d-flex flex-column">
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            class="w-100 mb-2"
+          >
+            🔑 Login
+          </button>
+          <a
+            href="javascript:void(0)"
+            data-bs-toggle="modal"
+            data-bs-target="#companyModal"
+            class="text-decoration-none text-center mt-2"
+          >
+            ➕ Create New Company
+          </a>
         </mat-card-actions>
       </mat-card>
     </form>
+  </div>
+</div>
+
+<!-- 🔹 Bootstrap Modal for Company -->
+<div class="modal fade" id="companyModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <form [formGroup]="companyForm" (ngSubmit)="createCompany()">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">🏢 Create New Company</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Company Name</label>
+            <input type="text" class="form-control" formControlName="cName" placeholder="Ex: Dream71 Ltd." />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" formControlName="cPhone" placeholder="+8801XXXXXXXXX" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="cEmail" placeholder="company@email.com" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Website</label>
+            <input type="text" class="form-control" formControlName="cWebsite" placeholder="www.company.com" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" rows="2" formControlName="cAddress" placeholder="Enter company address"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Logo</label>
+            <input type="file" class="form-control" (change)="onFileChange($event)" />
+            <div *ngIf="logoBase64" class="mt-2">
+              <img [src]="logoBase64" class="img-thumbnail" width="120" alt="Preview" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">❌ Cancel</button>
+          <button type="submit" class="btn btn-success">💾 Save Company</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

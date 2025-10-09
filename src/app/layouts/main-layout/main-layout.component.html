@@ -37,6 +37,19 @@
   </a>
 
     </div>
+    <div *ngIf="menu.id==35" class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
+    <a class="collapse-item" [routerLink]="['project/projectinfo']">
+
+    <span>Project</span>
+
+    </a>
+ <a class="collapse-item" [routerLink]="['projectmember/projectmember']">
+
+    <span>member Assign</span>
+
+    </a>
+    </div>
      <div *ngIf="menu.id==2" class="bg-white py-2 collapse-inner rounded">
       <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
      <a class="collapse-item" [routerLink]="['usermanage/add-user']">
@@ -164,6 +177,14 @@
   <a class="collapse-item" [routerLink]="['accounts/credit']">
 
     <span>Credit</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['accounts/reckisti']">
+
+    <span>Kisti Receive</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['accounts/recsubscription']">
+
+    <span>Subscription Receive</span>
   </a>
     </div>
   </div>

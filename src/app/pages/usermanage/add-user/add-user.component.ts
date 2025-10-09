@@ -185,7 +185,7 @@ export class AddUserComponent implements OnInit {
   }
 
   getEmptyUser(): UserInfoBasic {
-    return { id:0, fullName:'', username:'', email:'', phone:'', niD:'', address:'', father:'', mother:'', createDate:'', updateDate:'' };
+    return { id:0, fullName:'', username:'', email:'', phone:'', niD:'', address:'', father:'', mother:'', createDate:'', updateDate:'', cId: Number(this.authService.getcompanyid()) || 0 };
   }
 
   getEmptyEducation(): UserInfoEducation {

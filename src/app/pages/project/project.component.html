@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <h3>Project Management</h3>
+
+  <form (ngSubmit)="onSubmit()" #f="ngForm" class="border p-3 rounded">
+    <input type="hidden" [(ngModel)]="formData.projectId" name="projectId" />
+
+    <div class="mb-2">
+      <label>Project Name</label>
+      <input type="text" class="form-control" [(ngModel)]="formData.projectName" name="projectName" required />
+    </div>
+
+    <div class="mb-2">
+      <label>Location</label>
+      <input type="text" class="form-control" [(ngModel)]="formData.proLocation" name="proLocation" />
+    </div>
+
+    <div class="mb-2">
+      <label>Budget</label>
+      <input type="number" class="form-control" [(ngModel)]="formData.budget" name="budget" />
+    </div>
+
+    <!-- <div class="mb-2">
+      <label>Director</label>
+      <select class="form-control" [(ngModel)]="formData.directorId" name="directorId">
+        <option *ngFor="let d of directors" [value]="d.directorId">{{ d.givenName }} {{ d.sureName }}</option>
+      </select>
+    </div> -->
+
+    <div class="mb-2">
+      <label>Start Date</label>
+      <input type="date" class="form-control" [(ngModel)]="formData.startDate" name="startDate" />
+    </div>
+
+    <div class="mb-2">
+      <label>Tentative End Date</label>
+      <input type="date" class="form-control" [(ngModel)]="formData.tentitiveEndDate" name="tentitiveEndDate" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      {{ formData.projectId === 0 ? 'Save' : 'Update' }}
+    </button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">Clear</button>
+  </form>
+
+  <hr />
+
+  <h4>Project List</h4>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Budget</th>
+        <th>Director</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of projectList">
+        <td>{{ p.projectName }}</td>
+        <td>{{ p.proLocation }}</td>
+        <td>{{ p.budget }}</td>
+        <td>{{ p.givenName }} {{ p.sureName }}</td>
+        <td>{{ p.startDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ p.tentitiveEndDate | date: 'yyyy-MM-dd' }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" (click)="editProject(p)">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

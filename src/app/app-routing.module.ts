@@ -33,6 +33,10 @@ import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.c
 import { LoanInfoComponent } from './kisti-subscription/loan-info/loan-info.component';
 import { LoanDueComponent } from './kisti-subscription/loan-due/loan-due.component';
 import { LoanPaidComponent } from './kisti-subscription/loan-paid/loan-paid.component';
+import { ReckistiComponent } from './accounts/reckisti/reckisti.component';
+import { RecsubscriptionComponent } from './accounts/recsubscription/recsubscription.component';
+import { ProjectComponent } from './pages/project/project.component';
+import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
 
 const routes: Routes = [
   {
@@ -85,8 +89,13 @@ const routes: Routes = [
       { path: 'accounts/credit', component: CreditComponent },
       { path: 'accounts/balance', component: BalanceComponent },
       { path: 'member/memberinfo', component: MemberinfoComponent },
-       { path: 'member/membertrns', component: MembertrnsComponent },
-              { path: 'member/memberdeactive', component: MemberdeactiveComponent },
+      { path: 'member/membertrns', component: MembertrnsComponent },
+      { path: 'member/memberdeactive', component: MemberdeactiveComponent },
+      { path: 'accounts/reckisti', component: ReckistiComponent },
+      { path: 'accounts/recsubscription', component: RecsubscriptionComponent },
+      { path: 'project/projectinfo', component: ProjectComponent },
+       { path: 'projectmember/projectmember', component: ProjectmemberassignComponent },
+
     ]
   }
 ];

@@ -42,6 +42,11 @@ import { MemberdeactiveComponent } from './pages/memberdeactive/memberdeactive.c
 import { LoanInfoComponent } from './kisti-subscription/loan-info/loan-info.component';
 import { LoanDueComponent } from './kisti-subscription/loan-due/loan-due.component';
 import { LoanPaidComponent } from './kisti-subscription/loan-paid/loan-paid.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ReckistiComponent } from './accounts/reckisti/reckisti.component';
+import { RecsubscriptionComponent } from './accounts/recsubscription/recsubscription.component';
+import { ProjectComponent } from './pages/project/project.component';
+import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,6 +81,10 @@ import { LoanPaidComponent } from './kisti-subscription/loan-paid/loan-paid.comp
     LoanInfoComponent,
     LoanDueComponent,
     LoanPaidComponent,
+    ReckistiComponent,
+    RecsubscriptionComponent,
+    ProjectComponent,
+    ProjectmemberassignComponent,
 
 
   ],
@@ -90,7 +99,8 @@ import { LoanPaidComponent } from './kisti-subscription/loan-paid/loan-paid.comp
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxPaginationModule   
+    NgxPaginationModule,
+    MatIconModule
   ],
  providers: [
     {
