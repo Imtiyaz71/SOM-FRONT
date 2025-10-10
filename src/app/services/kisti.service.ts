@@ -20,6 +20,7 @@ getkistitype(): Observable<kistitypeinfo[]> {
   );
 }
  getkistitypeid(id: number): Observable<kistitypeinfo> { return this.http.get<kistitypeinfo>(`${this.apiBase}/kistytypebyid?id=${id}`); }
+getkistitypebyproject(id: number): Observable<kistitypeinfo[]> { return this.http.get<kistitypeinfo[]>(`${this.apiBase}/kistytypebyproject?compId=${this.authService.getcompanyid() ?? ''}&projectId=${id}`); }
 
  savekistitype(formData: addkistitype, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/savekistitype', formData, { headers });

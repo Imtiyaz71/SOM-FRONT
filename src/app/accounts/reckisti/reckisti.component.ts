@@ -5,6 +5,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { kistitypeinfo, KistiService } from '../../services/kisti.service';
 import { MemberInfo, MemberService } from '../../services/member.service';
 import { addamount, getreceive, accountservice } from '../../services/accountservice.service';
+import { projectinfo, assigninfo, ProjectserviceService } from '../../services/projectservice.service';
+
 import { format } from 'date-fns';
 @Component({
   selector: 'app-reckisti',
@@ -14,14 +16,15 @@ import { format } from 'date-fns';
 export class ReckistiComponent implements OnInit {
 
   ktype: kistitypeinfo[] = [];
-    mem: MemberInfo[] = [];
+    mem: assigninfo[] = [];
   rec: getreceive[] = [];
+   pro: projectinfo[] = [];
   page: number = 1;
   itemsPerPage: number = 5;
   searchMemNo: string = '';
  savereckisti: any = {
     typeid: 0, compId: '', memNo: 0, paybleamount: 0, recamount:0,remark: '',
-    recmonth: '',recyear:0,transby:'',
+    recmonth: '',recyear:0,transby:'',projectid:0,
   };
   months: string[] = [];
   years: number[] = [];
@@ -31,7 +34,8 @@ export class ReckistiComponent implements OnInit {
     private kistiService: KistiService,
      private MemberService: MemberService,
     private authService: AuthService,
-    private accountService: accountservice
+    private accountService: accountservice,
+        private projectservice: ProjectserviceService
   ) {}
 
   ngOnInit(): void {
@@ -55,16 +59,20 @@ generateMonths() {
   loadUsers() {
   this.generateMonths();
     this.generateYears();
-    this.kistiService.getkistitype().subscribe({
-      next: (data) => this.ktype = data,
-      error: (err) => console.error(err)
-    });
-      this.MemberService.getmemberinfo().subscribe({
-      next: (data) => this.mem = data,
-      error: (err) => console.error(err)
-    });
+    // this.kistiService.getkistitype().subscribe({
+    //   next: (data) => this.ktype = data,
+    //   error: (err) => console.error(err)
+    // });
+    //   this.MemberService.getmemberinfo().subscribe({
+    //   next: (data) => this.mem = data,
+    //   error: (err) => console.error(err)
+    // });
        this.accountService.getkistireceive().subscribe({
       next: (data) => this.rec = data,
+      error: (err) => console.error(err)
+    });
+      this.projectservice.getprojectinfo().subscribe({
+      next: (data) => this.pro = data,
       error: (err) => console.error(err)
     });
   }
@@ -89,18 +97,41 @@ generateMonths() {
     this.savereckisti.paybleamount = 0; // reset if no type selected
   }
 }
+onTypeChangeMember(id: number) {
+  if (id && id != 0) {
+    this.projectservice.getAssignByPrid(id).subscribe({
+      next: data => {
+
+        this.mem = data;
+
+
+      },
+      error: err => console.error(err)
+    });
+      this.kistiService.getkistitypebyproject(id).subscribe({
+      next: data => {
+
+        this.ktype = data;
+
+
+      },
+      error: err => console.error(err)
+    });
+  }
+}
  kistireceivesave() {
     const formattedDate = this.savereckisti.recdate
     ? format(new Date(this.savereckisti.recdate), 'dd-MMM-yyyy')
     : '';
   const payload: addamount = {
+    projectid:this.savereckisti?.projectid||0,
     typeid: this.savereckisti?.typeid || 0,
     compId: this.authService.getcompanyid()??'',
     memNo:  this.savereckisti.memNo|0,
     paybleamount:this.savereckisti.paybleamount|0,
     recamount:this.savereckisti.recamount|0,
     remark:this.savereckisti.remark??'',
-      recdate: formattedDate, 
+      recdate: formattedDate,
     recmonth:this.savereckisti.recmonth??'',
     recyear:this.savereckisti.recyear|0,
     transby:this.authService.getusername()??''

@@ -1,1 +1,95 @@
-<p>projectmemberassign works!</p>
+<div class="container-fluid mt-4">
+<div class="row">
+<div class="col-md-6">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white text-center rounded-top-4">
+      <h4 class="mb-0">🧑‍💼 Assign Member to Project</h4>
+    </div>
+
+    <div class="card-body p-4">
+      <!-- Project Selection -->
+      <div class="form-group mb-3">
+        <label for="projectSelect" class="form-label fw-semibold">Select Project</label>
+        <select
+          id="projectSelect"
+          class="form-select"
+          [(ngModel)]="formData.projectId"
+        >
+          <option value="0">-- Select Project --</option>
+          <option
+            *ngFor="let p of projectList"
+            [value]="p.projectId"
+          >
+            {{ p.projectName }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Member Selection -->
+      <div class="form-group mb-3">
+        <label for="memberSelect" class="form-label fw-semibold">Select Member</label>
+        <select
+          id="memberSelect"
+          class="form-select"
+          [(ngModel)]="formData.memNo"
+        >
+          <option value="0">-- Select Member --</option>
+          <option
+            *ngFor="let m of mem"
+            [value]="m.memNo"
+          >
+            {{ m.givenName }} {{m.sureName}}
+          </option>
+        </select>
+      </div>
+
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-center mt-4">
+        <button
+          class="btn btn-success px-4 me-2"
+          (click)="saveAssign()"
+        >
+          💾 Save Assignment
+        </button>
+
+      </div>
+    </div>
+</div>
+<div class="col-md-6">
+<div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white text-center rounded-top-4">
+      <h4 class="mb-0">Assign History</h4>
+    </div>
+       <div class="mb-3 text-start">
+      <input type="text" class="form-control w-25 d-inline-block" placeholder="Search Member No" [(ngModel)]="searchMemNo">
+    </div>
+     <div class="card-body p-4">
+           <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Sl</th>
+                       <th>Project</th>
+                        <th>Member</th>
+                         <th>Assign Date</th>
+                          <th>AssignBy</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                      <td>{{m.id}}</td>
+                      <td>{{m.projectname}}({{m.projectid}})</td>
+                        <td>{{m.givenName}} {{m.givenName}}({{m.memNo}})</td>
+                      <td>{{m.assignDate}}</td>
+                      <td>{{m.assignBy}}</td>
+                      </tr>
+                  </tbody>
+           </table>
+     </div>
+</div>
+</div>
+</div>
+  </div>
+
