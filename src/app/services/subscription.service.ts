@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 export interface crinfo { id: number; crname: string; }
-export interface subscriptiontypeinfo { id: number; typeName: string;crid: number;crname: string;amount: number;createdate: string;updatedate: string; }
-export interface addsubscriptiontype { id: number; typeName: string;crid: number;amount: number;createdate: string;updatedate: string; compId:string| null;}
+export interface subscriptiontypeinfo { id: number; typeName: string;crid: number;crname: string;amount: number;createdate: string;updatedate: string;projectid:number;projectName:string }
+export interface addsubscriptiontype { id: number; typeName: string;crid: number;amount: number;createdate: string;updatedate: string; compId:string| null;projectid:number;}
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,10 @@ getsubscriptionTypeinfo(): Observable<subscriptiontypeinfo[]> {
   );
 }
  getsubscriptiontypeid(id: number): Observable<subscriptiontypeinfo> { return this.http.get<subscriptiontypeinfo>(`${this.apiBase}/subscriptiontypebyid?id=${id}`); }
+getsubscriptionbyproject(id: number): Observable<subscriptiontypeinfo[]> { return this.http.get<subscriptiontypeinfo[]>(`${this.apiBase}/subscriptionbyproject?compId=${this.authService.getcompanyid() ?? ''}&projectid=${id}`); }
 
- savesubscriptiontype(formData: addsubscriptiontype, headers: HttpHeaders): Observable<string> {
+savesubscriptiontype(formData: addsubscriptiontype, headers: HttpHeaders): Observable<string> {
+  formData.id = formData.id && formData.id > 0 ? formData.id : 0; // 👈 Important fix
   return this.http.post<string>(this.apiBase + '/savesubscriptiontype', formData, { headers });
 }
 }

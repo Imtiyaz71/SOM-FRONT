@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 
 export interface addamount { projectid:number,typeid: number; compId: string|null;memNo: number;paybleamount: number;recamount:number;remark: string;recdate: string;recmonth:string;recyear:number;transby:string;}
-export interface getreceive { id:number;typeid: number; typeName:string;memNo: number;givenName:string;sureName:string;paybleAmount: number;recAmount:number;due:number;remarks: string;recDate: string;recMonth:string;recYear:number;transby:string;}
+export interface getreceive { id:number;typeid: number; typeName:string;memNo: number;givenName:string;sureName:string;paybleAmount: number;recAmount:number;due:number;remarks: string;recDate: string;recMonth:string;recYear:number;transby:string;projectid:number;projectName:string;}
 
 @Injectable({
   providedIn: 'root'
