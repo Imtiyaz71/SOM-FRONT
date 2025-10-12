@@ -47,6 +47,8 @@ import { ReckistiComponent } from './accounts/reckisti/reckisti.component';
 import { RecsubscriptionComponent } from './accounts/recsubscription/recsubscription.component';
 import { ProjectComponent } from './pages/project/project.component';
 import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
+import { RegularkistiComponent } from './pages/regularkisti/regularkisti.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,6 +87,7 @@ import { ProjectmemberassignComponent } from './pages/projectmemberassign/projec
     RecsubscriptionComponent,
     ProjectComponent,
     ProjectmemberassignComponent,
+    RegularkistiComponent,
 
 
   ],

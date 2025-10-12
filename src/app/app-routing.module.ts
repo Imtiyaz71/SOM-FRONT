@@ -37,6 +37,7 @@ import { ReckistiComponent } from './accounts/reckisti/reckisti.component';
 import { RecsubscriptionComponent } from './accounts/recsubscription/recsubscription.component';
 import { ProjectComponent } from './pages/project/project.component';
 import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
+import { RegularkistiComponent } from './pages/regularkisti/regularkisti.component';
 
 const routes: Routes = [
   {
@@ -95,6 +96,7 @@ const routes: Routes = [
       { path: 'accounts/recsubscription', component: RecsubscriptionComponent },
       { path: 'project/projectinfo', component: ProjectComponent },
        { path: 'projectmember/projectmember', component: ProjectmemberassignComponent },
+       { path: 'regular/regularkistsubs', component: RegularkistiComponent },
 
     ]
   }
