@@ -9,7 +9,11 @@ export interface getregularreceive { id:number;memNo: number;givenName:string;su
 
 export interface addamount { projectid:number,typeid: number; compId: string|null;memNo: number;paybleamount: number;recamount:number;remark: string;recdate: string;recmonth:string;recyear:number;transby:string;}
 export interface getreceive { id:number;typeid: number; typeName:string;memNo: number;givenName:string;sureName:string;paybleAmount: number;recAmount:number;due:number;remarks: string;recDate: string;recMonth:string;recYear:number;transby:string;projectid:number;projectName:string;}
-
+export interface getvendor{id:number;vType:string;}
+export interface getbalanceaddhistory{id:number;compId:number;vendor:number;vType:string;descri:string;amount:number;adate:string}
+export interface getamount{id:number;compId:string;amount:number;updateDate:string;}
+export interface balancesegment{id:number;compId:string;vendor:number;vType:string;descri:string;amount:number;createDate:string;}
+export interface addbalancesegment{id:number;compId:string;vendor:number;descri:string;amount:number;createDate:string}
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +21,28 @@ export class accountservice {
   private apiBase = environment.apiBaseUrl + '/AccountCtrl';
 
   constructor(private http: HttpClient,private authService: AuthService) { }
-getkistireceive(): Observable<getreceive[]> {
+getvendor(): Observable<getvendor[]> {
+  return this.http.get<getvendor[]>(
+    `${this.apiBase}/vendor`
+  );
+}
+  getbalance(): Observable<getamount[]> {
+  return this.http.get<getamount[]>(
+    `${this.apiBase}/accountbalance?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
+getbalancesegment(): Observable<balancesegment[]> {
+  return this.http.get<balancesegment[]>(
+    `${this.apiBase}/getvalancesegment?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
+getbalancesegmentbyid(id: number): Observable<balancesegment[]> { return this.http.get<balancesegment[]>(`${this.apiBase}/getvalancesegmentbyid?id=${id}`); }
+getbalanceaddhistory(): Observable<getbalanceaddhistory[]> {
+  return this.http.get<getbalanceaddhistory[]>(
+    `${this.apiBase}/balance-add-history?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
+  getkistireceive(): Observable<getreceive[]> {
   return this.http.get<getreceive[]>(
     `${this.apiBase}/kistireceive?compId=${this.authService.getcompanyid() ?? ''}`
   );
@@ -31,6 +56,9 @@ getregularsubscriptionreceive(): Observable<getregularreceive[]> {
   return this.http.get<getregularreceive[]>(
     `${this.apiBase}/regularsubscriptionreceive?compId=${this.authService.getcompanyid() ?? ''}`
   );
+}
+savebalancesegment(formData: addbalancesegment, headers: HttpHeaders): Observable<string> {
+  return this.http.post<string>(this.apiBase + '/savebalancesegment', formData, { headers });
 }
 savekistiamount(formData: addamount, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/savekistiamount', formData, { headers });
