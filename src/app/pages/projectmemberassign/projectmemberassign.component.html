@@ -1,95 +1,118 @@
 <div class="container-fluid mt-4">
-<div class="row">
-<div class="col-md-6">
-  <div class="card shadow-lg border-0 rounded-4">
-    <div class="card-header bg-primary text-white text-center rounded-top-4">
-      <h4 class="mb-0">🧑‍💼 Assign Member to Project</h4>
-    </div>
+  <div class="row">
+    <!-- Assign Form -->
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+          <h4 class="mb-0">🧑‍💼 Assign Member to Project</h4>
+        </div>
+        <div class="card-body p-4">
+          <!-- Project Selection -->
+          <div class="form-group mb-3">
+            <label class="form-label fw-semibold">Select Project</label>
+            <select class="form-select" [(ngModel)]="formData.projectId">
+              <option value="0">-- Select Project --</option>
+              <option *ngFor="let p of projectList" [value]="p.projectId">
+                {{ p.projectName }}
+              </option>
+            </select>
+          </div>
 
-    <div class="card-body p-4">
-      <!-- Project Selection -->
-      <div class="form-group mb-3">
-        <label for="projectSelect" class="form-label fw-semibold">Select Project</label>
-        <select
-          id="projectSelect"
-          class="form-select"
-          [(ngModel)]="formData.projectId"
-        >
-          <option value="0">-- Select Project --</option>
-          <option
-            *ngFor="let p of projectList"
-            [value]="p.projectId"
-          >
-            {{ p.projectName }}
-          </option>
-        </select>
-      </div>
+          <!-- Member Selection -->
+          <div class="form-group mb-3">
+            <label class="form-label fw-semibold">Select Member</label>
+            <select class="form-select" [(ngModel)]="formData.memNo">
+              <option value="0">-- Select Member --</option>
+              <option *ngFor="let m of mem" [value]="m.memNo">
+                {{ m.givenName }} {{ m.sureName }}
+              </option>
+            </select>
+          </div>
 
-      <!-- Member Selection -->
-      <div class="form-group mb-3">
-        <label for="memberSelect" class="form-label fw-semibold">Select Member</label>
-        <select
-          id="memberSelect"
-          class="form-select"
-          [(ngModel)]="formData.memNo"
-        >
-          <option value="0">-- Select Member --</option>
-          <option
-            *ngFor="let m of mem"
-            [value]="m.memNo"
-          >
-            {{ m.givenName }} {{m.sureName}}
-          </option>
-        </select>
-      </div>
+          <!-- Amount -->
+          <div class="form-group mb-3">
+            <label class="form-label fw-semibold">Enter Payble Amount</label>
+            <input type="number" class="form-control" placeholder="0" [(ngModel)]="formData.amount" />
+          </div>
 
-
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="d-flex justify-content-center mt-4">
-        <button
-          class="btn btn-success px-4 me-2"
-          (click)="saveAssign()"
-        >
-          💾 Save Assignment
-        </button>
-
+          <!-- Action -->
+          <div class="d-flex justify-content-center mt-4">
+            <button class="btn btn-success px-4 me-2" (click)="saveAssign()">💾 Save Assignment</button>
+          </div>
+        </div>
       </div>
     </div>
-</div>
-<div class="col-md-6">
-<div class="card shadow-lg border-0 rounded-4">
-    <div class="card-header bg-primary text-white text-center rounded-top-4">
-      <h4 class="mb-0">Assign History</h4>
+
+    <!-- Assignment History -->
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+          <h4 class="mb-0">Assign History</h4>
+        </div>
+        <div class="mb-3 text-start">
+          <input type="text" class="form-control w-25 d-inline-block" placeholder="Search Member No" [(ngModel)]="searchMemNo">
+        </div>
+        <div class="card-body p-4">
+          <table class="table table-responsive table-hover">
+            <thead>
+              <tr>
+                <th>Sl</th>
+                <th>Project</th>
+                <th>Member</th>
+                <th>Payble</th>
+                <th>Assign Date</th>
+                <th>AssignBy</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                <td>{{ m.id }}</td>
+                <td>{{ m.projectname }} ({{ m.projectid }})</td>
+                <td>{{ m.givenName }} {{ m.sureName }} ({{ m.memNo }})</td>
+                <td>{{ m.amount }}</td>
+                <td>{{ m.assignDate }}</td>
+                <td>{{ m.assignBy }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(m)">✏️ Edit</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-       <div class="mb-3 text-start">
-      <input type="text" class="form-control w-25 d-inline-block" placeholder="Search Member No" [(ngModel)]="searchMemNo">
-    </div>
-     <div class="card-body p-4">
-           <table class="table table-responsive">
-                  <thead>
-                    <tr>
-                      <th>Sl</th>
-                       <th>Project</th>
-                        <th>Member</th>
-                         <th>Assign Date</th>
-                          <th>AssignBy</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-                      <td>{{m.id}}</td>
-                      <td>{{m.projectname}}({{m.projectid}})</td>
-                        <td>{{m.givenName}} {{m.givenName}}({{m.memNo}})</td>
-                      <td>{{m.assignDate}}</td>
-                      <td>{{m.assignBy}}</td>
-                      </tr>
-                  </tbody>
-           </table>
-     </div>
-</div>
-</div>
-</div>
   </div>
+</div>
 
+<!-- ---------------- Edit Modal ---------------- -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Edit Assignment Amount</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateAssign()">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Project</label>
+            <input type="text" class="form-control" [value]="editData.projectId" readonly />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Member</label>
+            <input type="text" class="form-control" [value]="editData.memNo" readonly />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Amount</label>
+            <input type="number" class="form-control" [(ngModel)]="editData.amount" name="amount" required />
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success me-2">💾 Update</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

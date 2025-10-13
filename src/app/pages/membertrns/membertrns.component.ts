@@ -45,7 +45,7 @@ export class MembertrnsComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
 
-    this.authService.getcompanyinfo().subscribe({
+    this.authService.getCompanyInfo().subscribe({
       next: (data) => {
         // ✅ যদি server array দেয়, first element নাও
         this.companyinfo = Array.isArray(data) ? data[0] : data;

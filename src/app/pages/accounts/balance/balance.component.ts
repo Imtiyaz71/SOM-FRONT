@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { getvendor, balancesegment, getbalanceaddhistory,accountservice } from '../../../services/accountservice.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -20,7 +21,7 @@ export class BalanceComponent implements OnInit {
   itemsPerPage: number = 5;
   searchMemNo: string = '';
   amount: number = 0;
-
+  apiBase:string=environment.apiBaseUrl;
   // Add / Save form model
   savebalsegment: any = {
     id: 0,
@@ -174,48 +175,132 @@ export class BalanceComponent implements OnInit {
     });
   }
 downloadDepositHistory() {
-  this.accountService.getbalanceaddhistory().subscribe({
-    next: (data) => {
-      this.baladdhis = data;
+  // Step 1️⃣: Get company info first
+  this.authService.getCompanyInfo().subscribe({
+    next: (companyData: any) => {
+      const info = companyData?.info;
+      const companyName = info?.cName || 'Your Company Name Ltd.';
+      const logoUrl = info?.cLogo ? `${this.apiBase}/${info.cLogo}` : ''; // full path build
 
-      if (!this.baladdhis || this.baladdhis.length === 0) {
-        alert('No deposit history found!');
-        return;
-      }
+      // Step 2️⃣: Fetch deposit history after company info
+      this.accountService.getbalanceaddhistory().subscribe({
+        next: async (data) => {
+          if (!data || data.length === 0) {
+            alert('No deposit history found!');
+            return;
+          }
 
-      const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.text('💰 Deposit History', 14, 20);
+          const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
 
-      const columns = [
-        { header: '#', dataKey: 'sl' },
-        { header: 'Vendor Type', dataKey: 'vType' },
-        { header: 'Amount (৳)', dataKey: 'amount' },
-        { header: 'Description', dataKey: 'descri' },
-        { header: 'Date', dataKey: 'createDate' }
-      ];
+          // Load logo image if available
+          if (logoUrl) {
+            try {
+              const img = await fetch(logoUrl)
+                .then((res) => res.blob())
+                .then((blob) => new Promise<string>((resolve) => {
+                  const reader = new FileReader();
+                  reader.onload = () => resolve(reader.result as string);
+                  reader.readAsDataURL(blob);
+                }));
+              doc.addImage(img, 'JPEG', 450, 25, 100, 50); // adjust position/size
+            } catch (err) {
+              console.warn('Logo load failed:', err);
+            }
+          }
 
-      const rows = this.baladdhis.map((item, index) => ({
-        sl: index + 1,
-        vType: item.vType,
-        amount: item.amount.toFixed(2),
-        descri: item.descri,
-        createDate: new Date(item.adate).toLocaleDateString()
-      }));
+          // === Header ===
+          const reportTitle = 'Deposit History Report';
+          const printedDate = new Date().toLocaleString('en-GB', {
+            day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+          });
 
-      (doc as any).autoTable({
-        head: [columns.map(c => c.header)],
-        body: rows.map(r => columns.map(c => r[c.dataKey as keyof typeof r])),
-        startY: 30,
-        theme: 'grid',
-        headStyles: { fillColor: [22, 160, 133] },
-        styles: { fontSize: 10 }
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(18);
+          doc.text(companyName, 40, 40);
+
+          doc.setFontSize(14);
+          doc.text(reportTitle, 40, 65);
+
+          doc.setFontSize(10);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Printed on: ${printedDate}`, 40, 80);
+
+          // === Columns ===
+          const columns = ['#', 'Vendor Type', 'Amount (৳)', 'Description', 'Create Date'];
+
+          // === Date fix helper ===
+          const parseDate = (val: any): string => {
+            if (!val) return '';
+            const d = new Date(val);
+            if (isNaN(d.getTime())) {
+              const fixed = Date.parse(val.replace(/\s+/g, ' ').trim());
+              return isNaN(fixed)
+                ? val
+                : new Date(fixed).toLocaleDateString('en-GB');
+            }
+            return d.toLocaleDateString('en-GB');
+          };
+
+          // === Table rows ===
+          const rows = data.map((item: any, index: number) => [
+            index + 1,
+            item.vType ?? '',
+            (item.amount ?? 0).toLocaleString('en-BD', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }),
+            item.descri ?? '',
+            parseDate(item.adate),
+          ]);
+
+          // === Table ===
+          autoTable(doc, {
+            head: [columns],
+            body: rows,
+            startY: 100,
+            theme: 'grid',
+            headStyles: {
+              fillColor: [0, 102, 204],
+              textColor: 255,
+              fontStyle: 'bold',
+              halign: 'center',
+            },
+            bodyStyles: { halign: 'center', fontSize: 10 },
+            alternateRowStyles: { fillColor: [245, 245, 245] },
+            styles: { cellPadding: 4 },
+          });
+
+          // === Total ===
+          const totalAmount = data.reduce((sum: number, item: any) => sum + (item.amount ?? 0), 0);
+          const finalY = (doc as any).lastAutoTable.finalY || 110;
+
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`Total Deposit: ৳ ${totalAmount.toFixed(2)}`, 40, finalY + 30);
+
+          // === Footer ===
+          const pageHeight = doc.internal.pageSize.height;
+          doc.setFontSize(9);
+          doc.setFont('helvetica', 'normal');
+          doc.text('Generated by Somity Management System', 40, pageHeight - 20);
+
+          // ✅ Download PDF
+          doc.save(`DepositHistory_${new Date().getTime()}.pdf`);
+        },
+        error: (err) => {
+          console.error('Error fetching deposit history:', err);
+          alert('Failed to load deposit history.');
+        },
       });
-
-      doc.save('DepositHistory.pdf');
     },
-    error: (err) => console.error('Error fetching deposit history:', err)
+    error: (err) => {
+      console.error('Error fetching company info:', err);
+      alert('Failed to fetch company information.');
+    }
   });
 }
+
+
+
 
 }

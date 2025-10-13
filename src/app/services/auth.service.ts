@@ -15,8 +15,11 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/Log/login`, { username, password });
   }
-  getcompanyinfo(): Observable<companyinfo[]> { return this.http.get<companyinfo[]>(this.apiUrl + '/Log/cominfo'); }
-
+  // getcompanyinfo(): Observable<companyinfo[]> { return this.http.get<companyinfo[]>(this.apiUrl + '/Log/cominfo'); }
+ getCompanyInfo(): Observable<companyinfo[]> {
+  const cid = localStorage.getItem('cId');
+  return this.http.get<companyinfo[]>(`${this.apiUrl}/Log/cominfo?cid=${cid}`);
+}
   // Save token and role in localStorage
   saveAuthData(token: string, role: string,fullname: string,username: string,cId: string) {
     localStorage.setItem('jwtToken', token);
