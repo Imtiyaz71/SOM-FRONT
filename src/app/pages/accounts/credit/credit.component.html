@@ -1,1 +1,69 @@
-<p>credit works!</p>
+<div class="container mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">💰 Somity Transaction List</h4>
+      <button class="btn btn-light btn-sm" (click)="loadTransection()">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+    </div>
+
+    <div class="card-body">
+      <!-- Filter Section -->
+      <div class="row g-3 mb-4 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Start Date:</label>
+          <input type="date" class="form-control" [(ngModel)]="filter.startDate" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">End Date:</label>
+          <input type="date" class="form-control" [(ngModel)]="filter.endDate" />
+        </div>
+
+        <div class="col-md-3 text-end">
+          <button class="btn btn-success px-4" (click)="loadTransection()">
+            <i class="bi bi-search"></i> Filter
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+          <thead class="table-dark text-center">
+            <tr>
+              <th>ID</th>
+              <th>Purpose</th>
+              <th>Amount (৳)</th>
+              <th>Type</th>
+              <th>Remarks</th>
+              <th>Date</th>
+              <th>Month</th>
+              <th>Year</th>
+              <th>Transaction By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of transections" class="text-center">
+              <td>{{ t.id }}</td>
+              <td class="text-start">{{ t.purpose }}</td>
+              <td class="fw-bold text-success">{{ t.amount | number:'1.2-2' }}</td>
+              <td>
+                {{t.crName}}
+              </td>
+              <td>{{ t.remarks }}</td>
+              <td>{{ t.dates | date:'dd-MMM-yyyy' }}</td>
+              <td>{{ t.months }}</td>
+              <td>{{ t.years }}</td>
+              <td>{{ t.transectionBy }}</td>
+            </tr>
+            <tr *ngIf="transections.length === 0">
+              <td colspan="9" class="text-center text-muted py-3">
+                <i class="bi bi-info-circle"></i> No records found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

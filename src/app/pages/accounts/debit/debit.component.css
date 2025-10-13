@@ -1,0 +1,17 @@
+.card {
+  border-radius: 12px;
+}
+
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th {
+  background: linear-gradient(90deg, #0056b3, #007bff);
+  color: #fff;
+}
+
+button i {
+  margin-right: 5px;
+}

@@ -14,6 +14,25 @@ export interface getbalanceaddhistory{id:number;compId:number;vendor:number;vTyp
 export interface getamount{id:number;compId:string;amount:number;updateDate:string;}
 export interface balancesegment{id:number;compId:string;vendor:number;vType:string;descri:string;amount:number;createDate:string;}
 export interface addbalancesegment{id:number;compId:string;vendor:number;descri:string;amount:number;createDate:string}
+export interface somityTransection {
+  id: number;
+  compId: number;
+  purpose: string;
+  amount: number;
+  crType: number;
+  crName: string;
+  remarks: string;
+  dates: string;
+  months: string;
+  years: string;
+  transectionBy: string;
+}
+export interface AccDrCr {
+  startDate?: string | null;
+  endDate?: string | null;
+  compId: string|null;
+  crType: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +61,9 @@ getbalanceaddhistory(): Observable<getbalanceaddhistory[]> {
     `${this.apiBase}/balance-add-history?compId=${this.authService.getcompanyid() ?? ''}`
   );
 }
+  getSomityTransection(model: AccDrCr): Observable<somityTransection[]> {
+    return this.http.post<somityTransection[]>(`${this.apiBase}/getsomityacctransection`, model);
+  }
   getkistireceive(): Observable<getreceive[]> {
   return this.http.get<getreceive[]>(
     `${this.apiBase}/kistireceive?compId=${this.authService.getcompanyid() ?? ''}`
