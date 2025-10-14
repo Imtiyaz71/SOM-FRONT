@@ -21,6 +21,7 @@ import { SubscriptionDueComponent } from './pages/kisti-subscription/subscriptio
 import { SubscriptionPaidComponent } from './pages/kisti-subscription/subscription-paid/subscription-paid.component';
 import { AddExpenseComponent } from './pages/expense/add-expense/add-expense.component';
 import { ExpenseHistoryComponent } from './pages/expense/expense-history/expense-history.component';
+import {ExpensetypeComponent} from './pages/expense/expensetype/expensetype.component';
 import { AddBiboroniComponent } from './pages/meeting/add-biboroni/add-biboroni.component';
 import { MeetingHistoryComponent } from './pages/meeting/meeting-history/meeting-history.component';
 import { DebitComponent } from './pages/accounts/debit/debit.component';
@@ -80,6 +81,7 @@ const routes: Routes = [
       // Expense
       { path: 'expense/add-expense', component: AddExpenseComponent },
       { path: 'expense/expense-history', component: ExpenseHistoryComponent },
+      { path: 'expense/expense-type', component: ExpensetypeComponent },
 
       // Meeting
       { path: 'meeting/add-biboroni', component: AddBiboroniComponent },

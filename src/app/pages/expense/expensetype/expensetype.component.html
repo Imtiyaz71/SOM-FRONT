@@ -1,0 +1,71 @@
+<div class="container mt-4">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white text-center rounded-top-4">
+      <h4 class="mb-0">💰 Somity Expense Type Management</h4>
+    </div>
+
+    <div class="card-body p-4">
+      <!-- 🔹 Form Section -->
+      <form (ngSubmit)="saveExpenseType()" class="mb-4">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-8">
+            <label class="form-label fw-bold">Expense Type Name:</label>
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              placeholder="Enter expense type name"
+              [(ngModel)]="model.typeName"
+              name="typeName"
+              required
+            />
+          </div>
+
+          <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-success btn-lg w-100">
+              {{ model.id === 0 ? '➕ Add Type' : '✏️ Update Type' }}
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 🔹 Expense Type List -->
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle shadow-sm">
+          <thead class="table-primary text-center">
+            <tr>
+              <th style="width: 80px;">SL</th>
+              <th>Type Name</th>
+              <th style="width: 150px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of expensetypeList; let i = index" class="text-center">
+              <td>{{ i + 1 }}</td>
+              <td class="text-start">{{ item.typeName }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-outline-primary me-2"
+                  (click)="editExpenseType(item)"
+                >
+                  <i class="bi bi-pencil-square"></i> Edit
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="deleteExpenseType(item.id)"
+                >
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="expensetypeList.length === 0">
+              <td colspan="3" class="text-muted text-center py-3">
+                No expense types found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
