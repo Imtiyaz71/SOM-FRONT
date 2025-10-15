@@ -1,13 +1,18 @@
 <div class="container mt-4">
   <div class="card shadow-sm border-0">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h4 class="mb-0">💰 Somity Transaction List</h4>
+      <h4 class="mb-0">💰 Somity Transaction List(Debit)</h4>
       <button class="btn btn-light btn-sm" (click)="loadTransection()">
         <i class="bi bi-arrow-clockwise"></i> Refresh
       </button>
     </div>
 
     <div class="card-body">
+      <!-- Total Debited -->
+      <div class="mb-3 text-end fw-bold fs-5 text-success">
+        Total Debited: {{ totalDebited | number:'1.2-2' }} ৳
+      </div>
+
       <!-- Filter Section -->
       <div class="row g-3 mb-4 align-items-end">
         <div class="col-md-3">
@@ -28,7 +33,7 @@
 
       <!-- Table Section -->
       <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle">
+        <table class="table table-bordered table-striped align-middle shadow-sm">
           <thead class="table-dark text-center">
             <tr>
               <th>ID</th>
@@ -43,20 +48,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let t of transections" class="text-center">
+            <tr *ngFor="let t of pagedTransection" class="text-center">
               <td>{{ t.id }}</td>
               <td class="text-start">{{ t.purpose }}</td>
               <td class="fw-bold text-success">{{ t.amount | number:'1.2-2' }}</td>
-              <td>
-                {{t.crName}}
-              </td>
+              <td>{{ t.crName }}</td>
               <td>{{ t.remarks }}</td>
               <td>{{ t.dates | date:'dd-MMM-yyyy' }}</td>
               <td>{{ t.months }}</td>
               <td>{{ t.years }}</td>
               <td>{{ t.transectionBy }}</td>
             </tr>
-            <tr *ngIf="transections.length === 0">
+            <tr *ngIf="pagedTransection.length === 0">
               <td colspan="9" class="text-center text-muted py-3">
                 <i class="bi bi-info-circle"></i> No records found
               </td>
@@ -64,6 +67,22 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Pagination Controls -->
+      <nav *ngIf="totalPages > 1" aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="prevPage()">Previous</button>
+          </li>
+          <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === i + 1">
+            <button class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="nextPage()">Next</button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

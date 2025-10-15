@@ -1,1 +1,68 @@
-<p>expense-history works!</p>
+<div class="container mt-4">
+  <h3 class="mb-3 text-primary">Expense History</h3>
+
+  <!-- Year Filter -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-3">
+      <label for="yearSelect" class="form-label">Filter by Year:</label>
+      <select id="yearSelect" class="form-select"
+              [ngModel]="selectedYear"
+              (ngModelChange)="onYearChange($event)">
+        <option [ngValue]="null">All Years</option>
+        <option *ngFor="let y of years" [ngValue]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div class="col-md-9 text-end" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message -->
+  <div *ngIf="message" class="alert alert-warning">
+    {{ message }}
+  </div>
+
+  <!-- Expense Table -->
+  <div *ngIf="expenseData.length > 0" class="table-responsive">
+    <table class="table table-striped table-bordered table-hover shadow-sm align-middle">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Year</th>
+          <th>Jan</th>
+          <th>Feb</th>
+          <th>Mar</th>
+          <th>Apr</th>
+          <th>May</th>
+          <th>Jun</th>
+          <th>Jul</th>
+          <th>Aug</th>
+          <th>Sep</th>
+          <th>Oct</th>
+          <th>Nov</th>
+          <th>Dec</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exp of expenseData" class="text-center">
+          <td>{{ exp.year }}</td>
+          <td>{{ exp.january | number:'1.0-0' }}</td>
+          <td>{{ exp.february | number:'1.0-0' }}</td>
+          <td>{{ exp.march | number:'1.0-0' }}</td>
+          <td>{{ exp.april | number:'1.0-0' }}</td>
+          <td>{{ exp.may | number:'1.0-0' }}</td>
+          <td>{{ exp.june | number:'1.0-0' }}</td>
+          <td>{{ exp.july | number:'1.0-0' }}</td>
+          <td>{{ exp.august | number:'1.0-0' }}</td>
+          <td>{{ exp.september | number:'1.0-0' }}</td>
+          <td>{{ exp.october | number:'1.0-0' }}</td>
+          <td>{{ exp.november | number:'1.0-0' }}</td>
+          <td>{{ exp.december | number:'1.0-0' }}</td>
+          <td>{{ getMonthTotal(exp) | number:'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

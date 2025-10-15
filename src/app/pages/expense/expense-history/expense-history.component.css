@@ -1,0 +1,63 @@
+/* Container & Header */
+.container h3 {
+  font-weight: 600;
+  color: #0d6efd; /* Bootstrap primary color */
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+/* Table Styling */
+.table {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.table thead th {
+  background-color: #0d6efd;
+  color: #fff;
+  font-weight: 500;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa; /* light gray */
+}
+
+.table-hover tbody tr:hover {
+  background-color: #e2e6ea; /* subtle hover */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.table-responsive {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+}
+
+/* Spinner */
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Messages */
+.alert {
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+/* Dropdown */
+.form-select {
+  border-radius: 0.3rem;
+  height: calc(2.5rem + 2px);
+  font-weight: 500;
+}

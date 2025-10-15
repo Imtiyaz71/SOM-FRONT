@@ -1,1 +1,139 @@
-<p>add-expense works!</p>
+<div class="container mt-5">
+
+  <!-- Title -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">💰 Manage Expenses</h2>
+    <p class="text-muted">Add new expense & view all expenses</p>
+  </div>
+
+  <!-- Message -->
+  <div *ngIf="message" class="alert alert-info alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <!-- Add Expense Form -->
+  <div class="card shadow-sm mb-5">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">➕ Add New Expense</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="saveExpense()" class="row g-3">
+
+        <!-- Expense Type -->
+        <div class="col-md-4">
+          <label class="form-label">Expense Type</label>
+          <select [(ngModel)]="model.exType" name="exType" class="form-select" required>
+            <option value="0">-- Select Type --</option>
+            <option *ngFor="let t of expTypes" [value]="t.id">{{ t.typeName }}</option>
+          </select>
+        </div>
+
+        <!-- Amount -->
+        <div class="col-md-4">
+          <label class="form-label">Amount</label>
+          <input type="number" [(ngModel)]="model.amount" name="amount" class="form-control" placeholder="Enter amount" required>
+        </div>
+
+        <!-- Date -->
+        <div class="col-md-4">
+          <label class="form-label">Date</label>
+          <input type="date" [(ngModel)]="model.eDate" name="eDate" class="form-control" required>
+        </div>
+
+        <!-- Month -->
+        <div class="col-md-4">
+          <label class="form-label">Month</label>
+          <select [(ngModel)]="model.eMonth" name="eMonth" class="form-select">
+            <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <!-- Year -->
+        <div class="col-md-4">
+          <label class="form-label">Year</label>
+          <select [(ngModel)]="model.eYear" name="eYear" class="form-select">
+            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="col-md-12">
+          <label class="form-label">Description</label>
+          <textarea [(ngModel)]="model.descri" name="descri" class="form-control" rows="2" placeholder="Enter description"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-md-12 text-end">
+          <button type="submit" class="btn btn-success" [disabled]="loading || !model.exType || !model.amount || !model.eDate">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ loading ? 'Saving...' : 'Save Expense' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Expense List Table -->
+<!-- Expense List Table -->
+<div class="card shadow-sm">
+  <div class="card-header bg-secondary text-white">
+    <h5 class="mb-0">📋 Expense List</h5>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Description</th>
+            <th>By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of pagedExpenses; let i = index">
+            <td>{{ (currentPage-1)*pageSize + i + 1 }}</td>
+            <td>{{ e.typeName }}</td>
+            <td>{{ e.amount | currency:'BDT':'symbol':'1.0-0' }}</td>
+            <td>{{ e.eDate | date:'dd-MMM-yyyy' }}</td>
+            <td>{{ e.eMonth }}</td>
+            <td>{{ e.eYear }}</td>
+            <td>{{ e.descri }}</td>
+            <td>{{ e.eBy }}</td>
+          </tr>
+          <tr *ngIf="pagedExpenses.length === 0">
+            <td colspan="8" class="text-center text-muted">No expenses found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="card-footer d-flex justify-content-center align-items-center">
+    <nav *ngIf="totalPages > 1">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage - 1)">Previous</a>
+        </li>
+
+        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let idx = index" [class.active]="currentPage === idx + 1">
+          <a class="page-link" href="javascript:void(0)" (click)="changePage(idx + 1)">{{ idx + 1 }}</a>
+        </li>
+
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+</div>
