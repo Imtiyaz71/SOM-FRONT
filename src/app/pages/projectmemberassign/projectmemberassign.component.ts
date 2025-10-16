@@ -132,4 +132,29 @@ export class ProjectmemberassignComponent implements OnInit {
       }
     });
   }
+  cancelAssign(record: any) {
+  if (!confirm(`Are you sure you want to cancel project ${record.projectname} for member ${record.memNo}?`)) {
+    return;
+  }
+
+  const compId = record.compId ?? this.authService.getcompanyid();
+  const memNo = record.memNo;
+  const projectId = record.projectid;
+
+  this.projectService.cancelAssign(compId, memNo, projectId).subscribe({
+    next: (res) => {
+      if (res.statusCode === 1) {
+        alert('✅ ' + res.message);
+        this.loaddata(); // reload table
+      } else {
+        alert('⚠️ ' + res.message);
+      }
+    },
+    error: (err) => {
+      console.error(err);
+      alert('❌ Failed to cancel project assignment!');
+    }
+  });
+}
+
 }

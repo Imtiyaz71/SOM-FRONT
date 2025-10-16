@@ -42,6 +42,8 @@ export interface BalanceWithdraw {
   givenName: string;
   sureName: string;
   amount: number;
+  paid: number;
+  due: number;
   remarks: string;
   wDate: string;
   wMonth: string;
@@ -63,6 +65,34 @@ export interface VWBounceBalanceWithdrwal {
   fProject: number;
   memNo: number;
   compId: number;
+}
+export interface RePayModel {
+  compId: number;
+  memNo: number;
+  projectId: number;
+  payble: number;
+  paid: number;
+  withdrwalID: number;
+}
+export interface VW_MemberProjectAccount {
+  Id: number;
+  memNo: number;
+  compId: number;
+  projectId: number;
+  amount: number;
+  createDate: string;
+  updateDate: string;
+  Payble: number;
+  Due: number;
+  GivenName: string;
+  SureName: string;
+  ProjectName: string;
+}
+
+// SP output model
+export interface VW_Response {
+  statusCode: number;
+  message: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -115,6 +145,22 @@ getregularsubscriptionreceive(): Observable<getregularreceive[]> {
     `${this.apiBase}/regularsubscriptionreceive?compId=${this.authService.getcompanyid() ?? ''}`
   );
 }
+  getProjectAccountByMemberAndProject(
+    compId?: number,
+    memNo?: number,
+    projectId?: number
+  ): Observable<VW_MemberProjectAccount[]> {
+
+    let query = '?';
+    if (compId != null) query += `compId=${compId}&`;
+    if (memNo != null) query += `memNo=${memNo}&`;
+    if (projectId != null) query += `projectId=${projectId}&`;
+
+    // remove trailing '&' if exists
+    query = query.slice(0, -1);
+
+    return this.http.get<VW_MemberProjectAccount[]>(`${this.apiBase}/memberprojectaccount${query}`);
+  }
 savebalancesegment(formData: addbalancesegment, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/savebalancesegment', formData, { headers });
 }
@@ -133,5 +179,9 @@ saveregularsubscriptionamount(formData: any, headers: HttpHeaders): Observable<s
   }
     bounceBalanceWithdraw(model: VWBounceBalanceWithdrwal): Observable<string> {
     return this.http.post<string>(`${this.apiBase}/bounce-balance-withdraw`, model);
+  }
+   repay(model: RePayModel): Observable<VW_Response> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<VW_Response>(`${this.apiBase}/repay-balance`, model, { headers });
   }
 }

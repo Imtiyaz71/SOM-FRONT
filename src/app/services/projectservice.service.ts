@@ -7,7 +7,10 @@ export interface projectinfo { id: number;projectId: number;projectName: string;
 export interface addproject { id: number;projectId: number;projectName: string;proLocation: string;budget:number;directorId:number;startDate: string; tentitiveEndDate: string;compId:string| null;}
 export interface assigninfo { id: number;projectid: number;projectname: string;memNo: number;givenName:string;sureName:string;assignDate: string; assignBy: string;compId:string| null;amount:number}
 export interface addassign{id:number,projectId:number;memNo:number;assignBy:string;compId:string|null;amount:number}
-
+export interface VW_Response {
+  statusCode: number;
+  message: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -41,4 +44,8 @@ export class ProjectserviceService {
    saveprojectassign(formData: addassign, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/save-assign-project', formData, { headers });
 }
+cancelAssign(compId: string, memNo: number, projectId: number): Observable<VW_Response> {
+    const url = `${this.apiBase}/cancel-assign?compId=${compId}&memNo=${memNo}&projectId=${projectId}`;
+    return this.http.post<VW_Response>(url, {});
+  }
 }

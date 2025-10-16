@@ -73,9 +73,10 @@
                 <td>{{ m.amount }}</td>
                 <td>{{ m.assignDate }}</td>
                 <td>{{ m.assignBy }}</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(m)">✏️ Edit</button>
-                </td>
+               <td>
+              <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(m)">✏️ Edit</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="cancelAssign(m)">❌ Cancel</button>
+              </td>
               </tr>
             </tbody>
           </table>

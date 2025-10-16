@@ -20,7 +20,7 @@
   <div class="row g-4">
 
     <!-- Add Withdraw Form -->
-    <div class="col-lg-5">
+    <div class="col-lg-4">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white">
           <h5 class="mb-0">➕ Add Withdraw</h5>
@@ -51,7 +51,12 @@
             <!-- Amount -->
             <div class="mb-3">
               <label class="form-label fw-semibold">Amount</label>
-              <input type="number" class="form-control" [(ngModel)]="newWithdraw.amount" name="amount" placeholder="Enter amount" required>
+             <input type="number" class="form-control" [(ngModel)]="newWithdraw.amount" name="amount"
+       placeholder="Enter amount" required
+       [max]="memberProjectBalance"
+       (input)="checkAmount()">
+<small class="text-muted">Available Balance: {{ memberProjectBalance | currency:'BDT':'symbol' }}</small>
+
             </div>
 
             <!-- Remarks -->
@@ -85,7 +90,7 @@
     </div>
 
     <!-- Withdraw List -->
-    <div class="col-lg-7">
+    <div class="col-lg-8">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0">💳 Withdraw List</h5>
@@ -99,6 +104,8 @@
                 <th>Member</th>
                 <th>Project</th>
                 <th>Amount</th>
+                <th>Repay</th>
+                <th>Due</th>
                 <th>Remarks</th>
                 <th>Month</th>
                 <th>Year</th>
@@ -111,15 +118,18 @@
                 <td>{{ w.givenName }} {{ w.sureName }} ({{ w.memNo }})</td>
                 <td>{{ w.projectName }} ({{ w.fProject }})</td>
                 <td>{{ w.amount | currency:'BDT':'symbol' }}</td>
+                <td>{{ w.paid | currency:'BDT':'symbol' }}</td>
+                <td>{{ w.due | currency:'BDT':'symbol' }}</td>
                 <td>{{ w.remarks }}</td>
                 <td>{{ w.wMonth }}</td>
                 <td>{{ w.wYear }}</td>
-                  <td>
-                      <button class="btn btn-danger btn-sm" (click)="bounceWithdraw(w)">Bounce</button>
-                  </td>
+                <td>
+                  <button class="btn btn-danger btn-sm me-1" (click)="bounceWithdraw(w)">Bounce</button>
+                  <button class="btn btn-success btn-sm" (click)="openRepayModal(w)">Repay</button>
+                </td>
               </tr>
               <tr *ngIf="filteredList.length === 0">
-                <td colspan="7" class="text-center text-muted">No withdraw records found.</td>
+                <td colspan="10" class="text-center text-muted">No withdraw records found.</td>
               </tr>
             </tbody>
           </table>
@@ -142,5 +152,44 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ---------------- Repay Modal ---------------- -->
+<div class="modal fade" id="repayModal" tabindex="-1" aria-hidden="true" [ngClass]="{'show': showRepayPopup}" [ngStyle]="{'display': showRepayPopup ? 'block' : 'none'}">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">💰 Repay Withdraw</h5>
+        <button type="button" class="btn-close" (click)="closeRepayPopup()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitRepay()">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Member</label>
+            <input type="text" class="form-control" [value]="repayModel.memNo" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Project</label>
+            <input type="text" class="form-control" [value]="repayModel.projectId" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Payble Amount</label>
+            <input type="number" class="form-control" [value]="repayModel.payble" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Paid Amount</label>
+            <input type="number" class="form-control" [(ngModel)]="repayModel.paid" name="paid" required>
+          </div>
+          <div *ngIf="repayResponse" class="alert alert-info">
+            {{ repayResponse.message }}
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success me-2">💵 Repay</button>
+            <button type="button" class="btn btn-secondary" (click)="closeRepayPopup()">❌ Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
