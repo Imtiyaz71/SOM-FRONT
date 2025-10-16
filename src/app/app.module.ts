@@ -49,6 +49,7 @@ import { ProjectComponent } from './pages/project/project.component';
 import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
 import { RegularkistiComponent } from './pages/regularkisti/regularkisti.component';
 import { ExpensetypeComponent } from './pages/expense/expensetype/expensetype.component';
+import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdraw.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,8 @@ import { ExpensetypeComponent } from './pages/expense/expensetype/expensetype.co
     ProjectmemberassignComponent,
     RegularkistiComponent,
     ExpensetypeComponent,
+    BalancewithdrawComponent,
+ 
 
 
   ],

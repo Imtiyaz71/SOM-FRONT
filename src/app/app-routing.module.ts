@@ -39,6 +39,7 @@ import { RecsubscriptionComponent } from './accounts/recsubscription/recsubscrip
 import { ProjectComponent } from './pages/project/project.component';
 import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
 import { RegularkistiComponent } from './pages/regularkisti/regularkisti.component';
+import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdraw.component';
 
 const routes: Routes = [
   {
@@ -99,6 +100,7 @@ const routes: Routes = [
       { path: 'project/projectinfo', component: ProjectComponent },
        { path: 'projectmember/projectmember', component: ProjectmemberassignComponent },
        { path: 'regular/regularkistsubs', component: RegularkistiComponent },
+        { path: 'bal/balancewithdraw', component: BalancewithdrawComponent },
 
     ]
   }

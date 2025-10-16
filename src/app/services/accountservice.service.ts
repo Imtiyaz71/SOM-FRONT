@@ -33,6 +33,37 @@ export interface AccDrCr {
   compId: string|null;
   crType: number;
 }
+export interface BalanceWithdraw {
+  id: number;
+  compId: number;
+  memNo: number;
+  fProject: number;
+  projectName: string;
+  givenName: string;
+  sureName: string;
+  amount: number;
+  remarks: string;
+  wDate: string;
+  wMonth: string;
+  wYear: number;
+}
+export interface BalanceWithdrawAdd {
+  compId: string|null;
+  memNo: number;
+  fProject: number;
+  amount: number;
+  remarks: string;
+  wDate: string;
+  wMonth: string;
+  wYear: number;
+  wBy: string|null;
+}
+export interface VWBounceBalanceWithdrwal {
+  id: number;
+  fProject: number;
+  memNo: number;
+  compId: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -59,6 +90,11 @@ getbalancesegmentbyid(id: number): Observable<balancesegment[]> { return this.ht
 getbalanceaddhistory(): Observable<getbalanceaddhistory[]> {
   return this.http.get<getbalanceaddhistory[]>(
     `${this.apiBase}/balance-add-history?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
+getbalancewithdraw(): Observable<BalanceWithdraw[]> {
+  return this.http.get<BalanceWithdraw[]>(
+    `${this.apiBase}/get-Balance-withdraw?compId=${this.authService.getcompanyid() ?? ''}`
   );
 }
   getSomityTransection(model: AccDrCr): Observable<somityTransection[]> {
@@ -91,4 +127,11 @@ savesubscriptionamount(formData: addamount, headers: HttpHeaders): Observable<st
 saveregularsubscriptionamount(formData: any, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/saveregularsubscription', formData, { headers });
 }
+
+  addBalanceWithdraw(model: BalanceWithdrawAdd): Observable<string> {
+    return this.http.post<string>(`${this.apiBase}/save-withdraw`, model);
+  }
+    bounceBalanceWithdraw(model: VWBounceBalanceWithdrwal): Observable<string> {
+    return this.http.post<string>(`${this.apiBase}/bounce-balance-withdraw`, model);
+  }
 }

@@ -1,0 +1,146 @@
+<div class="container-fluid mt-5">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="text-primary mb-0">💰 Balance Withdraw Management</h3>
+      <small class="text-muted">Manage project-wise member withdrawals</small>
+    </div>
+    <div>
+      <button class="btn btn-outline-primary btn-sm" (click)="loadWithdrawList()">🔄 Refresh List</button>
+    </div>
+  </div>
+
+  <!-- Alert -->
+  <div *ngIf="message" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" (click)="message=''"></button>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Add Withdraw Form -->
+    <div class="col-lg-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">➕ Add Withdraw</h5>
+        </div>
+        <div class="card-body">
+          <form #withdrawForm="ngForm" (ngSubmit)="addWithdraw(withdrawForm)">
+
+            <!-- Project -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Project</label>
+              <select class="form-select" [(ngModel)]="newWithdraw.fProject" name="fProject"
+                      (change)="onProjectChange($event)" required>
+                <option value="">-- Select Project --</option>
+                <option *ngFor="let p of projects" [value]="p.projectId">{{ p.projectName }}</option>
+              </select>
+            </div>
+
+            <!-- Member -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Member</label>
+              <select class="form-select" [(ngModel)]="newWithdraw.memNo" name="memNo"
+                      (change)="onMemberChange($event)" required>
+                <option value="">-- Select Member --</option>
+                <option *ngFor="let m of members" [value]="m.memNo">{{ m.givenName }} {{ m.sureName }}</option>
+              </select>
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Amount</label>
+              <input type="number" class="form-control" [(ngModel)]="newWithdraw.amount" name="amount" placeholder="Enter amount" required>
+            </div>
+
+            <!-- Remarks -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Remarks</label>
+              <textarea class="form-control" rows="2" [(ngModel)]="newWithdraw.remarks" name="remarks" placeholder="Optional"></textarea>
+            </div>
+
+            <!-- Month -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Month</label>
+              <select class="form-select" [(ngModel)]="newWithdraw.wMonth" name="wMonth" required>
+                <option value="">-- Select Month --</option>
+                <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+
+            <!-- Year -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Year</label>
+              <select class="form-select" [(ngModel)]="newWithdraw.wYear" name="wYear" required>
+                <option value="">-- Select Year --</option>
+                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">💵 Add Withdraw</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdraw List -->
+    <div class="col-lg-7">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">💳 Withdraw List</h5>
+          <small class="text-light">Total: {{ filteredList.length }}</small>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-striped table-hover table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Member</th>
+                <th>Project</th>
+                <th>Amount</th>
+                <th>Remarks</th>
+                <th>Month</th>
+                <th>Year</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let w of paginatedWithdraws; let i = index">
+                <td>{{ (currentPage-1)*itemsPerPage + i + 1 }}</td>
+                <td>{{ w.givenName }} {{ w.sureName }} ({{ w.memNo }})</td>
+                <td>{{ w.projectName }} ({{ w.fProject }})</td>
+                <td>{{ w.amount | currency:'BDT':'symbol' }}</td>
+                <td>{{ w.remarks }}</td>
+                <td>{{ w.wMonth }}</td>
+                <td>{{ w.wYear }}</td>
+                  <td>
+                      <button class="btn btn-danger btn-sm" (click)="bounceWithdraw(w)">Bounce</button>
+                  </td>
+              </tr>
+              <tr *ngIf="filteredList.length === 0">
+                <td colspan="7" class="text-center text-muted">No withdraw records found.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <nav *ngIf="totalPages > 1" class="d-flex justify-content-center mt-3">
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="goToPage(currentPage - 1)">« Prev</button>
+              </li>
+              <li class="page-item" *ngFor="let p of [].constructor(totalPages); let idx = index" [class.active]="currentPage === idx+1">
+                <button class="page-link" (click)="goToPage(idx+1)">{{ idx+1 }}</button>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="goToPage(currentPage + 1)">Next »</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
