@@ -50,6 +50,9 @@ import { ProjectmemberassignComponent } from './pages/projectmemberassign/projec
 import { RegularkistiComponent } from './pages/regularkisti/regularkisti.component';
 import { ExpensetypeComponent } from './pages/expense/expensetype/expensetype.component';
 import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdraw.component';
+import { MemberbalanceComponent } from './pages/accounts/memberbalance/memberbalance.component';
+import { PaidkistiComponent } from './pages/memberinfo/paidkisti/paidkisti.component';
+import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/paidsubscription.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +95,9 @@ import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdra
     RegularkistiComponent,
     ExpensetypeComponent,
     BalancewithdrawComponent,
+    MemberbalanceComponent,
+    PaidkistiComponent,
+    PaidsubscriptionComponent,
  
 
 

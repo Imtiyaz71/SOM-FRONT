@@ -85,6 +85,7 @@ export interface VW_MemberProjectAccount {
   Payble: number;
   Due: number;
   GivenName: string;
+
   SureName: string;
   ProjectName: string;
 }
@@ -93,6 +94,13 @@ export interface VW_MemberProjectAccount {
 export interface VW_Response {
   statusCode: number;
   message: string;
+}
+export interface MemberBalance {
+  sl: number;
+  memberInfo: string;
+  projectInfo?: string | null;
+  projectBalance?: number | null;
+  totalBalance: number;
 }
 @Injectable({
   providedIn: 'root'
@@ -161,8 +169,11 @@ getregularsubscriptionreceive(): Observable<getregularreceive[]> {
 
     return this.http.get<VW_MemberProjectAccount[]>(`${this.apiBase}/memberprojectaccount${query}`);
   }
-savebalancesegment(formData: addbalancesegment, headers: HttpHeaders): Observable<string> {
-  return this.http.post<string>(this.apiBase + '/savebalancesegment', formData, { headers });
+savebalancesegment(formData: any, headers?: HttpHeaders): Observable<string> {
+  return this.http.post(this.apiBase + '/savebalancesegment', formData, {
+    headers: headers,
+    responseType: 'text'
+  });
 }
 savekistiamount(formData: addamount, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/savekistiamount', formData, { headers });
@@ -183,5 +194,8 @@ saveregularsubscriptionamount(formData: any, headers: HttpHeaders): Observable<s
    repay(model: RePayModel): Observable<VW_Response> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<VW_Response>(`${this.apiBase}/repay-balance`, model, { headers });
+  }
+    getMemberBalances(): Observable<MemberBalance[]> {
+    return this.http.get<MemberBalance[]>(`${this.apiBase}/getmemberbalancehistory?compId=${this.authService.getcompanyid() ?? ''}`);
   }
 }

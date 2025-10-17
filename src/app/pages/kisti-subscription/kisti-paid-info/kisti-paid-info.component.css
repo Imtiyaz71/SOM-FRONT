@@ -1,0 +1,10 @@
+.table th, .table td {
+  vertical-align: middle;
+}
+.table thead th {
+  background-color: #007bff;
+  color: #fff;
+}
+.card {
+  border-radius: 12px;
+}

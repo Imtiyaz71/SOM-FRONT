@@ -7,6 +7,43 @@ export interface crinfo { id: number; crname: string; }
 export interface subscriptiontypeinfo { id: number; typeName: string;crid: number;crname: string;amount: number;createdate: string;updatedate: string;projectid:number;projectName:string }
 export interface addsubscriptiontype { id: number; typeName: string;crid: number;amount: number;createdate: string;updatedate: string; compId:string| null;projectid:number;}
 export interface regularsubs{id:number;compId:number;amount:number;updateDate:string;updateBy:string;}
+export interface KistiRecHistory {
+  year: number;
+  project: number;
+  jan: number;
+  feb: number;
+  mar: number;
+  apr: number;
+  may: number;
+  jun: number;
+  jul: number;
+  aug: number;
+  sep: number;
+  oct: number;
+  nov: number;
+  dec: number;
+  total: number;
+}
+export interface RegularsubsRecHistory {
+  year: number;
+  jan: number;
+  feb: number;
+  mar: number;
+  apr: number;
+  may: number;
+  jun: number;
+  jul: number;
+  aug: number;
+  sep: number;
+  oct: number;
+  nov: number;
+  dec: number;
+  total: number;
+}
+export interface KistiRecGroup {
+  year: number;
+  projects: KistiRecHistory[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +63,16 @@ getregularsubscription(): Observable<regularsubs[]> {
   return this.http.get<regularsubs[]>(`${this.apiBase}/regularsubscription?compId=${this.authService.getcompanyid() ?? ''}`);
 }
  getsubscriptionbyproject(id: number): Observable<subscriptiontypeinfo[]> { return this.http.get<subscriptiontypeinfo[]>(`${this.apiBase}/subscriptionbyproject?compId=${this.authService.getcompanyid() ?? ''}&projectid=${id}`); }
-
+getsubscriptionreceiveamount(): Observable<KistiRecHistory[]> {
+  return this.http.get<KistiRecHistory[]>(
+    `${this.apiBase}/subscriptionreceivehistroy?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
+getregularsubscriptionhistory(): Observable<RegularsubsRecHistory[]> {
+  return this.http.get<RegularsubsRecHistory[]>(
+    `${this.apiBase}/regularsubscriptionreceivehistroy?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
 savesubscriptiontype(formData: addsubscriptiontype, headers: HttpHeaders): Observable<string> {
   formData.id = formData.id && formData.id > 0 ? formData.id : 0; // 👈 Important fix
   return this.http.post<string>(this.apiBase + '/savesubscriptiontype', formData, { headers });

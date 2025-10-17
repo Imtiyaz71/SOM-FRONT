@@ -6,6 +6,29 @@ import { AuthService } from './auth.service';
 export interface crinfo { id: number; crname: string; }
 export interface kistitypeinfo { id: number; typeName: string;crid: number;crname: string;amount: number;createdate: string;updatedate: string;projectid:number;projectname:string }
 export interface addkistitype { id: number; typeName: string;crid: number;amount: number;createdate: string;updatedate: string; compId:string| null;projectid:number}
+export interface KistiRecHistory {
+  year: number;
+  project: number;
+  jan: number;
+  feb: number;
+  mar: number;
+  apr: number;
+  may: number;
+  jun: number;
+  jul: number;
+  aug: number;
+  sep: number;
+  oct: number;
+  nov: number;
+  dec: number;
+  total: number;
+}
+
+export interface KistiRecGroup {
+  year: number;
+  projects: KistiRecHistory[];
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +44,11 @@ getkistitype(): Observable<kistitypeinfo[]> {
 }
  getkistitypeid(id: number): Observable<kistitypeinfo> { return this.http.get<kistitypeinfo>(`${this.apiBase}/kistytypebyid?id=${id}`); }
 getkistitypebyproject(id: number): Observable<kistitypeinfo[]> { return this.http.get<kistitypeinfo[]>(`${this.apiBase}/kistytypebyproject?compId=${this.authService.getcompanyid() ?? ''}&projectId=${id}`); }
-
+getkistireceiveamount(): Observable<KistiRecHistory[]> {
+  return this.http.get<KistiRecHistory[]>(
+    `${this.apiBase}/kistireceivehistory?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
  savekistitype(formData: addkistitype, headers: HttpHeaders): Observable<string> {
   return this.http.post<string>(this.apiBase + '/savekistitype', formData, { headers });
 }

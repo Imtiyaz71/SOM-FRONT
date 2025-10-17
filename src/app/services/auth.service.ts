@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 export interface companyinfo { id: number;cName:string;cPhone:string;cEmail:string;cAddress:string;cWebsite:string;cLogo:string;createAt:string; }
+
 @Injectable({
   providedIn: 'root'
 })

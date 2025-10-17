@@ -40,6 +40,9 @@ import { ProjectComponent } from './pages/project/project.component';
 import { ProjectmemberassignComponent } from './pages/projectmemberassign/projectmemberassign.component';
 import { RegularkistiComponent } from './pages/regularkisti/regularkisti.component';
 import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdraw.component';
+import { MemberbalanceComponent } from './pages/accounts/memberbalance/memberbalance.component';
+import { PaidkistiComponent } from './pages/memberinfo/paidkisti/paidkisti.component';
+import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/paidsubscription.component';
 
 const routes: Routes = [
   {
@@ -101,6 +104,9 @@ const routes: Routes = [
        { path: 'projectmember/projectmember', component: ProjectmemberassignComponent },
        { path: 'regular/regularkistsubs', component: RegularkistiComponent },
         { path: 'bal/balancewithdraw', component: BalancewithdrawComponent },
+     { path: 'bal/membalance', component: MemberbalanceComponent },
+ { path: 'mem/memberkistipaid', component: PaidkistiComponent },
+ { path: 'mem/membersubspaid', component: PaidsubscriptionComponent },
 
     ]
   }

@@ -1,15 +1,13 @@
 <div class="container mt-4">
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold text-primary mb-0">
-      💰 Somity Balance Management
-    </h3>
+    <h3 class="fw-bold text-primary mb-0">💰 Somity Balance Management</h3>
     <span class="badge bg-success fs-6 px-3 py-2 shadow-sm">
       Current Balance: {{ amount | number:'1.2-2' }} ৳
     </span>
   </div>
 
-  <!-- Add / Update Section -->
+  <!-- Add Section -->
   <div class="card shadow-sm border-0 mb-4">
     <div class="card-header bg-primary text-white fw-semibold">
       ➕ Add / Update Balance Segment
@@ -17,36 +15,25 @@
     <div class="card-body">
       <form (ngSubmit)="saveBalanceSegment()" autocomplete="off">
         <div class="row g-3">
-          <!-- Vendor -->
           <div class="col-md-4">
             <label class="form-label fw-semibold">Vendor</label>
             <select class="form-select" [(ngModel)]="savebalsegment.vendor" name="vendor" required>
-              <option value="" disabled selected>Select Vendor</option>
+              <option value="" disabled>Select Vendor</option>
               <option *ngFor="let v of ven" [value]="v.id">{{ v.vType }}</option>
             </select>
           </div>
-
-          <!-- Amount -->
           <div class="col-md-4">
             <label class="form-label fw-semibold">Amount (৳)</label>
             <input type="number" class="form-control" [(ngModel)]="savebalsegment.amount" name="amount" placeholder="Enter amount" required>
           </div>
-
-          <!-- Description -->
           <div class="col-md-4">
             <label class="form-label fw-semibold">Description</label>
             <input type="text" class="form-control" [(ngModel)]="savebalsegment.descri" name="descri" placeholder="Short note">
           </div>
         </div>
-
         <div class="text-end mt-3">
-          <button type="submit" class="btn btn-primary px-4 me-2 shadow-sm">
-            💾 Save
-          </button>
-          <button type="reset" class="btn btn-outline-secondary px-4 shadow-sm"
-            (click)="resetForm()">
-            🔄 Clear
-          </button>
+          <button type="submit" class="btn btn-primary px-4 me-2 shadow-sm">💾 Save</button>
+          <button type="reset" class="btn btn-outline-secondary px-4 shadow-sm" (click)="resetForm()">🔄 Clear</button>
         </div>
       </form>
     </div>
@@ -56,42 +43,39 @@
   <div class="card shadow-sm border-0">
     <div class="card-header bg-light d-flex justify-content-between align-items-center">
       <div class="fw-semibold">📋 Balance Segment List</div>
-       <button class="btn btn-sm btn-outline-success" (click)="downloadDepositHistory()">
-    📥 Deposit History
-  </button>
-      <input type="text" class="form-control w-25" [(ngModel)]="searchMemNo" placeholder="🔍 Search by Vendor Type">
+      <div class="d-flex gap-2 align-items-center">
+        <input type="text" class="form-control form-control-sm" style="width: 200px;" [(ngModel)]="searchMemNo" placeholder="🔍 Search vendor">
+        <button class="btn btn-sm btn-outline-success" (click)="downloadDepositHistory()">
+          📥 Export PDF
+        </button>
+      </div>
     </div>
 
     <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="table-primary text-center">
+      <table class="table table-hover align-middle mb-0 text-center">
+        <thead class="table-primary">
           <tr>
             <th>#</th>
             <th>Vendor Type</th>
             <th>Amount (৳)</th>
             <th>Description</th>
-            <th>Create Date</th>
+            <th>Date</th>
             <th>Edit</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let r of filteredRec | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index" class="text-center">
+          <tr *ngFor="let r of filteredRec | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index">
             <td>{{ (page - 1) * itemsPerPage + i + 1 }}</td>
             <td>{{ r.vType }}</td>
             <td>{{ r.amount | number:'1.2-2' }}</td>
             <td>{{ r.descri }}</td>
             <td>{{ r.createDate | date:'mediumDate' }}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(r)">
-                ✏️ Edit
-              </button>
+              <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(r)">✏️ Edit</button>
             </td>
           </tr>
-
           <tr *ngIf="filteredRec.length === 0">
-            <td colspan="6" class="text-center text-muted py-3">
-              No records found
-            </td>
+            <td colspan="6" class="text-center text-muted py-3">No records found</td>
           </tr>
         </tbody>
       </table>
@@ -99,68 +83,52 @@
 
     <!-- Pagination -->
     <div class="card-footer bg-light text-end">
-      <pagination-controls
-        (pageChange)="page = $event"
-        previousLabel="◀ Prev"
-        nextLabel="Next ▶"
-        class="d-inline-block">
-      </pagination-controls>
+   <pagination-controls
+  [maxSize]="5"
+  [directionLinks]="true"
+  [autoHide]="true">
+</pagination-controls>
     </div>
   </div>
 </div>
 
-<!-- 🟦 Edit Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">✏️ Edit Balance Segment</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-
       <div class="modal-body">
         <form (ngSubmit)="updateBalanceSegment()">
           <div class="row g-3">
-            <!-- Vendor -->
             <div class="col-md-4">
               <label class="form-label fw-semibold">Vendor</label>
-              <select class="form-select" [(ngModel)]="editSegment.vendor" name="vendor" required>
+              <select class="form-select" [(ngModel)]="editSegment.vendor" name="vendor">
                 <option *ngFor="let v of ven" [value]="v.id">{{ v.vType }}</option>
               </select>
             </div>
-
-            <!-- Current Balance (Read-only) -->
             <div class="col-md-4">
-              <label class="form-label fw-semibold text-primary">Current Balance (৳)</label>
+              <label class="form-label text-primary">Current Balance (৳)</label>
               <input type="number" class="form-control" [value]="editSegment.amount" readonly>
             </div>
-
-            <!-- Add New Balance -->
             <div class="col-md-4">
-              <label class="form-label fw-semibold text-success">Add New Balance (৳)</label>
+              <label class="form-label text-success">Add New (৳)</label>
               <input type="number" class="form-control" [(ngModel)]="editSegment.newAmount" name="newAmount" required>
             </div>
-
-            <!-- Description -->
             <div class="col-md-6">
               <label class="form-label fw-semibold">Description</label>
               <input type="text" class="form-control" [(ngModel)]="editSegment.descri" name="descri">
             </div>
-
-            <!-- Date -->
             <div class="col-md-6">
               <label class="form-label fw-semibold">Date</label>
               <input type="date" class="form-control" [(ngModel)]="editSegment.createDate" name="createDate">
             </div>
           </div>
-
           <div class="text-end mt-4">
-            <button type="submit" class="btn btn-success px-4 me-2">
-              💾 Update
-            </button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-              ❌ Close
-            </button>
+            <button type="submit" class="btn btn-success px-4 me-2">💾 Update</button>
+            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">❌ Close</button>
           </div>
         </form>
       </div>

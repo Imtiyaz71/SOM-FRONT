@@ -79,6 +79,14 @@
 
     <span>Member Info</span>
   </a>
+  <a class="collapse-item" [routerLink]="['mem/memberkistipaid']">
+
+    <span>Kisti Paid Info</span>
+  </a>
+  <a class="collapse-item" [routerLink]="['mem/membersubspaid']">
+
+    <span>Subscription Paid Info</span>
+  </a>
     </div>
     <div *ngIf="menu.id==4" class="bg-white py-2 collapse-inner rounded">
       <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
@@ -101,13 +109,13 @@
 
     <span>Kisti Info</span>
   </a>
-   <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-due']">
+   <!-- <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-due']">
 
     <span>Kisti Due</span>
-  </a>
+  </a> -->
     <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-paid-info']">
 
-    <span>Paid Info</span>
+    <span>Kisti Paid Info</span>
   </a>
    <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-info']">
 
@@ -115,11 +123,11 @@
   </a>
   <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-due']">
 
-    <span>Subscription Due</span>
+    <span>Regular Subscription Paid</span>
   </a>
   <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-paid']">
 
-    <span>Subscription Paid</span>
+    <span>Subscription Paid Info</span>
   </a>
     <a class="collapse-item" [routerLink]="['kisti-subscription/loan-info']">
 
@@ -172,6 +180,10 @@
      <a class="collapse-item" [routerLink]="['accounts/balance']">
 
     <span>Balance</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['bal/membalance']">
+
+    <span>Member Balance</span>
   </a>
 <a class="collapse-item" [routerLink]="['accounts/debit']">
 

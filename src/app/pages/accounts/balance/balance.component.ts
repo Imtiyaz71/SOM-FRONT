@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { getvendor, balancesegment, getbalanceaddhistory,accountservice } from '../../../services/accountservice.service';
+import { getvendor, balancesegment, getbalanceaddhistory, accountservice } from '../../../services/accountservice.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-declare var bootstrap: any; // Bootstrap modal
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-balance',
@@ -21,286 +22,165 @@ export class BalanceComponent implements OnInit {
   itemsPerPage: number = 5;
   searchMemNo: string = '';
   amount: number = 0;
-  apiBase:string=environment.apiBaseUrl;
-  // Add / Save form model
-  savebalsegment: any = {
-    id: 0,
-    compId: 0,
-    vendor: 0,
-    amount: 0,
-    descri: '',
-    createDate: ''
-  };
+  apiBase: string = environment.apiBaseUrl;
 
-  // Edit modal model
-  editSegment: any = {
-    id: 0,
-    compId: 0,
-    vendor: 0,
-    amount: 0,
-    newAmount: 0,
-    descri: '',
-    createDate: ''
-  };
+  savebalsegment = { id: 0, compId: 0, vendor: 0, amount: 0, descri: '', createDate: '' };
+  editSegment = { id: 0, compId: 0, vendor: 0, amount: 0, newAmount: 0, descri: '', createDate: '' };
 
-  constructor(
-    private authService: AuthService,
-    private accountService: accountservice
-  ) {}
+  constructor(private authService: AuthService, private accountService: accountservice) {}
 
   ngOnInit(): void {
     this.loadBalanceData();
   }
 
-  // Load all data: current balance, balance segments, vendors
-  loadBalanceData() {
-    // Current balance
+  loadBalanceData(): void {
+    // Fetch current balance
     this.accountService.getbalance().subscribe({
-      next: (data) => this.amount = data[0]?.amount ?? 0,
-      error: (err) => console.error('Error fetching balance:', err)
+      next: (data) => this.amount = data?.[0]?.amount ?? 0,
+      error: (err) => console.error('❌ Error fetching balance:', err)
     });
 
-    // Balance segments
+    // Fetch balance segments
     this.accountService.getbalancesegment().subscribe({
-      next: (data) => this.bal = data,
-      error: (err) => console.error('Error fetching balance segment:', err)
+      next: (data) => this.bal = data.sort((a, b) => b.id - a.id), // latest first
+      error: (err) => console.error('❌ Error fetching balance segment:', err)
     });
 
-    // Vendors
+    // Fetch vendors
     this.accountService.getvendor().subscribe({
       next: (data) => this.ven = data,
-      error: (err) => console.error('Error fetching vendor:', err)
+      error: (err) => console.error('❌ Error fetching vendor:', err)
     });
-    //Balance Add History
-      this.accountService.getbalanceaddhistory().subscribe({
+
+    // Fetch deposit history
+    this.accountService.getbalanceaddhistory().subscribe({
       next: (data) => this.baladdhis = data,
-      error: (err) => console.error('Error fetching vendor:', err)
+      error: (err) => console.error('❌ Error fetching add history:', err)
     });
   }
 
-  // Filter search
-  get filteredRec() {
-    if (!this.searchMemNo) return this.bal;
-    return this.bal.filter(r =>
-      r.vType?.toString().toLowerCase().includes(this.searchMemNo.toLowerCase())
-    );
+  get filteredRec(): balancesegment[] {
+    const keyword = this.searchMemNo?.toLowerCase().trim();
+    return keyword
+      ? this.bal.filter(r => r.vType?.toLowerCase().includes(keyword))
+      : this.bal;
   }
 
-  // Save new balance segment
-  saveBalanceSegment() {
+  saveBalanceSegment(): void {
     const payload = {
       id: this.savebalsegment.id,
-      compId: (this.authService.getcompanyid()) || '',
-      vendor: Number(this.savebalsegment.vendor) || 0,
-      amount: Number(this.savebalsegment.amount) || 0,
-      descri: this.savebalsegment.descri ?? '',
-      createDate: this.savebalsegment.createDate ?? ''
+      compId: this.authService.getcompanyid() ?? '',
+      vendor: +this.savebalsegment.vendor,
+      amount: +this.savebalsegment.amount,
+      descri: this.savebalsegment.descri || '',
+      createDate: this.savebalsegment.createDate || ''
     };
 
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      'Bearer ' + this.authService.getToken()
-    );
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.getToken());
 
     this.accountService.savebalancesegment(payload, headers).subscribe({
       next: (res) => {
-        alert(res);
+        alert(res || '✅ Saved successfully!');
         this.loadBalanceData();
         this.resetForm();
       },
       error: (err) => {
-        console.error('Error saving balance segment:', err);
-        alert(err.error?.message || ' Save sucess!');
-        this.loadBalanceData();
-        this.resetForm();
+        console.error('❌ Error saving balance:', err);
+        alert('Failed to save!');
       }
     });
   }
 
-  // Reset add form
-  resetForm() {
-    this.savebalsegment = {
-      id: 0,
-      compId: 0,
-      vendor: 0,
-      amount: 0,
-      descri: '',
-      createDate: ''
-    };
+  resetForm(): void {
+    this.savebalsegment = { id: 0, compId: 0, vendor: 0, amount: 0, descri: '', createDate: '' };
   }
 
-  // Open edit modal
-  openEditModal(record: any) {
-    this.editSegment = { ...record, newAmount: 0 }; // reset newAmount
+  openEditModal(record: any): void {
+    this.editSegment = { ...record, newAmount: 0 };
     const modal = new bootstrap.Modal(document.getElementById('editModal'));
     modal.show();
   }
 
-  // Update existing record: add new balance only
-  updateBalanceSegment() {
+  updateBalanceSegment(): void {
     if (!this.editSegment.newAmount || this.editSegment.newAmount <= 0) {
-      alert('Please enter a valid amount to add!');
+      alert('⚠️ Please enter a valid amount!');
       return;
     }
 
     const payload = {
       id: this.editSegment.id,
       compId: this.authService.getcompanyid() ?? '',
-      vendor: Number(this.editSegment.vendor) || 0,
-      amount: Number(this.editSegment.newAmount) || 0, // ONLY new balance
-      descri: this.editSegment.descri ?? '',
-      createDate: this.editSegment.createDate ?? ''
+      vendor: +this.editSegment.vendor,
+      amount: +this.editSegment.newAmount,
+      descri: this.editSegment.descri || '',
+      createDate: this.editSegment.createDate || ''
     };
 
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      'Bearer ' + this.authService.getToken()
-    );
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.getToken());
 
     this.accountService.savebalancesegment(payload, headers).subscribe({
-      next: (res) => {
-        alert('✅ New balance added successfully!');
-        this.loadBalanceData(); // refresh table & current balance
+      next: () => {
+        alert('✅ Balance updated successfully!');
+        this.loadBalanceData();
         const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-        modal?.hide(); // close modal
-        this.editSegment.newAmount = 0; // reset newAmount
+        modal?.hide();
       },
       error: (err) => {
-        console.error('Error adding new balance:', err);
-        alert(err.error?.message || 'New Balance Added!');
-          this.loadBalanceData();
-           const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-        modal?.hide();
+        console.error('❌ Update failed:', err);
+        alert('Failed to update!');
       }
     });
   }
-downloadDepositHistory() {
-  // Step 1️⃣: Get company info first
-  this.authService.getCompanyInfo().subscribe({
-    next: (companyData: any) => {
-      const info = companyData?.info;
-      const companyName = info?.cName || 'Your Company Name Ltd.';
-      const logoUrl = info?.cLogo ? `${this.apiBase}/${info.cLogo}` : ''; // full path build
 
-      // Step 2️⃣: Fetch deposit history after company info
-      this.accountService.getbalanceaddhistory().subscribe({
-        next: async (data) => {
-          if (!data || data.length === 0) {
-            alert('No deposit history found!');
-            return;
-          }
+  async downloadDepositHistory() {
+    try {
+      const companyData = await this.authService.getCompanyInfo().toPromise();
+      const info = companyData?.[0];
+      const companyName = info?.cName || 'Your Company';
+      const logoUrl = info?.cLogo ? `${this.apiBase}/${info.cLogo}` : '';
 
-          const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+      const data = await this.accountService.getbalanceaddhistory().toPromise();
+      if (!data || !data.length) return alert('No deposit history found.');
 
-          // Load logo image if available
-          if (logoUrl) {
-            try {
-              const img = await fetch(logoUrl)
-                .then((res) => res.blob())
-                .then((blob) => new Promise<string>((resolve) => {
-                  const reader = new FileReader();
-                  reader.onload = () => resolve(reader.result as string);
-                  reader.readAsDataURL(blob);
-                }));
-              doc.addImage(img, 'JPEG', 450, 25, 100, 50); // adjust position/size
-            } catch (err) {
-              console.warn('Logo load failed:', err);
-            }
-          }
+      const doc = new jsPDF();
+      if (logoUrl) {
+        try {
+          const img = await fetch(logoUrl)
+            .then(res => res.blob())
+            .then(blob => new Promise<string>(resolve => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.readAsDataURL(blob);
+            }));
+          doc.addImage(img, 'JPEG', 450, 25, 100, 50);
+        } catch (e) { console.warn('Logo load failed', e); }
+      }
 
-          // === Header ===
-          const reportTitle = 'Deposit History Report';
-          const printedDate = new Date().toLocaleString('en-GB', {
-            day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-          });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text(companyName, 40, 40);
+      doc.setFontSize(12);
+      doc.text('Deposit History Report', 40, 60);
+      doc.setFontSize(10);
+      doc.text(`Printed on: ${new Date().toLocaleString('en-GB')}`, 40, 75);
 
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(18);
-          doc.text(companyName, 40, 40);
+      const columns = ['#', 'Vendor Type', 'Amount (৳)', 'Description', 'Date'];
+      const rows = data.map((x: any, i: number) => [
+        i + 1,
+        x.vType,
+        x.amount.toLocaleString('en-BD', { minimumFractionDigits: 2 }),
+        x.descri || '',
+        new Date(x.adate).toLocaleDateString('en-GB')
+      ]);
 
-          doc.setFontSize(14);
-          doc.text(reportTitle, 40, 65);
-
-          doc.setFontSize(10);
-          doc.setFont('helvetica', 'normal');
-          doc.text(`Printed on: ${printedDate}`, 40, 80);
-
-          // === Columns ===
-          const columns = ['#', 'Vendor Type', 'Amount (৳)', 'Description', 'Create Date'];
-
-          // === Date fix helper ===
-          const parseDate = (val: any): string => {
-            if (!val) return '';
-            const d = new Date(val);
-            if (isNaN(d.getTime())) {
-              const fixed = Date.parse(val.replace(/\s+/g, ' ').trim());
-              return isNaN(fixed)
-                ? val
-                : new Date(fixed).toLocaleDateString('en-GB');
-            }
-            return d.toLocaleDateString('en-GB');
-          };
-
-          // === Table rows ===
-          const rows = data.map((item: any, index: number) => [
-            index + 1,
-            item.vType ?? '',
-            (item.amount ?? 0).toLocaleString('en-BD', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            }),
-            item.descri ?? '',
-            parseDate(item.adate),
-          ]);
-
-          // === Table ===
-          autoTable(doc, {
-            head: [columns],
-            body: rows,
-            startY: 100,
-            theme: 'grid',
-            headStyles: {
-              fillColor: [0, 102, 204],
-              textColor: 255,
-              fontStyle: 'bold',
-              halign: 'center',
-            },
-            bodyStyles: { halign: 'center', fontSize: 10 },
-            alternateRowStyles: { fillColor: [245, 245, 245] },
-            styles: { cellPadding: 4 },
-          });
-
-          // === Total ===
-          const totalAmount = data.reduce((sum: number, item: any) => sum + (item.amount ?? 0), 0);
-          const finalY = (doc as any).lastAutoTable.finalY || 110;
-
-          doc.setFontSize(12);
-          doc.setFont('helvetica', 'bold');
-          doc.text(`Total Deposit: ৳ ${totalAmount.toFixed(2)}`, 40, finalY + 30);
-
-          // === Footer ===
-          const pageHeight = doc.internal.pageSize.height;
-          doc.setFontSize(9);
-          doc.setFont('helvetica', 'normal');
-          doc.text('Generated by Somity Management System', 40, pageHeight - 20);
-
-          // ✅ Download PDF
-          doc.save(`DepositHistory_${new Date().getTime()}.pdf`);
-        },
-        error: (err) => {
-          console.error('Error fetching deposit history:', err);
-          alert('Failed to load deposit history.');
-        },
-      });
-    },
-    error: (err) => {
-      console.error('Error fetching company info:', err);
-      alert('Failed to fetch company information.');
+      autoTable(doc, { head: [columns], body: rows, startY: 90, theme: 'grid' });
+      const total = data.reduce((a: number, b: any) => a + (b.amount ?? 0), 0);
+      const finalY = (doc as any).lastAutoTable.finalY + 30;
+      doc.text(`Total: ৳ ${total.toFixed(2)}`, 40, finalY);
+      doc.save(`DepositHistory_${Date.now()}.pdf`);
+    } catch (err) {
+      console.error('❌ PDF generation failed:', err);
+      alert('Error generating report!');
     }
-  });
-}
-
-
-
-
+  }
 }

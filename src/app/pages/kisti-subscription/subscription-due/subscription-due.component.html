@@ -1,1 +1,81 @@
-<p>subscription-due works!</p>
+<div class="container mt-4">
+  <!-- Header & Actions -->
+  <div class="card shadow-sm border-0 mb-3">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">📊 Subscription Due History</h4>
+      <button class="btn btn-light btn-sm" (click)="exportToPDF()">
+        <i class="bi bi-file-earmark-pdf"></i> Export PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="row mb-3">
+    <div class="col-md-3">
+    <input
+  type="number"
+  min="2000"
+  max="2099"
+  class="form-control"
+  placeholder="Search by Year..."
+  [(ngModel)]="searchYear"
+  (input)="filterByYear()"
+/>
+    </div>
+  </div>
+
+  <!-- Loading & Error -->
+  <div *ngIf="loading" class="alert alert-info">
+    Loading data...
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && filteredHistories.length === 0" class="text-center text-muted">
+    No records found.
+  </div>
+
+  <!-- Data Table -->
+  <div class="table-responsive" *ngIf="!loading && filteredHistories.length > 0">
+    <table class="table table-bordered table-striped table-hover text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Year</th>
+          <th>Jan</th>
+          <th>Feb</th>
+          <th>Mar</th>
+          <th>Apr</th>
+          <th>May</th>
+          <th>Jun</th>
+          <th>Jul</th>
+          <th>Aug</th>
+          <th>Sep</th>
+          <th>Oct</th>
+          <th>Nov</th>
+          <th>Dec</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of filteredHistories">
+          <td>{{ row.year }}</td>
+          <td class="text-end">{{ row.jan }}</td>
+          <td class="text-end">{{ row.feb }}</td>
+          <td class="text-end">{{ row.mar }}</td>
+          <td class="text-end">{{ row.apr }}</td>
+          <td class="text-end">{{ row.may }}</td>
+          <td class="text-end">{{ row.jun }}</td>
+          <td class="text-end">{{ row.jul }}</td>
+          <td class="text-end">{{ row.aug }}</td>
+          <td class="text-end">{{ row.sep }}</td>
+          <td class="text-end">{{ row.oct }}</td>
+          <td class="text-end">{{ row.nov }}</td>
+          <td class="text-end">{{ row.dec }}</td>
+          <td class="text-end fw-bold">{{ row.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

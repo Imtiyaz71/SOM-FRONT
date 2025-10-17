@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">💰 Subscription Paid History</h4>
+      <div>
+        <input type="number" placeholder="Search Year" [(ngModel)]="searchYear" (input)="filterByYear()" class="form-control form-control-sm d-inline-block" style="width: 120px;">
+        <button class="btn btn-light btn-sm ms-2" (click)="exportToPDF()">
+          <i class="bi bi-file-earmark-pdf"></i> Export PDF
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <ng-container *ngIf="loading">
+        <div class="text-center p-4">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="!loading && groupedData.length === 0">
+        <div class="text-center text-muted p-4">
+          No records found.
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="!loading && groupedData.length > 0">
+        <div *ngFor="let yearGroup of groupedData" class="mb-4">
+          <h5 class="bg-light p-2 rounded">📅 Year: {{yearGroup.year}}</h5>
+
+          <div *ngFor="let member of yearGroup.members" class="ms-3 mb-3">
+            <h5 class="text-secondary fw-bold fs-5">👤 Member: {{member.memberName}}</h5>
+
+            <div *ngFor="let project of member.projects" class="ms-4 mb-2">
+              <h5 class="text-info fw-bold fs-6">🏗 Project: {{project.projectName}}</h5>
+
+              <table class="table table-bordered table-striped table-sm">
+                <thead class="table-primary text-center">
+                  <tr>
+                    <th>Type</th>
+                    <th>Jan</th>
+                    <th>Feb</th>
+                    <th>Mar</th>
+                    <th>Apr</th>
+                    <th>May</th>
+                    <th>Jun</th>
+                    <th>Jul</th>
+                    <th>Aug</th>
+                    <th>Sep</th>
+                    <th>Oct</th>
+                    <th>Nov</th>
+                    <th>Dec</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let type of project.types">
+                    <tr *ngFor="let record of type.records" class="text-center">
+                      <td>{{type.typeName}}</td>
+                      <td>{{record.jan || ''}}</td>
+                      <td>{{record.feb || ''}}</td>
+                      <td>{{record.mar || ''}}</td>
+                      <td>{{record.apr || ''}}</td>
+                      <td>{{record.may || ''}}</td>
+                      <td>{{record.jun || ''}}</td>
+                      <td>{{record.jul || ''}}</td>
+                      <td>{{record.aug || ''}}</td>
+                      <td>{{record.sep || ''}}</td>
+                      <td>{{record.oct || ''}}</td>
+                      <td>{{record.nov || ''}}</td>
+                      <td>{{record.dec || ''}}</td>
+                      <td>{{record.total}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
