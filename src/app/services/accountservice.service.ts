@@ -102,6 +102,14 @@ export interface MemberBalance {
   projectBalance?: number | null;
   totalBalance: number;
 }
+export interface VW_Journal {
+  years: number;
+  months: string;
+  purpose: string;
+  debit: number;
+  credit: number;
+  balance: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -197,5 +205,8 @@ saveregularsubscriptionamount(formData: any, headers: HttpHeaders): Observable<s
   }
     getMemberBalances(): Observable<MemberBalance[]> {
     return this.http.get<MemberBalance[]>(`${this.apiBase}/getmemberbalancehistory?compId=${this.authService.getcompanyid() ?? ''}`);
+  }
+   getjournal(): Observable<VW_Journal[]> {
+    return this.http.get<VW_Journal[]>(`${this.apiBase}/getjournal?compId=${this.authService.getcompanyid() ?? ''}`);
   }
 }

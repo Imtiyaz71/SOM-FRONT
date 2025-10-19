@@ -1,0 +1,53 @@
+<div *ngIf="loading">Loading journal...</div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <label for="yearFilter" class="form-label">Filter by Year:</label>
+   <select id="yearFilter" class="form-select" [(ngModel)]="yearFilter">
+  <option value="">All Years</option>
+  <option *ngFor="let y of allYears" [ngValue]="y">{{y}}</option>
+</select>
+
+  </div>
+
+  <div class="col-md-6">
+    <label for="monthFilter" class="form-label">Filter by Month:</label>
+    <select id="monthFilter" class="form-select" [(ngModel)]="monthFilter">
+      <option value="">All Months</option>
+      <option *ngFor="let m of allMonths" [value]="m">{{m}}</option>
+    </select>
+  </div>
+</div>
+
+<div *ngFor="let y of filteredYears(groupedData)">
+  <h3>Year: {{y.year}}</h3>
+  <div *ngFor="let m of y.months" style="margin-left:20px;">
+    <h4>Month: {{m.month}}</h4>
+    <table class="table table-bordered table-sm">
+      <thead class="table-light">
+        <tr>
+          <th>Purpose</th>
+          <th>Debit</th>
+          <th>Credit</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of m.records">
+          <td>{{r.purpose}}</td>
+          <td>{{r.debit | number}}</td>
+          <td>{{r.credit | number}}</td>
+          <td>{{r.balance | number}}</td>
+        </tr>
+      </tbody>
+      <tfoot class="table-secondary">
+        <tr>
+          <th>Total</th>
+          <th>{{m.totalDebit | number}}</th>
+          <th>{{m.totalCredit | number}}</th>
+          <th>{{m.balance | number}}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

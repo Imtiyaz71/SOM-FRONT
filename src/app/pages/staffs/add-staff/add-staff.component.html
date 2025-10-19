@@ -1,1 +1,140 @@
-<p>add-staff works!</p>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- ----- STAFF FORM ----- -->
+    <div class="col-md-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">{{ staffForm.value.id === 0 ? 'Add Staff' : 'Update Staff' }}</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="staffForm" (ngSubmit)="saveStaff()">
+
+            <!-- Full Name -->
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" id="fullName" formControlName="fullName" class="form-control"
+                [ngClass]="{'is-invalid': staffForm.get('fullName')?.invalid && staffForm.get('fullName')?.touched}">
+              <div class="invalid-feedback">
+                Full Name is required.
+              </div>
+            </div>
+
+            <!-- NID -->
+            <div class="mb-3">
+              <label for="nId" class="form-label">NID</label>
+              <input type="text" id="nId" formControlName="nId" class="form-control"
+                [ngClass]="{'is-invalid': staffForm.get('nId')?.invalid && staffForm.get('nId')?.touched}">
+              <div class="invalid-feedback">
+                NID is required.
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" id="phone" formControlName="phone" class="form-control"
+                [ngClass]="{'is-invalid': staffForm.get('phone')?.invalid && staffForm.get('phone')?.touched}">
+              <div class="invalid-feedback">
+                Phone is required.
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" formControlName="email" class="form-control"
+                [ngClass]="{'is-invalid': staffForm.get('email')?.invalid && staffForm.get('email')?.touched}">
+              <div class="invalid-feedback">
+                Valid email is required.
+              </div>
+            </div>
+
+            <!-- Full Address -->
+            <div class="mb-3">
+              <label for="fullAddress" class="form-label">Full Address</label>
+              <textarea id="fullAddress" formControlName="fullAddress" rows="2" class="form-control"
+                [ngClass]="{'is-invalid': staffForm.get('fullAddress')?.invalid && staffForm.get('fullAddress')?.touched}"></textarea>
+              <div class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+
+            <!-- Staff Type -->
+            <div class="mb-3">
+              <label for="staffType" class="form-label">Staff Type</label>
+              <select id="staffType" formControlName="staffType" class="form-select"
+                [ngClass]="{'is-invalid': staffForm.get('staffType')?.invalid && staffForm.get('staffType')?.touched}">
+                <option value="0" disabled>Select Staff Type</option>
+                <option *ngFor="let s of staffList" [value]="s.id">{{ s.designation }}</option>
+              </select>
+              <div class="invalid-feedback">
+                Staff Type is required.
+              </div>
+            </div>
+
+            <!-- Photo -->
+            <div class="mb-3">
+              <label class="form-label">Photo</label>
+              <input type="file" class="form-control" (change)="onFileChange($event)">
+              <div class="mt-2" *ngIf="selectedFileBase64 || staffForm.value.photo">
+                <img [src]="selectedFileBase64 ? 'data:image/png;base64,' + selectedFileBase64 : staffForm.value.photo"
+                     alt="Staff Photo" class="img-thumbnail" width="120">
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || staffForm.invalid">
+              {{ staffForm.value.id === 0 ? 'Add Staff' : 'Update Staff' }}
+            </button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- STAFF TABLE ----- -->
+    <div class="col-md-7">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-secondary text-white">
+          <h5 class="mb-0">Staff List</h5>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Designation</th>
+                <th>Photo</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let st of staffs">
+                <td>{{ st.id }}</td>
+                <td>{{ st.fullName }}</td>
+                <td>{{ st.phone }}</td>
+                <td>{{ st.email }}</td>
+                <td>{{ (st.designation) }}</td>
+              <td>
+  <img *ngIf="st.photo" [src]="apiphoto + '/' + st.photo" alt="Photo" width="50" class="img-thumbnail">
+</td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-1" (click)="editStaff(st)">Edit</button>
+                  <!-- Optional delete button -->
+                  <!-- <button class="btn btn-sm btn-danger" (click)="deleteStaff(st.id)">Delete</button> -->
+                </td>
+              </tr>
+              <tr *ngIf="staffs.length === 0">
+                <td colspan="7" class="text-center">No staff found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

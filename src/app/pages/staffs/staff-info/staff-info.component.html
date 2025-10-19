@@ -1,1 +1,45 @@
-<p>staff-info works!</p>
+<div class="container mt-4">
+  <h3>Staff Designations</h3>
+
+  <!-- Add / Edit Designation -->
+  <div class="mb-3 row">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Designation"
+        [(ngModel)]="newDesignation"
+      />
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary" (click)="saveDesignation()">
+        {{ selectedDesignation ? 'Update' : 'Add' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Staff Designation List -->
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Designation</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let staff of staffList; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ staff.designation }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-1" (click)="editDesignation(staff)">
+            Edit
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteStaff(staff.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

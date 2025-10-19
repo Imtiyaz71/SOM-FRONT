@@ -28,7 +28,29 @@ export interface VW_ProjectWiseMemberReceive {
   dec: string;
   total: number;        // 5000
 }
+export interface VW_MemberRegularReceive {
+  memberInfo: string;   // "imtiyaz Uddin (9)"
 
+
+  recYear: number;      // 2025
+  jan: string;          // "Payble-5000, Rec-5000, Due-0" or ""
+  feb: string;
+  mar: string;
+  apr: string;
+  may: string;
+  jun: string;
+  jul: string;
+  aug: string;
+  sep: string;
+  oct: string;
+  nov: string;
+  dec: string;
+  total: number;        // 5000
+}
+export interface VW_Response {
+  statusCode: number;
+  message: string;
+}
 @Injectable({ providedIn: 'root' })
 export class MemberService {
   private apiBase = environment.apiBaseUrl + '/Memb';
@@ -53,6 +75,9 @@ export class MemberService {
  getmemberwisesubscriptionamount(): Observable<VW_ProjectWiseMemberReceive[]> {
   return this.http.get<VW_ProjectWiseMemberReceive[]>(`${this.apiBase}/subscriptionpaidhistory?compId=${this.authService.getcompanyid()}`);
 }
+ getmemberwiseregularsubscriptionamount(): Observable<VW_MemberRegularReceive[]> {
+  return this.http.get<VW_MemberRegularReceive[]>(`${this.apiBase}/regularsubscriptionpaidhistory?compId=${this.authService.getcompanyid()}`);
+}
   savememberdata(formData: MemberAdd, headers: HttpHeaders): Observable<any> {
     return this.http.post(this.apiBase + '/savemember', formData, { headers });
   }
@@ -62,7 +87,10 @@ export class MemberService {
   editmemberdata(formData: MemberAdd, headers: HttpHeaders): Observable<any> {
     return this.http.post(this.apiBase + '/editmember', formData, { headers });
   }
- memberDeactive(formData: { memNo: number; compId: number; entryBy: string }, headers: HttpHeaders): Observable<any> {
-  return this.http.post(this.apiBase + '/memberdeactive', formData, { headers });
+ memberDeactive(
+    formData: { memNo: number; compId: number; entryBy: string },
+    headers: HttpHeaders
+): Observable<VW_Response> {
+    return this.http.post<VW_Response>(this.apiBase + '/memberdeactive', formData, { headers });
 }
 }

@@ -43,6 +43,8 @@ import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdra
 import { MemberbalanceComponent } from './pages/accounts/memberbalance/memberbalance.component';
 import { PaidkistiComponent } from './pages/memberinfo/paidkisti/paidkisti.component';
 import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/paidsubscription.component';
+import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregularsubscription/paidregularsubscription.component';
+import { JournalComponent } from './pages/accounts/journal/journal.component';
 
 const routes: Routes = [
   {
@@ -107,6 +109,8 @@ const routes: Routes = [
      { path: 'bal/membalance', component: MemberbalanceComponent },
  { path: 'mem/memberkistipaid', component: PaidkistiComponent },
  { path: 'mem/membersubspaid', component: PaidsubscriptionComponent },
+{ path: 'mem/memberregusubspaid', component: PaidregularsubscriptionComponent },
+{ path: 'accounts/journal', component: JournalComponent },
 
     ]
   }

@@ -63,13 +63,14 @@
     </div>
     <div *ngIf="menu.id==3" class="bg-white py-2 collapse-inner rounded">
       <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-     <a class="collapse-item" [routerLink]="['staffs/add-staff']">
 
-    <span>Add Staff</span>
-  </a>
    <a class="collapse-item" [routerLink]="['staffs/staff-info']">
 
-    <span>Staff Info</span>
+    <span>Staff Designation</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['staffs/add-staff']">
+
+    <span>Add Staff</span>
   </a>
     </div>
     <div *ngIf="menu.id==31" class="bg-white py-2 collapse-inner rounded">
@@ -86,6 +87,10 @@
   <a class="collapse-item" [routerLink]="['mem/membersubspaid']">
 
     <span>Subscription Paid Info</span>
+  </a>
+    <a class="collapse-item" [routerLink]="['mem/memberregusubspaid']">
+
+    <span>Regular Subs Paid Info</span>
   </a>
     </div>
     <div *ngIf="menu.id==4" class="bg-white py-2 collapse-inner rounded">
@@ -153,7 +158,7 @@
     <div *ngIf="menu.id==7" class="bg-white py-2 collapse-inner rounded">
  <a class="collapse-item" [routerLink]="['expense/expense-type']">
 
-    <span>Add Expense</span>
+    <span>Add Expense Type</span>
   </a>
      <a class="collapse-item" [routerLink]="['expense/add-expense']">
 
@@ -184,6 +189,10 @@
     <a class="collapse-item" [routerLink]="['bal/membalance']">
 
     <span>Member Balance</span>
+  </a>
+     <a class="collapse-item" [routerLink]="['accounts/journal']">
+
+    <span>Journal</span>
   </a>
 <a class="collapse-item" [routerLink]="['accounts/debit']">
 

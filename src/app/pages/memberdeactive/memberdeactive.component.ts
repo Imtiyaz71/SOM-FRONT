@@ -42,32 +42,39 @@ export class MemberdeactiveComponent implements OnInit {
     return this.deac.filter(m => m.memNo.toString().includes(this.searchMemNo));
   }
 
-  deactivateMember() {
-    if (!this.selectedMemNo) {
-      alert("Please select a member first!");
-      return;
-    }
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    });
-
-    const payload = {
-      memNo: this.selectedMemNo,                            // 👈 selected memNo
-      compId: Number(this.authService.getcompanyid()),      // backend expects number
-      entryBy: this.authService.getfullnamename() ?? ''           // logged in user
-    };
-
-    this.memberService.memberDeactive(payload, headers).subscribe({
-      next: (res) => {
-        console.log("Member deactivated successfully", res);
-        alert("Member Deactivated Successfully!");
-      },
-      error: (err) => {
-        console.error("Error deactivating member:", err);
-           alert("Member Deactivated Successfully!");
-      }
-    });
+ deactivateMember() {
+  if (!this.selectedMemNo) {
+    alert("Please select a member first!");
+    return;
   }
+
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.authService.getToken()}`
+  });
+
+  const payload = {
+    memNo: this.selectedMemNo,
+    compId: Number(this.authService.getcompanyid()),
+    entryBy: this.authService.getfullnamename() ?? ''
+  };
+
+this.memberService.memberDeactive(payload, headers).subscribe({
+  next: (res) => {
+    if (res.statusCode === 200) {
+      alert('✅ ' + res.message);
+    } else if (res.statusCode === 400) {
+      alert('⚠️ ' + res.message);
+    } else {
+      alert('❌ ' + res.message);
+    }
+  },
+  error: (err) => {
+    console.error("Server error:", err);
+    alert('❌ Server error occurred');
+  }
+});
+
+}
+
 }

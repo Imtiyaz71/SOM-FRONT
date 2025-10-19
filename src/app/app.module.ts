@@ -53,6 +53,8 @@ import { BalancewithdrawComponent } from './pages/balancewithdraw/balancewithdra
 import { MemberbalanceComponent } from './pages/accounts/memberbalance/memberbalance.component';
 import { PaidkistiComponent } from './pages/memberinfo/paidkisti/paidkisti.component';
 import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/paidsubscription.component';
+import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregularsubscription/paidregularsubscription.component';
+import { JournalComponent } from './pages/accounts/journal/journal.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +100,8 @@ import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/p
     MemberbalanceComponent,
     PaidkistiComponent,
     PaidsubscriptionComponent,
+    PaidregularsubscriptionComponent,
+    JournalComponent,
  
 
 
