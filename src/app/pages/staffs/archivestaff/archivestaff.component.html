@@ -1,0 +1,35 @@
+<div class="mb-3">
+  <input type="text" class="form-control" placeholder="Search by staff name"
+         [(ngModel)]="searchTerm" (input)="searchStaff()" />
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>NID</th>
+      <th>Address</th>
+      <th>Designation</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Photo</th>
+      <th>Deactive Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let s of filteredStaff">
+      <td>{{ s.id }}</td>
+      <td>{{ s.fullName }}</td>
+      <td>{{ s.nId }}</td>
+      <td>{{ s.fullAddress }}</td>
+      <td>{{ s.designation }}</td>
+      <td>{{ s.phone }}</td>
+      <td>{{ s.email }}</td>
+      <td>
+        <img *ngIf="s.photo" [src]="apiBase + '/' + s.photo" width="50" class="img-thumbnail" />
+      </td>
+      <td>{{ s.deactiveDate }}</td>
+    </tr>
+  </tbody>
+</table>

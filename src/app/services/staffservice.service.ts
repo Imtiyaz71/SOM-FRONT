@@ -26,7 +26,19 @@ export interface VW_Staff {
   updateDate: string;
   createBy: string;
 }
-
+export interface VW_ArchiveStaff {
+  id: number;
+  compId: number;
+  fullName: string;
+  nId: string;
+  fullAddress: string;
+  staffType: number;
+  photo: string;
+  phone: string;
+  email: string;
+  deactiveDate: string;
+  designation: string;
+}
 export interface VW_Response {
   statusCode: number;
   message: string;
@@ -88,7 +100,10 @@ export class StaffserviceService {
     { headers }
   );
 }
-
+  getArchiveStaff(): Observable<VW_ArchiveStaff[]> {
+      const compId = this.authService.getcompanyid() ?? '';
+    return this.http.get<VW_ArchiveStaff[]>(`${this.apiBase}/get-archive-staff?compId=${compId}`);
+  }
   saveStaff(model: VW_Staff): Observable<VW_Response> {
     const headers = this.getHeaders();
     return this.http.post<VW_Response>(
@@ -97,4 +112,11 @@ export class StaffserviceService {
       { headers }
     );
   }
+  deactivateStaff(id: number): Observable<VW_Response> {
+     const headers = this.getHeaders();
+  return this.http.post<VW_Response>(
+    `${this.apiBase}/deactivate-staff?id=${id}`,{headers}
+
+  );
+}
 }

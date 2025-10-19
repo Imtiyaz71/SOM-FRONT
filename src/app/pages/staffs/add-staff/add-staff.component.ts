@@ -137,6 +137,23 @@ export class AddStaffComponent implements OnInit {
   //     }
   //   });
   // }
+deactivate(id: number) {
+  if (confirm('Are you sure you want to deactivate this staff?')) {
+    this.staffService.deactivateStaff(id).subscribe({
+      next: (res: VW_Response) => {
+        if (res.statusCode === 200) {
+          alert(res.message);
+          this.loadStaffInfo();
+        } else {
+          alert('Failed: ' + res.message);
+        }
+      },
+      error: (err) => {
+        alert('Error occurred: ' + err.message);
+      }
+    });
+  }
+}
 
   // ---------------- RESET FORM ----------------
   resetForm(): void {

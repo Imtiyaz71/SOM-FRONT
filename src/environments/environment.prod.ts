@@ -5,5 +5,6 @@ export const environment = {
 };
 // export const environment={
 //   production:true,
-//   apiBaseUrl:'http://localhost:807/api'
+//   apiBaseUrl:'http://localhost:807/api',
+//  photourl:'http://localhost:39919'
 // }

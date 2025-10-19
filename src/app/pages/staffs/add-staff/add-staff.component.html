@@ -124,7 +124,8 @@
                 <td>
                   <button class="btn btn-sm btn-warning me-1" (click)="editStaff(st)">Edit</button>
                   <!-- Optional delete button -->
-                  <!-- <button class="btn btn-sm btn-danger" (click)="deleteStaff(st.id)">Delete</button> -->
+                  <button class="btn btn-sm btn-danger" (click)="deactivate(st.id)">Delete</button>
+
                 </td>
               </tr>
               <tr *ngIf="staffs.length === 0">

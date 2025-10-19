@@ -1,160 +1,79 @@
 <div class="row">
 
-  <!-- Member Entry Form -->
-  <div class="col-lg-4">
+  <!-- Loan Type Form -->
+  <div class="col-lg-4" *ngIf="selectedLoan">
     <div class="card mb-4">
       <div class="card-header py-3">
-        <h3 class="m-0 font-weight-bold text-primary">Loan Type Entry</h3>
+        <h3 class="m-0 font-weight-bold text-primary">
+          {{ isEditMode ? 'Edit Loan Type' : 'Add Loan Type' }}
+        </h3>
       </div>
       <div class="card-body">
-        <form #memberForm="ngForm" (ngSubmit)="loantypesave()">
+        <form (ngSubmit)="saveLoanType()">
 
-          <div class="row mb-3">
-
-            <div class="col-md-6">
-              <label class="font-weight-bold text-secondary">Type Name</label>
-              <input type="text" class="form-control" name="typeName" [(ngModel)]="saveloantype.typeName"/>
-
-            </div>
-
-
-
-
-
-            <div class="col-md-6">
-              <label class="font-weight-bold text-secondary">Amount</label>
-              <input type="text" class="form-control" name="amount" [(ngModel)]="saveloantype.amount"/>
-            </div>
-
-
-
-            <div class="col-md-6">
-              <label class="font-weight-bold text-secondary">Cr Type</label>
-              <select class="form-control" name="crid" [(ngModel)]="saveloantype.crid">
-                <option *ngFor="let m of cr" [value]="m.id">{{m.crname}}</option>
-              </select>
-            </div>
-
-
+          <div class="mb-3">
+            <label class="font-weight-bold text-secondary">Type Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedLoan.typeName" name="typeName" required />
           </div>
 
-          <button type="submit" class="btn btn-primary">Save Type</button>
+          <div class="mb-3">
+            <label class="font-weight-bold text-secondary">Interest (%)</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedLoan.interest" name="interest" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="font-weight-bold text-secondary">Time Period (Months)</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedLoan.timePeriodMonths" name="timePeriodMonths" required />
+          </div>
+
+          <button type="submit" class="btn btn-success">
+            {{ isEditMode ? 'Save Changes' : 'Add Loan Type' }}
+          </button>
+          <button type="button" class="btn btn-secondary ms-2" *ngIf="isEditMode" (click)="closeEditModal()">Cancel</button>
         </form>
-
       </div>
     </div>
   </div>
 
-  <!-- Current Active Members -->
+  <!-- Loan Type List -->
   <div class="col-lg-8">
-   <div class="card">
-  <div class="card-header py-3 d-flex justify-content-between align-items-center">
-    <h3 class="m-0 font-weight-bold text-primary">Loan Types</h3>
-
-  </div>
-
-  <div class="card-body text-center overflow">
-      <div class="mb-3 text-start">
-      <input type="text" class="form-control w-25 d-inline-block" placeholder="Search CR Type" [(ngModel)]="searchMemNo">
-    </div>
-    <table class="table table-bordered table-hover">
-      <thead class="table-light">
-        <tr>
-          <th>#Sl</th>
-          <th>Type</th>
-          <th>CR</th>
-          <th>Amount</th>
-
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-
-          <td>{{m.id}}</td>
-          <td>{{m.typeName}}</td>
-          <td>{{m.crname}}</td>
-          <td>{{m.amount}}</td>
-
-
-
-          <td>
-    <button type="button" class="btn btn-primary mb-2" (click)="OpenMemberEditModel(m?.id)">Edit</button>
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <pagination-controls
-      (pageChange)="page = $event"
-      previousLabel="Prev"
-      nextLabel="Next">
-    </pagination-controls>
-  </div>
-</div>
-
-  </div>
-
-</div>
-<div *ngIf="MemberEditModel" class="modal fade show d-block" tabindex="-1">
-  <div class="modal-dialog custom-width">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Edit Kisti Type Info</h3>
-        <button type="button" class="btn-close" (click)="closeeditmodel()" aria-label="Close"></button>
+    <div class="card">
+      <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h3 class="m-0 font-weight-bold text-primary">Loan Types</h3>
+        <input type="text" class="form-control w-25" placeholder="Search" [(ngModel)]="searchMemNo" />
       </div>
-      <div class="modal-body" *ngIf="selectedUser">
-        <div class="row">
+      <div class="card-body overflow-auto">
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>#ID</th>
+              <th>Type Name</th>
+              <th>Interest (%)</th>
+              <th>Time Period (Months)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let l of filteredLoans | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+              <td>{{ l.id }}</td>
+              <td>{{ l.typeName }}</td>
+              <td>{{ l.interest }}</td>
+              <td>{{ l.timePeriodMonths }}</td>
+              <td>
+                <button type="button" class="btn btn-primary btn-sm" (click)="openEditModal(l.id)">Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-          <div class="col-md-12">
-            <table class="table table-bordered">
-              <thead><tr><th>Sl No</th><th>Type Name</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td><input type="text" class="form-control" [readOnly]="true" [(ngModel)]="selectedUser.id" readonly/></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.typeName"/></td>
-
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="col-md-12">
-            <table class="table table-bordered">
-              <thead><tr><th>Amount</th><th>Cr</th></thead>
-              <tbody>
-                <tr>
-                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.amount"/></td>
-                  <td>
-                    <select class="form-control" [(ngModel)]="selectedUser.crid">
-                      <option [value]="selectedUser.crid">{{selectedUser.crname}}</option>
-                      <option *ngFor="let g of cr" [value]="g.id">{{g.crname}}</option>
-                    </select>
-                  </td>
-
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-
-
-
-
-
-          <div class="col-md-6">
-  <button type="button" class="btn btn-success" (click)="loantypesave()">Save Changes</button>
-
-          </div>
-
-        </div>
-      </div>
-      <div class="modal-footer">
-
-        <button type="button" class="btn btn-secondary" (click)="closeeditmodel()">Close</button>
+        <pagination-controls
+          (pageChange)="page = $event"
+          previousLabel="Prev"
+          nextLabel="Next"
+          [maxSize]="5">
+        </pagination-controls>
       </div>
     </div>
   </div>
+
 </div>
-<div *ngIf="MemberEditModel" class="modal-backdrop fade show"></div>

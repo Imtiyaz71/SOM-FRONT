@@ -45,6 +45,7 @@ import { PaidkistiComponent } from './pages/memberinfo/paidkisti/paidkisti.compo
 import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/paidsubscription.component';
 import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregularsubscription/paidregularsubscription.component';
 import { JournalComponent } from './pages/accounts/journal/journal.component';
+import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.component';
 
 const routes: Routes = [
   {
@@ -111,7 +112,7 @@ const routes: Routes = [
  { path: 'mem/membersubspaid', component: PaidsubscriptionComponent },
 { path: 'mem/memberregusubspaid', component: PaidregularsubscriptionComponent },
 { path: 'accounts/journal', component: JournalComponent },
-
+{ path: 'staff/archive', component: ArchivestaffComponent },
     ]
   }
 ];

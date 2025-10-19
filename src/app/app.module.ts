@@ -55,6 +55,7 @@ import { PaidkistiComponent } from './pages/memberinfo/paidkisti/paidkisti.compo
 import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/paidsubscription.component';
 import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregularsubscription/paidregularsubscription.component';
 import { JournalComponent } from './pages/accounts/journal/journal.component';
+import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { JournalComponent } from './pages/accounts/journal/journal.component';
     PaidsubscriptionComponent,
     PaidregularsubscriptionComponent,
     JournalComponent,
+    ArchivestaffComponent,
  
 
 
