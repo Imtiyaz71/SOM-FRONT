@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <h2 class="mb-3 text-primary">Project Account Summary</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="d-flex justify-content-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="summaries.length > 0" class="table-responsive">
+    <table class="table table-striped table-bordered table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Project Name</th>
+          <th>Budget</th>
+          <th>Balance</th>
+          <th>Expense</th>
+          <th>Last Transaction</th>
+          <th>Create Date</th>
+          <th>Update Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of summaries">
+          <td>{{ s.projectName }}</td>
+          <td>{{ s.budget | number:'1.0-2' }}</td>
+          <td>{{ s.balance | number:'1.0-2' }}</td>
+          <td>{{ s.expense | number:'1.0-2' }}</td>
+          <td>{{ s.lastTransaction }}</td>
+          <td>{{ s.createDate | date:'medium' }}</td>
+          <td>{{ s.updateDate ? (s.updateDate | date:'medium') : '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="!loading && summaries.length === 0 && !errorMessage" class="alert alert-warning">
+    No project account data found.
+  </div>
+</div>

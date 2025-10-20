@@ -46,6 +46,7 @@ import { PaidsubscriptionComponent } from './pages/memberinfo/paidsubscription/p
 import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregularsubscription/paidregularsubscription.component';
 import { JournalComponent } from './pages/accounts/journal/journal.component';
 import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.component';
+import { ProjectbalanceComponent } from './pages/accounts/projectbalance/projectbalance.component';
 
 const routes: Routes = [
   {
@@ -113,6 +114,7 @@ const routes: Routes = [
 { path: 'mem/memberregusubspaid', component: PaidregularsubscriptionComponent },
 { path: 'accounts/journal', component: JournalComponent },
 { path: 'staff/archive', component: ArchivestaffComponent },
+{ path: 'bal/projectbalance', component: ProjectbalanceComponent },
     ]
   }
 ];

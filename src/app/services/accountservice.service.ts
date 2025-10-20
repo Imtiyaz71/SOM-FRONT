@@ -110,6 +110,18 @@ export interface VW_Journal {
   credit: number;
   balance: number;
 }
+export interface ProjectAccountSummary {
+  id: number;
+  compId: number;
+  projectId: number;
+  budget: number;
+  balance: number;
+  expense: number;
+  lastTransaction: string; // backend string format e asche
+  createDate: string;      // backend string e asche, Date object convert korte paro later
+  updateDate?: string;     // nullable
+  projectName: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -176,6 +188,9 @@ getregularsubscriptionreceive(): Observable<getregularreceive[]> {
     query = query.slice(0, -1);
 
     return this.http.get<VW_MemberProjectAccount[]>(`${this.apiBase}/memberprojectaccount${query}`);
+  }
+    getProjectAccountSummary(): Observable<ProjectAccountSummary[]> {
+    return this.http.get<ProjectAccountSummary[]>(`${this.apiBase}/getprojectaccountsummary?compId=${this.authService.getcompanyid() ?? ''}`);
   }
 savebalancesegment(formData: any, headers?: HttpHeaders): Observable<string> {
   return this.http.post(this.apiBase + '/savebalancesegment', formData, {
