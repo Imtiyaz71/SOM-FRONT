@@ -47,6 +47,8 @@ import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregular
 import { JournalComponent } from './pages/accounts/journal/journal.component';
 import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.component';
 import { ProjectbalanceComponent } from './pages/accounts/projectbalance/projectbalance.component';
+import { AddprojectexpenseComponent } from './pages/expense/addprojectexpense/addprojectexpense.component';
+import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehistory/projectexpensehistory.component';
 
 const routes: Routes = [
   {
@@ -115,6 +117,8 @@ const routes: Routes = [
 { path: 'accounts/journal', component: JournalComponent },
 { path: 'staff/archive', component: ArchivestaffComponent },
 { path: 'bal/projectbalance', component: ProjectbalanceComponent },
+{ path: 'exp/proexpense', component: AddprojectexpenseComponent },
+{ path: 'exp/proexpensehistory', component: ProjectexpensehistoryComponent },
     ]
   }
 ];

@@ -47,6 +47,23 @@ export interface MonthlyExpense {
   november: number;
   december: number;
 }
+export interface ProjectWiseExpense {
+  id: number;
+  compId: string|null;
+  projectInfo?: string; // get response e থাকে
+  projectId?: number;   // add এ লাগে
+  purpose: string;
+  amount: number;
+  eDate: string;
+  eMonth: string;
+  eYear: number | string;
+  eBy: string|null;
+}
+
+export interface VW_Response {
+  statusCode: number;
+  message: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -85,5 +102,13 @@ export class ExpenseserviceService {
     return this.http.post(`${this.apiBase}/delete-expense-type`, null, {
       params: { id: id.toString() }
     });
+  }
+    getProjectExpenses(): Observable<ProjectWiseExpense[]> {
+    return this.http.get<ProjectWiseExpense[]>(`${this.apiBase}/get-project-expense?compId=${this.authService.getcompanyid() ?? ''}`);
+  }
+
+  // 🔹 2. Add Project Expense
+  addProjectExpense(expense: ProjectWiseExpense): Observable<VW_Response> {
+    return this.http.post<VW_Response>(`${this.apiBase}/add-project-expense`, expense);
   }
 }

@@ -168,9 +168,17 @@
 
     <span>Add Expense</span>
   </a>
+  <a class="collapse-item" [routerLink]="['exp/proexpense']">
+
+    <span>Add Project Expense</span>
+  </a>
 <a class="collapse-item" [routerLink]="['expense/expense-history']">
 
     <span>Expense History</span>
+  </a>
+  <a class="collapse-item" [routerLink]="['exp/proexpensehistory']">
+
+    <span>Project Expense History</span>
   </a>
     </div>
      <div *ngIf="menu.id==8" class="bg-white py-2 collapse-inner rounded">

@@ -1,0 +1,72 @@
+<div class="container mt-4">
+
+  <div *ngIf="loading" class="text-center p-3">Loading...</div>
+  <div *ngIf="!loading && errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && groupedData.length > 0">
+    <div *ngFor="let yearGroup of groupedData">
+      <!-- Year Header -->
+      <div class="card mb-2 shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center" (click)="toggleYear(yearGroup)" style="cursor:pointer">
+          <span>Year: {{ yearGroup.year }}</span>
+          <span>Total: {{ yearGroup.totalAmount | number }}</span>
+        </div>
+        <div class="card-body p-2" *ngIf="yearGroup.expanded">
+          <!-- Month Group -->
+          <div *ngFor="let monthGroup of yearGroup.months">
+            <div class="card mb-1 border-info">
+              <div class="card-header bg-info text-white d-flex justify-content-between align-items-center" (click)="toggleMonth(monthGroup)" style="cursor:pointer">
+                <span>Month: {{ monthGroup.month }}</span>
+                <span>Total: {{ monthGroup.totalAmount | number }}</span>
+              </div>
+              <div class="card-body p-1" *ngIf="monthGroup.expanded">
+                <!-- Project Group -->
+                <div *ngFor="let projectGroup of monthGroup.projects">
+                  <div class="card mb-1 border-success">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center" (click)="toggleProject(projectGroup)" style="cursor:pointer">
+                      <span>Project: {{ projectGroup.projectName }}</span>
+                      <span>Total: {{ projectGroup.totalAmount | number }}</span>
+                    </div>
+                    <div class="card-body p-1" *ngIf="projectGroup.expanded">
+                      <!-- Expense Table -->
+                      <table class="table table-sm table-bordered mb-1">
+                        <thead class="table-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Purpose</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Expense By</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let exp of projectGroup.expenses; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ exp.purpose }}</td>
+                            <td>{{ exp.amount | number }}</td>
+                            <td>{{ exp.eDate | date:'mediumDate' }}</td>
+                            <td>{{ exp.eBy }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Total -->
+    <div class="alert alert-secondary mt-2 text-end">
+      <strong>Grand Total: {{ fullTotal | number }}</strong>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && groupedData.length === 0" class="p-3 text-center">
+    No expenses found.
+  </div>
+
+</div>

@@ -57,6 +57,8 @@ import { PaidregularsubscriptionComponent } from './pages/memberinfo/paidregular
 import { JournalComponent } from './pages/accounts/journal/journal.component';
 import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.component';
 import { ProjectbalanceComponent } from './pages/accounts/projectbalance/projectbalance.component';
+import { AddprojectexpenseComponent } from './pages/expense/addprojectexpense/addprojectexpense.component';
+import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehistory/projectexpensehistory.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +108,8 @@ import { ProjectbalanceComponent } from './pages/accounts/projectbalance/project
     JournalComponent,
     ArchivestaffComponent,
     ProjectbalanceComponent,
+    AddprojectexpenseComponent,
+    ProjectexpensehistoryComponent,
  
 
 
