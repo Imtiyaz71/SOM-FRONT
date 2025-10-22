@@ -1,1 +1,137 @@
-<p>loan-due works!</p>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Loan Sension Form -->
+    <div class="col-lg-5 mb-4">
+      <div class="card shadow-sm border-primary">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Loan Sension Form</h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="saveLoanSension()" #loanFormRef="ngForm">
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" [(ngModel)]="loanForm.fullName" name="fullName" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Phone</label>
+                <input type="text" class="form-control" [(ngModel)]="loanForm.phone" name="phone" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="loanForm.email" name="email" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">NID</label>
+                <input type="text" class="form-control" [(ngModel)]="loanForm.nId" name="nId" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">DOB</label>
+                <input type="date" class="form-control" [(ngModel)]="loanForm.dob" name="dob" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Father</label>
+                <input type="text" class="form-control" [(ngModel)]="loanForm.father" name="father" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Mother</label>
+                <input type="text" class="form-control" [(ngModel)]="loanForm.mother" name="mother" />
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Address</label>
+                <textarea class="form-control" [(ngModel)]="loanForm.bAddress" name="bAddress" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Photo</label>
+                <input type="file" class="form-control" (change)="onPhotoSelected($event)" accept="image/*" />
+                <img *ngIf="loanForm.photo" [src]="loanForm.photo" class="img-thumbnail mt-2" width="150" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Loan Type</label>
+                <select class="form-select" [(ngModel)]="loanForm.loanType" name="loanType" required>
+                  <option *ngFor="let loan of loantype" [value]="loan.id">{{ loan.typeName }}</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Amount</label>
+                <input type="number" class="form-control" [(ngModel)]="loanForm.amount" name="amount" required />
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-control" [(ngModel)]="loanForm.sDate" name="sDate" required />
+              </div>
+              <div class="col-md-2 mb-3">
+                <label class="form-label">Month</label>
+                <select class="form-select" [(ngModel)]="loanForm.sMonth" name="sMonth" required>
+                  <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                </select>
+              </div>
+              <div class="col-md-2 mb-3">
+                <label class="form-label">Year</label>
+                <select class="form-select" [(ngModel)]="loanForm.sYear" name="sYear" required>
+                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100 mt-3">Save Loan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Borrower Loan List -->
+    <div class="col-lg-7 mb-4">
+      <div class="card shadow-sm border-success">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Borrower Loan List</h4>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>NID</th>
+                <th>DOB</th>
+                <th>Father</th>
+                <th>Mother</th>
+                <th>Loan Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Month</th>
+                <th>Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of pagedBorrowerLoans">
+                <td>{{item.brwId}}</td>
+                <td>{{item.fullName}}</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.bAddress}}</td>
+                <td>{{item.nId}}</td>
+                <td>{{item.dob}}</td>
+                <td>{{item.father}}</td>
+                <td>{{item.mother}}</td>
+                <td>{{item.loanType || '-'}}</td>
+                <td>{{item.amount || 0}}</td>
+                <td>{{item.sDate || '-'}}</td>
+                <td>{{item.sMonth || '-'}}</td>
+                <td>{{item.sYear || '-'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+  <button class="btn btn-sm btn-primary" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+  <span>Page {{currentPage}} of {{totalPages}}</span>
+  <button class="btn btn-sm btn-primary" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

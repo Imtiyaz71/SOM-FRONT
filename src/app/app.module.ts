@@ -59,7 +59,7 @@ import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.
 import { ProjectbalanceComponent } from './pages/accounts/projectbalance/projectbalance.component';
 import { AddprojectexpenseComponent } from './pages/expense/addprojectexpense/addprojectexpense.component';
 import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehistory/projectexpensehistory.component';
-
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -110,7 +110,7 @@ import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehi
     ProjectbalanceComponent,
     AddprojectexpenseComponent,
     ProjectexpensehistoryComponent,
- 
+
 
 
   ],
@@ -126,7 +126,8 @@ import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehi
     ReactiveFormsModule,
     HttpClientModule,
     NgxPaginationModule,
-    MatIconModule
+    MatIconModule,
+    NgChartsModule
   ],
  providers: [
     {

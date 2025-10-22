@@ -9,7 +9,14 @@ export interface DashboardCount {
   deActiveMember: number;
   projectCount: number;
 }
-
+export interface VW_ReceiveDashboardSummary {
+  receiveKisti: number;
+  kistiDue: number;
+  receivesubs: number;
+  subsDue: number;
+  receiveregsubs: number;
+  regsubsDue: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -24,5 +31,10 @@ export class DashserviceService {
     const compId = this.authService.getcompanyid(); // AuthService থেকে CompanyId নেবে
     return this.http.get<DashboardCount>(`${this.apiBase}/dashcount?compId=${compId}`);
   }
-
+ getReceiveDashboardSummary(): Observable<VW_ReceiveDashboardSummary> {
+   const compId = this.authService.getcompanyid();
+  return this.http.get<VW_ReceiveDashboardSummary>(
+      `${this.apiBase}/dashrecsummary?compId=${compId}`
+    );
+  }
 }

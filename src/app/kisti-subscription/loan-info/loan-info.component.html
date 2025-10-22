@@ -20,12 +20,18 @@
             <label class="font-weight-bold text-secondary">Interest (%)</label>
             <input type="number" class="form-control" [(ngModel)]="selectedLoan.interest" name="interest" required />
           </div>
-
+            <div class="mb-3">
+            <label class="font-weight-bold text-secondary">Delay Interest (%)</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedLoan.delayInterest" name="delayInterest" required />
+          </div>
           <div class="mb-3">
             <label class="font-weight-bold text-secondary">Time Period (Months)</label>
             <input type="number" class="form-control" [(ngModel)]="selectedLoan.timePeriodMonths" name="timePeriodMonths" required />
           </div>
-
+              <div class="mb-3">
+            <label class="font-weight-bold text-secondary">Active Time Period (Months)</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedLoan.activityPeriod" name="activityPeriod" required />
+          </div>
           <button type="submit" class="btn btn-success">
             {{ isEditMode ? 'Save Changes' : 'Add Loan Type' }}
           </button>
@@ -49,7 +55,9 @@
               <th>#ID</th>
               <th>Type Name</th>
               <th>Interest (%)</th>
+              <th>Delay Interest (%)</th>
               <th>Time Period (Months)</th>
+              <th>Active Period (Months)</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -58,7 +66,9 @@
               <td>{{ l.id }}</td>
               <td>{{ l.typeName }}</td>
               <td>{{ l.interest }}</td>
+                  <td>{{ l.delayInterest }}</td>
               <td>{{ l.timePeriodMonths }}</td>
+                     <td>{{ l.activityPeriod }}</td>
               <td>
                 <button type="button" class="btn btn-primary btn-sm" (click)="openEditModal(l.id)">Edit</button>
               </td>

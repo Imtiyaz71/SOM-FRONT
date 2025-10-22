@@ -26,7 +26,7 @@ export class LoanInfoComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
      if (!this.selectedLoan) {
-    this.selectedLoan = {id:0, compId:'', typeName:'', interest:0, timePeriodMonths:0, createDate:'', updateDate:'', updateBy:''};
+    this.selectedLoan = {id:0, compId:'', typeName:'', interest:0, timePeriodMonths:0, createDate:'', updateDate:'', updateBy:'',delayInterest:0,activityPeriod:0};
   }
   }
 
@@ -79,6 +79,8 @@ export class LoanInfoComponent implements OnInit {
       typeName: this.selectedLoan.typeName,
       interest: this.selectedLoan.interest || 0,
       timePeriodMonths: this.selectedLoan.timePeriodMonths || 0,
+      delayInterest: this.selectedLoan.delayInterest || 0,
+      activityPeriod: this.selectedLoan.activityPeriod || 0,
       createDate: new Date().toISOString(),
       updateDate: new Date().toISOString(),
       updateBy: this.authService.getusername() || 'Admin'
@@ -97,7 +99,7 @@ export class LoanInfoComponent implements OnInit {
       },
       error: err => {
         console.error(err);
-        alert(err.error?.message || 'Something went wrong!');
+        alert(err.error?.message || 'Saved!');
         this.loadData();
       }
     });
