@@ -63,6 +63,56 @@ export interface VW_BorrowerLoanInfo {
   sMonth?: string;
   sYear?: number;
 }
+export interface LoanSension {
+  id: number;
+  fullName: string;
+  phone: string;
+  typeName: string;
+  timePeriodMonths: number;
+  activityPeriod: number;
+  interest: number;
+  delayInterestRate: number;
+  principal: number;
+  sDate: string;
+  endContractAt: string;
+  monthsPassed: number;
+  activeMonthRunning: number;
+  paidMonths: number;
+  remainingMonth: number;
+  monthWiseInterest: number;
+  monthlyPrincipal: number;
+  monthlyPrinciplePayable: number;
+  runningInterestTotal: number;
+  calculatedDelayInterest: number;
+  totalPayable: number;
+  compId: number;
+}
+export interface LoanPaid {
+  id: number;
+  compId: number;
+  loanId: number;
+  payble: number;
+  paidAmount: number;
+  principle: number;
+  interest: number;
+  pDate: string;
+  pMonth: string;
+  pYear: number;
+  pBy: string;
+}
+export interface LoanPaidHistory {
+  id: number;
+  loanId: number;
+  payble: number;
+  paidAmount: number;
+  interest: number;
+  principle: number;
+  pDate: string; // or Date if you parse it
+  pMonth: number;
+  pYear: number;
+  fullName: string;
+  phone: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -95,5 +145,25 @@ export class LoanserviceService {
   getBorrowerLoanInfo(): Observable<VW_BorrowerLoanInfo[]> {
         const compId = this.authService.getcompanyid() ?? 0;
     return this.http.get<VW_BorrowerLoanInfo[]>(`${this.apiBase}/borrowerloan?compId=${compId}`);
+  }
+   getLoanSensionDetails(): Observable<LoanSension[]> {
+      const compId = this.authService.getcompanyid() ?? 0;
+    return this.http.get<LoanSension[]>(`${this.apiBase}/loanpaiddetails?compId=${compId}`);
+  }
+    saveLoanPaid(model: LoanPaid): Observable<VW_Response> {
+    // JWT token fetch from localStorage/sessionStorage
+    const token = localStorage.getItem('token'); 
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post<VW_Response>(`${this.apiBase}/save-loan-paid`, model, { headers });
+  }
+  
+  getLoanPaidHistory(): Observable<LoanPaidHistory[]> {
+    const compId = this.authService.getcompanyid() ?? 0;
+    return this.http.get<LoanPaidHistory[]>(`${this.apiBase}/loan-paid-history?compId=${compId}`);
   }
 }
