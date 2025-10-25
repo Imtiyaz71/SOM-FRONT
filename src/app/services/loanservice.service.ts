@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 
@@ -56,7 +56,7 @@ export interface VW_BorrowerLoanInfo {
   father: string;
   mother: string;
   photo: string;
-
+loanTypeName?:string;
   loanType?: number;
   amount?: number;
   sDate?: string;
@@ -64,32 +64,34 @@ export interface VW_BorrowerLoanInfo {
   sYear?: number;
 }
 export interface LoanSension {
-  id: number;
-  fullName: string;
+  loanId: number;
+  borrowerName: string;
   phone: string;
-  typeName: string;
-  timePeriodMonths: number;
-  activityPeriod: number;
-  interest: number;
+  loanType: string;
+  totalMonths: number;
+  activeMonths: number;
+  interestRate: number;
   delayInterestRate: number;
   principal: number;
-  sDate: string;
-  endContractAt: string;
-  monthsPassed: number;
-  activeMonthRunning: number;
-  paidMonths: number;
-  remainingMonth: number;
-  monthWiseInterest: number;
-  monthlyPrincipal: number;
-  monthlyPrinciplePayable: number;
-  runningInterestTotal: number;
-  calculatedDelayInterest: number;
-  totalPayable: number;
+  startDate: string;            // or Date if you parse it as Date object
   compId: number;
+  endContractAt: string;        // or Date
+  activeStartDate: string;      // or Date
+  paidMonths: number;
+  activeMonthRunning: number;
+  remainingMonths: number;
+  monthlyPrincipal: number;
+  monthlyInterest: number;
+  accruedInterest: number;
+  delayInterest: number;
+  totalInterestTillNow: number;
+  totalPaidAmount: number;
+  totalPayableAmount: number;
+  remainingPayable: number;
 }
 export interface LoanPaid {
   id: number;
-  compId: number;
+  compId: string|null;
   loanId: number;
   payble: number;
   paidAmount: number;
@@ -98,11 +100,12 @@ export interface LoanPaid {
   pDate: string;
   pMonth: string;
   pYear: number;
-  pBy: string;
+  pBy: string|null;
 }
 export interface LoanPaidHistory {
   id: number;
   loanId: number;
+  typeName: string|null;
   payble: number;
   paidAmount: number;
   interest: number;
@@ -146,13 +149,23 @@ export class LoanserviceService {
         const compId = this.authService.getcompanyid() ?? 0;
     return this.http.get<VW_BorrowerLoanInfo[]>(`${this.apiBase}/borrowerloan?compId=${compId}`);
   }
+ getBorrowerLoanInfoById(brwId:number): Observable<VW_BorrowerLoanInfo> {
+    const compId = this.authService.getcompanyid() ?? 0;
+    return this.http.get<VW_BorrowerLoanInfo[]>(`${this.apiBase}/borrowerloanById?compId=${compId}&brwId=${brwId}`)
+        .pipe(
+            map(res => res[0]) // array এর প্রথম item নেওয়া
+        );
+}
+getBorrowerPhoto(compId: number, brwId: number): Observable<any> {
+  return this.http.get(`${this.apiBase}/borrowerphoto?compId=${compId}&brwId=${brwId}`, { responseType: 'blob' });
+}
    getLoanSensionDetails(): Observable<LoanSension[]> {
       const compId = this.authService.getcompanyid() ?? 0;
     return this.http.get<LoanSension[]>(`${this.apiBase}/loanpaiddetails?compId=${compId}`);
   }
     saveLoanPaid(model: LoanPaid): Observable<VW_Response> {
     // JWT token fetch from localStorage/sessionStorage
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -161,9 +174,13 @@ export class LoanserviceService {
 
     return this.http.post<VW_Response>(`${this.apiBase}/save-loan-paid`, model, { headers });
   }
-  
+
   getLoanPaidHistory(): Observable<LoanPaidHistory[]> {
     const compId = this.authService.getcompanyid() ?? 0;
     return this.http.get<LoanPaidHistory[]>(`${this.apiBase}/loan-paid-history?compId=${compId}`);
+  }
+    getLoanPaidHistoryByLoanId(loanid:number): Observable<LoanPaidHistory[]> {
+    const compId = this.authService.getcompanyid() ?? 0;
+    return this.http.get<LoanPaidHistory[]>(`${this.apiBase}/loan-paid-history-loanid?compId=${compId}&loanid=${loanid}`);
   }
 }

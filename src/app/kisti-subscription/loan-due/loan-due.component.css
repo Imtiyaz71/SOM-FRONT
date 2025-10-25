@@ -1,0 +1,10 @@
+.card-header {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+.form-label {
+  font-size: 0.9rem;
+}
+.table th, .table td {
+  font-size: 0.88rem;
+  vertical-align: middle;
+}

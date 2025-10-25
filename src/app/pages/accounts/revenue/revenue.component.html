@@ -1,0 +1,120 @@
+<div class="container mt-4">
+  <h3 class="mb-3 text-primary">Revenue History & Summary</h3>
+
+  <!-- Year Filter -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-3">
+      <label for="yearSelect" class="form-label">Filter by Year:</label>
+      <select id="yearSelect" class="form-select"
+              [ngModel]="selectedYear"
+              (ngModelChange)="onYearChange($event)">
+        <option [ngValue]="null">All Years</option>
+        <option *ngFor="let y of years" [ngValue]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div class="col-md-9 text-end" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print Button -->
+  <div class="mb-3 text-end">
+    <button class="btn btn-primary" (click)="printPage()">Print Revenue</button>
+  </div>
+
+  <!-- Message -->
+  <div *ngIf="message" class="alert alert-warning">
+    {{ message }}
+  </div>
+
+  <!-- Monthly Revenue Table -->
+  <div *ngIf="rev.length > 0" class="table-responsive mb-5" id="revenueHistoryTable">
+    <h5 class="text-secondary mb-2">Monthly Revenue Summary</h5>
+    <table class="table table-striped table-bordered table-hover shadow-sm align-middle">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Year</th>
+          <th>Jan</th>
+          <th>Feb</th>
+          <th>Mar</th>
+          <th>Apr</th>
+          <th>May</th>
+          <th>Jun</th>
+          <th>Jul</th>
+          <th>Aug</th>
+          <th>Sep</th>
+          <th>Oct</th>
+          <th>Nov</th>
+          <th>Dec</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exp of rev" class="text-center">
+          <td>{{ exp.year }}</td>
+          <td>{{ exp.january | number:'1.0-0' }}</td>
+          <td>{{ exp.february | number:'1.0-0' }}</td>
+          <td>{{ exp.march | number:'1.0-0' }}</td>
+          <td>{{ exp.april | number:'1.0-0' }}</td>
+          <td>{{ exp.may | number:'1.0-0' }}</td>
+          <td>{{ exp.june | number:'1.0-0' }}</td>
+          <td>{{ exp.july | number:'1.0-0' }}</td>
+          <td>{{ exp.august | number:'1.0-0' }}</td>
+          <td>{{ exp.september | number:'1.0-0' }}</td>
+          <td>{{ exp.october | number:'1.0-0' }}</td>
+          <td>{{ exp.november | number:'1.0-0' }}</td>
+          <td>{{ exp.december | number:'1.0-0' }}</td>
+          <td>{{ getMonthTotal(exp) | number:'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Detailed Revenue Summary Table -->
+  <div *ngIf="revsumm.length > 0" class="table-responsive" id="revenueSummaryTable">
+    <h5 class="text-secondary mb-2">Detailed Revenue Summary</h5>
+
+    <div *ngFor="let year of getYearsGroup()">
+      <h6 class="text-primary mt-3">Year: {{ year }}</h6>
+
+      <div *ngFor="let month of getMonthsGroup(year)">
+        <h6 class="text-success ms-3">Month: {{ month }}</h6>
+
+        <table class="table table-bordered table-striped table-hover shadow-sm align-middle ms-4">
+          <thead class="table-dark text-center">
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Date Total</th>
+              <th>Month Total</th>
+              <th>Year Total</th>
+              <th>Total Revenue</th>
+              <th>Account Balance</th>
+              <th>Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let date of getDatesGroup(year, month)">
+              <tr *ngFor="let row of getRows(year, month, date)" class="text-center">
+                <td>{{ row.dates }}</td>
+                <td>{{ row.descri }}</td>
+                <td>{{ row.amount | number:'1.0-0' }}</td>
+                <td>{{ row.dateTotal | number:'1.0-0' }}</td>
+                <td>{{ row.monthTotal | number:'1.0-0' }}</td>
+                <td>{{ row.yearTotal | number:'1.0-0' }}</td>
+                <td>{{ row.totalRevenue | number:'1.0-0' }}</td>
+                <td [ngStyle]="{'color': getBalanceColor(row)}">
+                  {{ row.accountBalance | number:'1.0-0' }}
+                </td>
+                <td>{{ row.difference | number:'1.0-0' }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -49,6 +49,12 @@ import { ArchivestaffComponent } from './pages/staffs/archivestaff/archivestaff.
 import { ProjectbalanceComponent } from './pages/accounts/projectbalance/projectbalance.component';
 import { AddprojectexpenseComponent } from './pages/expense/addprojectexpense/addprojectexpense.component';
 import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehistory/projectexpensehistory.component';
+import { RevenueComponent } from './pages/accounts/revenue/revenue.component';
+import { SensionComponent } from './pages/recept/loan/sension/sension.component';
+import { PaidComponent } from './pages/recept/loan/paid/paid.component';
+import { KistisubsComponent } from './pages/recept/kistisubs/kistisubs.component';
+import { SubrecptComponent } from './pages/recept/subrecpt/subrecpt.component';
+import { RegsubsrecptComponent } from './pages/recept/regsubsrecpt/regsubsrecpt.component';
 
 const routes: Routes = [
   {
@@ -119,6 +125,12 @@ const routes: Routes = [
 { path: 'bal/projectbalance', component: ProjectbalanceComponent },
 { path: 'exp/proexpense', component: AddprojectexpenseComponent },
 { path: 'exp/proexpensehistory', component: ProjectexpensehistoryComponent },
+{ path: 'bal/revenue', component: RevenueComponent },
+{path:'rpt/sension/:brwId',component:SensionComponent},
+{path:'rpt/paid/:brwId',component:PaidComponent},
+{path:'rpt/kistisubs/:brwId',component:KistisubsComponent},
+{path:'rpt/subrect/:brwId',component:SubrecptComponent},
+{path:'rpt/regsubrect/:brwId',component:RegsubsrecptComponent},
     ]
   }
 ];

@@ -60,6 +60,13 @@ import { ProjectbalanceComponent } from './pages/accounts/projectbalance/project
 import { AddprojectexpenseComponent } from './pages/expense/addprojectexpense/addprojectexpense.component';
 import { ProjectexpensehistoryComponent } from './pages/expense/projectexpensehistory/projectexpensehistory.component';
 import { NgChartsModule } from 'ng2-charts';
+import { RevenueComponent } from './pages/accounts/revenue/revenue.component';
+import { SensionComponent } from './pages/recept/loan/sension/sension.component';
+import { PaidComponent } from './pages/recept/loan/paid/paid.component';
+import { KistisubsComponent } from './pages/recept/kistisubs/kistisubs.component';
+import { SubrecptComponent } from './pages/recept/subrecpt/subrecpt.component';
+import { RegsubsrecptComponent } from './pages/recept/regsubsrecpt/regsubsrecpt.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -110,6 +117,12 @@ import { NgChartsModule } from 'ng2-charts';
     ProjectbalanceComponent,
     AddprojectexpenseComponent,
     ProjectexpensehistoryComponent,
+    RevenueComponent,
+    SensionComponent,
+    PaidComponent,
+    KistisubsComponent,
+    SubrecptComponent,
+    RegsubsrecptComponent,
 
 
 

@@ -1,0 +1,87 @@
+<div class="container mt-4" *ngIf="!loading" id="receipt-content">
+  <div class="card shadow-lg border-0 rounded-3">
+    <div class="card-header bg-primary text-white text-center py-3">
+      <div class="d-flex justify-content-center align-items-center gap-3">
+        <!-- Company icon -->
+        <i class="bi bi-building fs-2"></i>
+
+        <div class="text-start">
+          <h5 class="fw-bold mb-1">{{cominfo.cName}}</h5>
+          <p class="mb-1">
+            <i class="bi bi-geo-alt-fill me-1"></i>
+            {{cominfo.cAddress}}
+          </p>
+          <p class="mb-1">
+            <i class="bi bi-telephone-fill me-1"></i>
+            {{cominfo.cPhone}}
+          </p>
+          <p class="mb-0">
+            <i class="bi bi-envelope-fill me-1"></i>
+            {{cominfo.cEmail}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body px-5 py-4">
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <table class="table table-sm table-borderless">
+            <tr><td><strong>LoanId:</strong></td><td>{{ paid.loanId }}</td></tr>
+            <tr><td><strong>Full Name:</strong></td><td>{{ paid.fullName }}</td></tr>
+            <tr><td><strong>Phone:</strong></td><td>{{ paid.phone }}</td></tr>
+
+          </table>
+        </div>
+
+      </div>
+
+      <hr />
+
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <table class="table table-bordered text-center">
+            <thead class="table-primary">
+              <tr>
+                <th>LoanType</th>
+                  <th>Payble (৳)</th>
+                <th>Paid Amount (৳)</th>
+                <th>Date</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ paid.typeName }}</td>
+                <td>{{ paid.payble | number:'1.2-2' }}</td>
+                 <td>{{ paid.paidAmount | number:'1.2-2' }}</td>
+                <td>{{ paid.pDate | date:'mediumDate' }}</td>
+         
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-md-6 text-start">
+          <div class="border-bottom mt-4" style="width: 60%;"></div>
+          <p>Borrower Signature</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <div class="border-bottom mt-4 ms-auto" style="width: 60%;"></div>
+          <p>Authorized Officer</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-muted small">This is a system-generated document.</p>
+        <button class="btn btn-success btn-lg mt-2" (click)="printReceipt()">
+          <i class="bi bi-printer"></i> Print Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="text-center mt-5"><p>Loading borrower data...</p></div>

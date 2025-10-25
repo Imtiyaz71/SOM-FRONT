@@ -135,4 +135,21 @@
     </div>
   </div>
 
+  <!-- Revenue vs Account Balance Line Chart -->
+<!-- Revenue Line Chart -->
+<div *ngIf="revsumm.length > 0" class="card shadow-sm mb-4">
+  <div class="card-header bg-info text-white">
+    <h5 class="mb-0">Revenue Trend by Year</h5>
+  </div>
+  <div class="card-body">
+    <canvas
+      baseChart
+      [data]="revenueChartData"
+      [options]="revenueChartOptions"
+      chartType="line">
+    </canvas>
+  </div>
+</div>
+
+
 </div>

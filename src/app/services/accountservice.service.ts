@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
+import { isThisSecond } from 'date-fns';
 export interface addregularsubscription{id:number;compId:string;memNo:number;paybleamount:number;recamount:number;recdate:string;recmonth:string;recyear:number;trnasBy:string;}
 
-export interface getregularreceive { id:number;memNo: number;givenName:string;sureName:string;paybleAmount: number;recAmount:number;due:number;recDate: string;recMonth:string;recYear:number;recBy:string;}
+export interface getregularreceive { id:number;memNo: number;givenName:string;sureName:string;phone:string;email:string;paybleAmount: number;recAmount:number;due:number;recDate: string;recMonth:string;recYear:number;recBy:string;}
 
 export interface addamount { projectid:number,typeid: number; compId: string|null;memNo: number;paybleamount: number;recamount:number;remark: string;recdate: string;recmonth:string;recyear:number;transby:string;}
-export interface getreceive { id:number;typeid: number; typeName:string;memNo: number;givenName:string;sureName:string;paybleAmount: number;recAmount:number;due:number;remarks: string;recDate: string;recMonth:string;recYear:number;transby:string;projectid:number;projectName:string;}
+export interface getreceive { id:number;typeid: number; typeName:string;memNo: number;givenName:string;sureName:string;phone:string;email:string;paybleAmount: number;recAmount:number;due:number;remarks: string;recDate: string;recMonth:string;recYear:number;transby:string;projectid:number;projectName:string;}
 export interface getvendor{id:number;vType:string;}
 export interface getbalanceaddhistory{id:number;compId:number;vendor:number;vType:string;descri:string;amount:number;adate:string}
 export interface getamount{id:number;compId:string;amount:number;updateDate:string;}
@@ -122,6 +123,36 @@ export interface ProjectAccountSummary {
   updateDate?: string;     // nullable
   projectName: string;
 }
+
+ export interface RevenueSummary  {
+    year: number,
+    january: number,
+    february: number,
+    march: number,
+    april: number,
+    may: number,
+    june: number,
+    july: number,
+    august: number,
+    september: number,
+    october: number,
+    november: number,
+    december: number
+  }
+  export interface RevenueSummary1 {
+  years: number;
+  months: string;
+  dates: string;
+  descri: string;
+  amount: number;
+  dateTotal: number;
+  monthTotal: number;
+  yearTotal: number;
+  totalRevenue: number;
+  accountBalance: number;
+  difference: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -163,14 +194,29 @@ getbalancewithdraw(): Observable<BalanceWithdraw[]> {
     `${this.apiBase}/kistireceive?compId=${this.authService.getcompanyid() ?? ''}`
   );
 }
+getkistireceiveById(id: number): Observable<getreceive[]> {
+  return this.http.get<getreceive[]>(
+    `${this.apiBase}/kistireceivebyid?compId=${this.authService.getcompanyid() ?? ''}&id=${id}`
+  );
+}
 getsubscriptionreceive(): Observable<getreceive[]> {
   return this.http.get<getreceive[]>(
     `${this.apiBase}/subscriptionreceive?compId=${this.authService.getcompanyid() ?? ''}`
   );
 }
+getsubscriptionreceiveById(id:number): Observable<getreceive[]> {
+  return this.http.get<getreceive[]>(
+    `${this.apiBase}/subscriptionreceivebyid?compId=${this.authService.getcompanyid() ?? ''}&id=${id}`
+  );
+}
 getregularsubscriptionreceive(): Observable<getregularreceive[]> {
   return this.http.get<getregularreceive[]>(
     `${this.apiBase}/regularsubscriptionreceive?compId=${this.authService.getcompanyid() ?? ''}`
+  );
+}
+getregularsubscriptionreceiveById(id:number): Observable<getregularreceive[]> {
+  return this.http.get<getregularreceive[]>(
+    `${this.apiBase}/regularsubscriptionreceivebyid?compId=${this.authService.getcompanyid() ?? ''}&id=${id}`
   );
 }
   getProjectAccountByMemberAndProject(
@@ -223,5 +269,15 @@ saveregularsubscriptionamount(formData: any, headers: HttpHeaders): Observable<s
   }
    getjournal(): Observable<VW_Journal[]> {
     return this.http.get<VW_Journal[]>(`${this.apiBase}/getjournal?compId=${this.authService.getcompanyid() ?? ''}`);
+  }
+getRevenue(year?: number): Observable<RevenueSummary[]> {
+  let url = `${this.apiBase}/getrevenue?compId=${this.authService.getcompanyid() ?? ''}`;
+  if (year) {
+    url += `&year=${year}`;
+  }
+  return this.http.get<RevenueSummary[]>(url);
+}
+  getRevenueSummary(): Observable<RevenueSummary1[]> {
+    return this.http.get<RevenueSummary1[]>(`${this.apiBase}/revenuesummary?compId=${this.authService.getcompanyid() ?? ''}`);
   }
 }
