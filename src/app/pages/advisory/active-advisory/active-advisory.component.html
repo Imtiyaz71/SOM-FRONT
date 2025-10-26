@@ -1,1 +1,97 @@
-<p>active-advisory works!</p>
+<div class="container mt-3">
+
+  <!-- 🔹 Success / Error Message -->
+  <div *ngIf="message" class="alert alert-info">
+    {{ message }}
+  </div>
+
+  <!-- 🔹 Add Advisory Form -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      Add New Advisory
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="addAdvisory()">
+
+        <!-- Member Selection -->
+        <div class="mb-3">
+          <label for="member" class="form-label">Member</label>
+          <select class="form-select" [(ngModel)]="newAdvisory.memNo" name="memNo" required>
+            <option value="" disabled>Select Member</option>
+            <option *ngFor="let m of mem" [value]="m.memNo">
+              {{ m.givenName }} {{ m.sureName }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Advisory Role Selection -->
+        <div class="mb-3">
+          <label for="role" class="form-label">Advisory Role</label>
+          <select class="form-select" [(ngModel)]="newAdvisory.adRole" name="adRole" required>
+            <option value="" disabled>Select Role</option>
+            <option *ngFor="let r of advisoryrole" [value]="r.id">
+              {{ r.roles }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Validity -->
+        <div class="mb-3">
+          <label for="validity" class="form-label">Validity</label>
+          <input type="text" class="form-control" [(ngModel)]="newAdvisory.validity" name="validity" placeholder="Enter validity" required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Add Advisory</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- 🔹 Active Advisory List Table -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-success text-white">
+      Active Advisory List
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Member Name</th>
+            <th>Role</th>
+            <th>Validity</th>
+            <th>Status</th>
+             <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of advisoryList; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ a.givenName }} {{ a.sureName }}</td>
+            <td>{{ a.roles }}</td>
+            <td>{{ a.validity }}</td>
+               <td>
+              <span *ngIf="a.cStatus === 1" class="badge bg-success">Active</span>
+              <span *ngIf="a.cStatus === 0" class="badge bg-danger">Deactive</span>
+            </td>
+             <td>
+                 <button class="btn btn-danger btn-sm" (click)="deactiveRole(a.id!)">DeActive</button>
+            </td>
+          </tr>
+          <tr *ngIf="advisoryList.length === 0">
+            <td colspan="5" class="text-center">No active advisory found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🔹 Loading Spinner -->
+  <div *ngIf="loading" class="text-center mt-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+</div>

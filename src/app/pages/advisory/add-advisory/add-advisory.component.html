@@ -1,1 +1,42 @@
-<p>add-advisory works!</p>
+<div class="container mt-4">
+  <h4 class="mb-3">Add Advisory Role</h4>
+
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Enter role name" [(ngModel)]="newRole.roles" />
+  </div>
+
+  <button class="btn btn-primary" (click)="addRole()">Add Role</button>
+
+  <p class="mt-2 text-success">{{ message }}</p>
+
+  <hr />
+  <h5>Advisory Role List</h5>
+
+  <div *ngIf="loading">Loading...</div>
+
+ <table class="table table-bordered mt-3" *ngIf="!loading && advisoryList.length > 0">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Role</th>
+      <th>Company ID</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of advisoryList">
+      <td>{{ item.id }}</td>
+      <td>{{ item.roles }}</td>
+      <td>{{ item.compId }}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" (click)="deleteRole(item.id!)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+  <div *ngIf="!loading && advisoryList.length === 0" class="text-muted">
+    No advisory roles found.
+  </div>
+</div>

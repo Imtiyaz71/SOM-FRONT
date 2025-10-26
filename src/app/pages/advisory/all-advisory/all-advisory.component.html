@@ -1,1 +1,51 @@
-<p>all-advisory works!</p>
+<div class="container mt-3">
+
+  <!-- 🔹 Success / Error Message -->
+  <div *ngIf="message" class="alert alert-info">
+    {{ message }}
+  </div>
+
+  <!-- 🔹 Advisory List Table -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white">
+      Advisory List
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Member Name</th>
+            <th>Role</th>
+            <th>Validity</th>
+            <th>Status</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of advisoryList; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ a.givenName }} {{ a.sureName }}</td>
+            <td>{{ a.roles }}</td>
+            <td>{{ a.validity }}</td>
+            <td>
+              <span *ngIf="a.cStatus === 1" class="badge bg-success">Active</span>
+              <span *ngIf="a.cStatus === 0" class="badge bg-danger">Deactive</span>
+            </td>
+          </tr>
+          <tr *ngIf="advisoryList.length === 0">
+            <td colspan="5" class="text-center">No advisory found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🔹 Loading Spinner -->
+  <div *ngIf="loading" class="text-center mt-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+</div>

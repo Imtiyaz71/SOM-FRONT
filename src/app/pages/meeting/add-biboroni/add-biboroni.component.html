@@ -1,1 +1,60 @@
-<p>add-biboroni works!</p>
+<div class="container mt-4">
+  <div class="card shadow-sm p-3">
+    <h4 class="card-title text-center mb-3">Add Meeting / Biboroni</h4>
+
+    <!-- Message -->
+    <div *ngIf="message" class="alert alert-info">{{ message }}</div>
+
+    <!-- Add Meeting Form -->
+    <form (ngSubmit)="addMeeting()">
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <label class="form-label">Title</label>
+          <input type="text" class="form-control" [(ngModel)]="newMeeting.title" name="title" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Meeting Date</label>
+          <input type="date" class="form-control" [(ngModel)]="newMeeting.meetingDate" name="meetingDate" required>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <label class="form-label">Month</label>
+
+          <select
+          id="recmonth"
+          class="form-select"
+          [(ngModel)]="newMeeting.meetingMonth"
+          name="recmonth"
+          required
+        >
+          <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+        </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Year</label>
+
+          <select
+          id="recyear"
+          class="form-select"
+          [(ngModel)]="newMeeting.meetingYear"
+          name="recyear"
+          required
+        >
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Biboroni</label>
+        <textarea class="form-control" [(ngModel)]="newMeeting.biboroni" name="biboroni" rows="3" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Meeting</button>
+    </form>
+  </div>
+
+
+</div>
