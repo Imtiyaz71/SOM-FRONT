@@ -1,1 +1,34 @@
-<p>meeting-history works!</p>
+<div class="container mt-4">
+  <h2 class="mb-3">Meeting History</h2>
+
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let meeting of meetings">
+      <div class="card shadow-sm notice-card" (click)="openModal(meeting)">
+        <div class="card-body">
+          <h5 class="card-title">{{ meeting.meetingDate | date: 'dd MMM yyyy' }}</h5>
+          <p class="card-text text-truncate">{{ meeting.title }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="meetingModalLabel">{{ selectedMeeting?.meetingDate | date:'dd MMM yyyy' }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>{{ selectedMeeting?.title }}</h6>
+        <p>{{ selectedMeeting?.biboroni }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="printMeeting()">Print</button>
+      </div>
+    </div>
+  </div>
+</div>
