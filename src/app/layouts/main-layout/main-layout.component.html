@@ -12,244 +12,37 @@
       <div class="sidebar-brand-text mx-3">Admin <sup>2</sup></div>
     </a>
 
-    <!-- Divider -->
     <hr class="sidebar-divider my-0" />
 
+    <!-- Parent Menu Loop -->
+    <li *ngFor="let menu of parentMenus; let i = index" class="nav-item">
+      <a class="nav-link collapsed" href="#"
+         data-toggle="collapse"
+         [attr.data-target]="'#collapse' + i"
+         aria-expanded="false"
+         [attr.aria-controls]="'collapse' + i">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>{{ menu.menuName }}</span>
+      </a>
 
-<li *ngFor="let menu of childMenus; let i = index" class="nav-item">
-  <a class="nav-link collapsed" href="#"
-     data-toggle="collapse"
-     [attr.data-target]="'#collapse' + i"
-     aria-expanded="false"
-     [attr.aria-controls]="'collapse' + i">
-    <i class="fas fa-fw fa-cog"></i>
-    <span>{{ menu.menuName }}</span>
-  </a>
-
-  <div [id]="'collapse' + i" class="collapse"
-       [attr.aria-labelledby]="'heading' + i"
-       data-parent="#accordionSidebar">
-    <div *ngIf="menu.id==1" class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-     <a class="collapse-item" [routerLink]="['/dashboard']">
-
-    <span>Dashboard</span>
-  </a>
-
-    </div>
-    <div *ngIf="menu.id==35" class="bg-white py-2 collapse-inner rounded">
+      <div [id]="'collapse' + i" class="collapse"
+           [attr.aria-labelledby]="'heading' + i"
+           data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-    <a class="collapse-item" [routerLink]="['project/projectinfo']">
+          <!-- Child Menus Loop -->
+          <a *ngFor="let child of getChildMenus(menu.id)"
+             class="collapse-item"
+             [routerLink]="[child.menuUrl]">
+            <span>{{ child.menuName }}</span>
+          </a>
+        </div>
+      </div>
+    </li>
 
-    <span>Project</span>
-
-    </a>
- <a class="collapse-item" [routerLink]="['projectmember/projectmember']">
-
-    <span>member Assign</span>
-
-    </a>
-    </div>
-     <div *ngIf="menu.id==2" class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-     <a class="collapse-item" [routerLink]="['usermanage/add-user']">
-
-    <span>Add User</span>
-  </a>
-   <a class="collapse-item" [routerLink]="['usermanage/user-mapping-role']">
-
-    <span>User Mapping</span>
-  </a>
-    </div>
-    <div *ngIf="menu.id==3" class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-
-   <a class="collapse-item" [routerLink]="['staffs/staff-info']">
-
-    <span>Staff Designation</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['staffs/add-staff']">
-
-    <span>Add Staff</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['staff/archive']">
-
-    <span>Archive Staff</span>
-  </a>
-    </div>
-    <div *ngIf="menu.id==31" class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-
-   <a class="collapse-item" [routerLink]="['member/memberinfo']">
-
-    <span>Member Info</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['mem/memberkistipaid']">
-
-    <span>Kisti Paid Info</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['mem/membersubspaid']">
-
-    <span>Subscription Paid Info</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['mem/memberregusubspaid']">
-
-    <span>Regular Subs Paid Info</span>
-  </a>
-    </div>
-    <div *ngIf="menu.id==4" class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">{{ menu.menuName }} Components:</h6>
-     <a class="collapse-item" [routerLink]="['advisory/add-advisory']">
-
-    <span>Add Advisory</span>
-  </a>
-   <a class="collapse-item" [routerLink]="['advisory/active-advisory']">
-
-    <span>Active Advisory Info</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['advisory/all-advisory']">
-
-    <span>All Advisory Info</span>
-  </a>
-    </div>
-    <div *ngIf="menu.id==5" class="bg-white py-2 collapse-inner rounded">
-
-     <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-info']">
-
-    <span>Kisti Info</span>
-  </a>
-   <!-- <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-due']">
-
-    <span>Kisti Due</span>
-  </a> -->
-    <a class="collapse-item" [routerLink]="['kisti-subscription/kisti-paid-info']">
-
-    <span>Kisti Paid Info</span>
-  </a>
-   <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-info']">
-
-    <span>Subscription Info</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-due']">
-
-    <span>Regular Subscription Paid</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['kisti-subscription/subscription-paid']">
-
-    <span>Subscription Paid Info</span>
-  </a>
-
-    </div>
-     <div *ngIf="menu.id==6" class="bg-white py-2 collapse-inner rounded">
-
-     <a class="collapse-item" [routerLink]="['report']">
-
-    <span>Report</span>
-  </a>
-
-    </div>
-    <div *ngIf="menu.id==7" class="bg-white py-2 collapse-inner rounded">
- <a class="collapse-item" [routerLink]="['expense/expense-type']">
-
-    <span>Add Expense Type</span>
-  </a>
-     <a class="collapse-item" [routerLink]="['expense/add-expense']">
-
-    <span>Add Expense</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['exp/proexpense']">
-
-    <span>Add Project Expense</span>
-  </a>
-<a class="collapse-item" [routerLink]="['expense/expense-history']">
-
-    <span>Expense History</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['exp/proexpensehistory']">
-
-    <span>Project Expense History</span>
-  </a>
-    </div>
-     <div *ngIf="menu.id==8" class="bg-white py-2 collapse-inner rounded">
-
-     <a class="collapse-item" [routerLink]="['meeting/add-biboroni']">
-
-    <span>Add Biboroni</span>
-  </a>
-<a class="collapse-item" [routerLink]="['meeting/meeting-history']">
-
-    <span>Meeting History</span>
-  </a>
-    </div>
-     <div *ngIf="menu.id==36" class="bg-white py-2 collapse-inner rounded">
-
-     <a class="collapse-item" [routerLink]="['kisti-subscription/loan-info']">
-
-    <span>Loan Info</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['kisti-subscription/loan-due']">
-
-    <span>Loan Sension</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['kisti-subscription/loan-paid']">
-
-    <span>Loan Paid</span>
-  </a>
-    </div>
-    <div *ngIf="menu.id==9" class="bg-white py-2 collapse-inner rounded">
-
-     <a class="collapse-item" [routerLink]="['accounts/balance']">
-
-    <span>Balance</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['bal/membalance']">
-
-    <span>Member Balance</span>
-  </a>
-   <a class="collapse-item" [routerLink]="['bal/projectbalance']">
-
-    <span>Project Balance</span>
-  </a>
-     <a class="collapse-item" [routerLink]="['accounts/journal']">
-
-    <span>Journal</span>
-  </a>
-<a class="collapse-item" [routerLink]="['accounts/debit']">
-
-    <span>Debit</span>
-  </a>
-  <a class="collapse-item" [routerLink]="['accounts/credit']">
-
-    <span>Credit</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['accounts/reckisti']">
-
-    <span>Kisti Receive</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['accounts/recsubscription']">
-
-    <span>Subscription Receive</span>
-  </a>
-    <a class="collapse-item" [routerLink]="['regular/regularkistsubs']">
-
-    <span>Regular Subs Receive</span>
-  </a>
-     <a class="collapse-item" [routerLink]="['bal/balancewithdraw']">
-
-    <span>Balance Withdraw</span>
-  </a>
-     <a class="collapse-item" [routerLink]="['bal/revenue']">
-
-    <span>Revenue</span>
-  </a>
-    </div>
-  </div>
-</li>
-
-    <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
 
-    <!-- Sidebar Toggler (Sidebar) -->
+    <!-- Sidebar Toggler -->
     <div class="text-center d-none d-md-inline">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
@@ -270,96 +63,55 @@
   <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
 
-  <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+          <i class="fa fa-bars"></i>
+        </button>
 
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <div class="input-group">
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
+            </div>
+          </div>
+        </form>
 
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto">
+          <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+          <!-- User Info -->
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{fullname}}</span>
+              <img class="img-profile rounded-circle" [src]="photoPreview"/>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <!-- End Topbar -->
 
-
-                        <!-- Nav Item - Messages -->
-
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{fullname}}</span>
-                                <img class="img-profile rounded-circle"
-                                    [src]="photoPreview"/>
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-
-
-                                <div class="dropdown-divider"></div>
-                           <a class="dropdown-item" href="#">
-                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                           Logout
-                           </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
-        <div class="container-fluid">
-   <router-outlet></router-outlet>
-        </div>
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
 
     </div>
-
 
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
@@ -369,9 +121,8 @@
         </div>
       </div>
     </footer>
-    <!-- End of Footer -->
   </div>
-  <!-- End of Content Wrapper -->
+  <!-- End Content Wrapper -->
 
 </div>
-<!-- End of Page Wrapper -->
+<!-- End Page Wrapper -->

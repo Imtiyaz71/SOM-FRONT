@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuService, Menu } from '../../services/menu.service';
+import { MenuService, ParentMenu, ChildMenu } from '../../services/menu.service';
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
+import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
@@ -9,43 +11,55 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./main-layout.component.css']
 })
 export class MainLayoutComponent implements OnInit {
-  menus: Menu[] = [];
-  childMenus: Menu[] = [];
-  photobaseurl: string = environment.apiBaseUrl +'/UserInfo';
-  router: any;
-  //photoPreview: string | null = null;
+  parentMenus: ParentMenu[] = [];
+  childMenusMap: { [parentId: number]: ChildMenu[] } = {}; // child menus keyed by parentId
+  photobaseurl: string = environment.apiBaseUrl + '/UserInfo';
+  fullname = this.authService.getfullnamename() || '----';
+  photoPreview = `${this.photobaseurl}/userphotobyusername?Username=${this.authService.getusername()}`;
+
   constructor(
     private menuService: MenuService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
- fullname = this.authService.getfullnamename() || '----';
-
-photoPreview= `${this.photobaseurl}/userphotobyusername?Username=${this.authService.getusername()}`;;
 
   ngOnInit(): void {
     this.loadMenus();
   }
-//this.photoPreview = `${this.photobaseurl}/userphotobyusername?Username=${data.username}`;
 
   loadMenus(): void {
-    // this.menuService.getParentMenus().subscribe({
-    //   next: (data: Menu[]) => this.menus = data,
-    //   error: (err: any) => console.error('Parent menu load failed', err)
-    // });
+    // 1️⃣ Load parent menus
+    this.menuService.getparentmenu().subscribe({
+      next: (parents: ParentMenu[]) => {
+        this.parentMenus = parents;
 
-    const role = this.authService.getRole() || 'User';
+        // 2️⃣ Load child menus for each parent menu
+        const childRequests = parents.map(p =>
+          this.menuService.getchildmenu2(p.id)
+        );
 
-    this.menuService.getChildMenus(role).subscribe({
-      next: (data: Menu[]) => this.childMenus = data,
-      error: (err: any) => console.error('Child menu load failed', err)
+        forkJoin(childRequests).subscribe({
+          next: (childrenArray: ChildMenu[][]) => {
+            childrenArray.forEach((children, index) => {
+              this.childMenusMap[parents[index].id] = children;
+            });
+          },
+          error: err => console.error('Child menu load failed', err)
+        });
+      },
+      error: err => console.error('Parent menu load failed', err)
     });
   }
-logout(event: Event) {
-  event.preventDefault(); // <--- important
-  console.log('Logout called');
-  localStorage.removeItem('jwtToken');
-  localStorage.removeItem('userRole');
-  this.router.navigate(['./login']);
-}
 
+  getChildMenus(parentId: number): ChildMenu[] {
+    return this.childMenusMap[parentId] || [];
+  }
+
+  logout(event: Event) {
+    event.preventDefault();
+    console.log('Logout called');
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userRole');
+    this.router.navigate(['/login']); // ✅ corrected navigation
+  }
 }
