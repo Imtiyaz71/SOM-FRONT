@@ -60,44 +60,56 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      alert('Please fill all required fields correctly.');
-      return;
-    }
-
-    this.loading = true;
-    this.errorMessage = '';
-
-    const { username, password } = this.loginForm.value;
-
-    this.authService.login(username, password).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        if (res && res.token && res.token.token) {
-          const jwtToken = res.token.token;
-          const role = res.token.role;
-          const username = res.token.username;
-          const fullname = res.token.fullname;
-          const cId = res.token.cId;
-          this.authService.saveAuthData(jwtToken, role, fullname, username, cId);
-
-          if (role === 'Admin' || role === 'User') {
-            alert('Login successful!');
-            this.router.navigate(['/dashboard']);
-          } else {
-            alert('Login Unsuccessful! Invalid role.');
-          }
-        } else {
-          alert('Invalid response from server');
-        }
-      },
-      error: (err) => {
-        this.loading = false;
-        alert('Login Failed. Please check credentials.');
-        console.error('Login Failed', err);
-      }
-    });
+  if (this.loginForm.invalid) {
+    alert('Please fill all required fields correctly.');
+    return;
   }
+
+  this.loading = true;
+  this.errorMessage = '';
+
+  const { username, password } = this.loginForm.value;
+
+   this.authService.login(username, password).subscribe({
+    next: (res: any) => {
+      this.loading = false;
+
+      // 🔹 1. Subscription expired check
+      if (res.message && res.message.includes('expired')) {
+        alert(res.message);
+        return;
+      }
+
+      // 🔹 2. Invalid credentials or error message
+      if (!res.token) {
+        alert(res.message || 'Login failed. Please check credentials.');
+        return;
+      }
+
+      // 🔹 3. Successful login
+      const jwtToken = res.token;
+      const role = res.role;
+      const fullname = res.fullname;
+      const uname = res.username;
+      const cId = res.cid?.toString() ?? '';
+
+      this.authService.saveAuthData(jwtToken, role, fullname, uname, cId);
+
+      if (role === 'Admin' || role === 'User') {
+        alert(res.message || 'Login successful!');
+        this.router.navigate(['/dashboard']);
+      } else {
+        alert('Login Unsuccessful! Invalid role.');
+      }
+    },
+    error: (err) => {
+      this.loading = false;
+      const msg = err.error?.message || 'Login failed. Please check credentials.';
+      alert(msg);
+      console.error('Login Failed', err);
+    }
+  });
+}
 
   // File upload → Base64
   onFileChange(event: any): void {
@@ -124,7 +136,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         alert('Company created successfully!');
         console.log(res);
-        
+
       },
       error: (err) => {
         console.error('Error creating company', err);

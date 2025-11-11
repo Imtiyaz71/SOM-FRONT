@@ -1,18 +1,18 @@
 .wrap-login {
-  height: 100vh;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-}
-
-.login-box {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
+  min-height: 100vh;
 }
 
 .full-width {
   width: 100%;
 }
 
-.modal-content {
-  border-radius: 15px;
+.img-thumbnail {
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+mat-card {
+  max-width: 400px;
+  margin: auto;
+  background-color: #fff;
 }

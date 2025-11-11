@@ -17,6 +17,17 @@ export interface companyinfo1 {
   cLogo: string;
   createAt: string ;
 }
+
+export interface LoginResponse {
+  token: string | null;
+  role: string | null;
+  fullname: string | null;
+  username: string | null;
+  cname: string | null;
+  cid: number | null;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,8 +37,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Log/login`, { username, password });
+    login(username: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/Log/login`, { username, password });
   }
   // getcompanyinfo(): Observable<companyinfo[]> { return this.http.get<companyinfo[]>(this.apiUrl + '/Log/cominfo'); }
  getCompanyInfo(): Observable<companyinfo[]> {
@@ -41,7 +52,7 @@ getCompanyInfo1(): Observable<{ info: companyinfo1 }> {
   // Save token and role in localStorage
   saveAuthData(token: string, role: string,fullname: string,username: string,cId: string) {
     localStorage.setItem('jwtToken', token);
-    localStorage.setItem('userRole', role);
+    localStorage.setItem('role', role);
     localStorage.setItem('fullname', fullname);
     localStorage.setItem('username', username);
     localStorage.setItem('cId', cId);
@@ -52,7 +63,7 @@ getCompanyInfo1(): Observable<{ info: companyinfo1 }> {
   }
 
   getRole(): string | null {
-    return localStorage.getItem('userRole');
+    return localStorage.getItem('role');
   }
  getusername(): string | null {
     return localStorage.getItem('username');
@@ -65,6 +76,9 @@ getCompanyInfo1(): Observable<{ info: companyinfo1 }> {
   }
   logout() {
     localStorage.removeItem('jwtToken');
-    localStorage.removeItem('userRole');
+    localStorage.removeItem('role');
+    localStorage.removeItem('fullname');
+    localStorage.removeItem('username');
+    localStorage.removeItem('cId');
   }
 }
