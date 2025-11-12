@@ -1,125 +1,148 @@
 <div class="row">
 
-  <!-- Member Entry Form -->
+  <!-- Entry Form -->
   <div class="col-lg-4">
-    <div class="card mb-4">
+    <div class="card mb-4 shadow-sm">
       <div class="card-header py-3">
         <h3 class="m-0 font-weight-bold text-primary">Kisti Type Entry</h3>
       </div>
       <div class="card-body">
-        <form #memberForm="ngForm" (ngSubmit)="kistytypesave()">
+        <form #memberForm="ngForm" (ngSubmit)="kistytypesave(); memberForm.resetForm()">
 
           <div class="row mb-3">
-
             <div class="col-md-6">
               <label class="font-weight-bold text-secondary">Type Name</label>
-              <input type="text" class="form-control" name="typeName" [(ngModel)]="savekistitype.typeName"/>
-
+              <input type="text" class="form-control" name="typeName" required [(ngModel)]="savekistitype.typeName" />
             </div>
-
-
-
-
 
             <div class="col-md-6">
               <label class="font-weight-bold text-secondary">Amount</label>
-              <input type="text" class="form-control" name="amount" [(ngModel)]="savekistitype.amount"/>
+              <input type="number" class="form-control" name="amount" required [(ngModel)]="savekistitype.amount" />
             </div>
 
-
-
             <div class="col-md-6">
-              <label class="font-weight-bold text-secondary">Cr Type</label>
-              <select class="form-control" name="crid" [(ngModel)]="savekistitype.crid">
-                <option *ngFor="let m of cr" [value]="m.id">{{m.crname}}</option>
+              <label class="font-weight-bold text-secondary">CR Type</label>
+              <select class="form-control" name="crid" required [(ngModel)]="savekistitype.crid">
+                <option value="">-- Select CR Type --</option>
+                <option *ngFor="let m of cr" [value]="m.id">{{ m.crname }}</option>
               </select>
             </div>
 
-   <div class="col-md-6">
+            <div class="col-md-6">
               <label class="font-weight-bold text-secondary">Project</label>
-              <select class="form-control" name="projectid" [(ngModel)]="savekistitype.projectid">
-                <option *ngFor="let m of pro" [value]="m.projectId">{{m.projectName}}</option>
+              <select class="form-control" name="projectid" required [(ngModel)]="savekistitype.projectid">
+                <option value="">-- Select Project --</option>
+                <option *ngFor="let m of pro" [value]="m.projectId">{{ m.projectName }}</option>
               </select>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary">Save Type</button>
+          <button type="submit" class="btn btn-primary w-100">Save Type</button>
         </form>
-
       </div>
     </div>
   </div>
 
-  <!-- Current Active Members -->
+  <!-- List Section -->
   <div class="col-lg-8">
-   <div class="card">
-  <div class="card-header py-3 d-flex justify-content-between align-items-center">
-    <h3 class="m-0 font-weight-bold text-primary">Kisti Types</h3>
+    <div class="card shadow-sm">
+      <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h3 class="m-0 font-weight-bold text-primary">Kisti Types</h3>
+        <input
+          type="text"
+          class="form-control w-25"
+          placeholder="Search CR Type"
+          [(ngModel)]="searchMemNo"
+        />
+      </div>
 
-  </div>
+      <div class="card-body text-center overflow-auto">
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>#Sl</th>
+              <th>Type</th>
+              <th>CR</th>
+              <th>Amount</th>
+              <th>Project</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index"
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ m.typeName }}</td>
+              <td>{{ m.crname }}</td>
+              <td>{{ m.amount }}</td>
+              <td>{{ m.projectname }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="OpenMemberEditModel(m?.id)"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredMembers.length === 0">
+              <td colspan="6" class="text-center text-muted">No data found</td>
+            </tr>
+          </tbody>
+        </table>
 
-  <div class="card-body text-center overflow">
-      <div class="mb-3 text-start">
-      <input type="text" class="form-control w-25 d-inline-block" placeholder="Search CR Type" [(ngModel)]="searchMemNo">
+        <pagination-controls
+          (pageChange)="page = $event"
+          previousLabel="Prev"
+          nextLabel="Next"
+        ></pagination-controls>
+      </div>
     </div>
-    <table class="table table-bordered table-hover">
-      <thead class="table-light">
-        <tr>
-          <th>#Sl</th>
-          <th>Type</th>
-          <th>CR</th>
-          <th>Amount</th>
-           <th>Project</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let m of filteredMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-
-          <td>{{m.id}}</td>
-          <td>{{m.typeName}}</td>
-          <td>{{m.crname}}</td>
-          <td>{{m.amount}}</td>
-         <td>({{m.projectid}}){{m.projectname}}</td>
-
-
-          <td>
-    <button type="button" class="btn btn-primary mb-2" (click)="OpenMemberEditModel(m?.id)">Edit</button>
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <pagination-controls
-      (pageChange)="page = $event"
-      previousLabel="Prev"
-      nextLabel="Next">
-    </pagination-controls>
   </div>
 </div>
 
-  </div>
-
-</div>
+<!-- Edit Modal -->
 <div *ngIf="MemberEditModel" class="modal fade show d-block" tabindex="-1">
   <div class="modal-dialog custom-width">
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Edit Kisti Type Info</h3>
-        <button type="button" class="btn-close" (click)="closeeditmodel()" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeeditmodel()"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body" *ngIf="selectedUser">
         <div class="row">
-
           <div class="col-md-12">
             <table class="table table-bordered">
-              <thead><tr><th>Sl No</th><th>Type Name</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Sl No</th>
+                  <th>Type Name</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
-                  <td><input type="text" class="form-control" [readOnly]="true" [(ngModel)]="selectedUser.id" readonly/></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.typeName"/></td>
-
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      readonly
+                      [(ngModel)]="selectedUser.id"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="selectedUser.typeName"
+                    />
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -127,20 +150,45 @@
 
           <div class="col-md-12">
             <table class="table table-bordered">
-              <thead><tr><th>Amount</th><th>Cr</th><th>Project</th></thead>
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>CR</th>
+                  <th>Project</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
-                  <td><input type="text" class="form-control" [(ngModel)]="selectedUser.amount"/></td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="selectedUser.amount"
+                    />
+                  </td>
                   <td>
                     <select class="form-control" [(ngModel)]="selectedUser.crid">
-                      <option [value]="selectedUser.crid">{{selectedUser.crname}}</option>
-                      <option *ngFor="let g of cr" [value]="g.id">{{g.crname}}</option>
+                      <option
+                        *ngFor="let g of cr"
+                        [value]="g.id"
+                        [selected]="g.id === selectedUser.crid"
+                      >
+                        {{ g.crname }}
+                      </option>
                     </select>
                   </td>
-                         <td>
-                    <select class="form-control" [(ngModel)]="selectedUser.projectid">
-                      <option [value]="selectedUser.projectid">{{selectedUser.projectname}}</option>
-                      <option *ngFor="let g of pro" [value]="g.projectId">{{g.projectName}}</option>
+                  <td>
+                    <select
+                      class="form-control"
+                      [(ngModel)]="selectedUser.projectid"
+                    >
+                      <option
+                        *ngFor="let g of pro"
+                        [value]="g.projectId"
+                        [selected]="g.projectId === selectedUser.projectid"
+                      >
+                        {{ g.projectName }}
+                      </option>
                     </select>
                   </td>
                 </tr>
@@ -148,23 +196,28 @@
             </table>
           </div>
 
-
-
-
-
-
           <div class="col-md-6">
-  <button type="button" class="btn btn-success" (click)="kistytypesave()">Save Changes</button>
-
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="kistytypesave()"
+            >
+              Save Changes
+            </button>
           </div>
-
         </div>
       </div>
       <div class="modal-footer">
-
-        <button type="button" class="btn btn-secondary" (click)="closeeditmodel()">Close</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeeditmodel()"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
 </div>
+
 <div *ngIf="MemberEditModel" class="modal-backdrop fade show"></div>

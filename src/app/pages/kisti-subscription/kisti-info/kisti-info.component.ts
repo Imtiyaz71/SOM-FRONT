@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { crinfo, kistitypeinfo, addkistitype, KistiService } from '../../../services/kisti.service';
@@ -21,43 +21,60 @@ export class KistiInfoComponent implements OnInit {
   MemberEditModel: boolean = false;
   selectedUser: kistitypeinfo | null = null;
 
-  savekistitype: any = {
+  savekistitype: addkistitype = {
     id: 0,
     typeName: '',
     crid: 0,
     amount: 0,
     createdate: '',
     updatedate: '',
+    compId: '',
     projectid: 0
   };
 
   constructor(
     private KistiService: KistiService,
     private authService: AuthService,
-    private ProjectserviceService: ProjectserviceService
+    private ProjectserviceService: ProjectserviceService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadInitialData();
   }
 
-  loadUsers() {
+  /** 🔹 Load All Data */
+  loadInitialData() {
+    this.loadCrInfo();
+    this.loadKistiType();
+    this.loadProjects();
+  }
+
+  loadCrInfo() {
     this.KistiService.getcrinfo().subscribe({
-      next: data => (this.cr = data),
-      error: err => console.error(err)
-    });
-
-    this.KistiService.getkistitype().subscribe({
-      next: data => (this.ktype = data),
-      error: err => console.error(err)
-    });
-
-    this.ProjectserviceService.getprojectinfo().subscribe({
-      next: data => (this.pro = data),
-      error: err => console.error(err)
+      next: data => (this.cr = data || []),
+      error: err => console.error('Error loading CR info:', err)
     });
   }
 
+  loadKistiType() {
+    this.KistiService.getkistitype().subscribe({
+      next: data => {
+        this.ktype = data || [];
+        console.log('Kisti type loaded:', this.ktype);
+      },
+      error: err => console.error('Error loading kisti type:', err)
+    });
+  }
+
+  loadProjects() {
+    this.ProjectserviceService.getprojectinfo().subscribe({
+      next: data => (this.pro = data || []),
+      error: err => console.error('Error loading project info:', err)
+    });
+  }
+
+  /** 🔍 Search Filter */
   get filteredMembers() {
     if (!this.searchMemNo) return this.ktype;
     return this.ktype.filter(m =>
@@ -65,7 +82,7 @@ export class KistiInfoComponent implements OnInit {
     );
   }
 
-  // Edit button click
+  /** ✏️ Edit Button Click */
   OpenMemberEditModel(id?: number) {
     if (!id) return;
     this.KistiService.getkistitypeid(id).subscribe({
@@ -73,10 +90,11 @@ export class KistiInfoComponent implements OnInit {
         this.selectedUser = { ...data };
         this.MemberEditModel = true;
       },
-      error: err => console.error(err)
+      error: err => console.error('Error loading edit data:', err)
     });
   }
 
+  /** ❌ Close Edit Modal */
   closeeditmodel() {
     this.MemberEditModel = false;
     this.selectedUser = null;
@@ -87,36 +105,49 @@ export class KistiInfoComponent implements OnInit {
       amount: 0,
       createdate: '',
       updatedate: '',
+      compId: '',
       projectid: 0
     };
   }
 
-  // Save or Update
+  /** 💾 Save or Update */
   kistytypesave() {
+    const isEdit = this.MemberEditModel && this.selectedUser;
+
     const payload: addkistitype = {
-      id: this.MemberEditModel ? this.selectedUser!.id : 0,
-      typeName: this.MemberEditModel ? this.selectedUser!.typeName : this.savekistitype.typeName,
-      crid: this.MemberEditModel ? this.selectedUser!.crid : this.savekistitype.crid,
-      amount: this.MemberEditModel ? this.selectedUser!.amount : this.savekistitype.amount,
+      id: isEdit ? this.selectedUser!.id : 0,
+      typeName: isEdit ? this.selectedUser!.typeName : this.savekistitype.typeName,
+      crid: isEdit ? this.selectedUser!.crid : this.savekistitype.crid,
+      amount: isEdit ? this.selectedUser!.amount : this.savekistitype.amount,
       createdate: new Date().toISOString(),
       updatedate: new Date().toISOString(),
       compId: this.authService.getcompanyid() ?? '',
-      projectid: this.MemberEditModel ? this.selectedUser!.projectid : this.savekistitype.projectid
+      projectid: isEdit ? this.selectedUser!.projectid : this.savekistitype.projectid
     };
 
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', 'Bearer ' + this.authService.getToken());
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.authService.getToken()
+    });
 
     this.KistiService.savekistitype(payload, headers).subscribe({
       next: res => {
-        alert(res);
-        this.loadUsers();
+        alert(res || 'Data saved successfully');
         this.closeeditmodel();
+
+        // 🟢 small delay to ensure backend commit completes
+        setTimeout(() => {
+          // force change detection to update list instantly
+          this.ngZone.run(() => {
+            this.loadInitialData();
+          });
+        }, 300);
       },
       error: err => {
-        console.error('Error saving kisti type', err);
-        alert(err.error?.message || 'Success');
+        console.error('Error saving kisti type:', err);
+        alert(err.error?.message || 'Saved');
+         this.loadInitialData();
+            this.closeeditmodel();
       }
     });
   }

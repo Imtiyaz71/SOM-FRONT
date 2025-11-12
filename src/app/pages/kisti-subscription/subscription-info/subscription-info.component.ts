@@ -91,6 +91,7 @@ this.loadUsers();
       console.error('Error block', err);
         this.loadUsers();
       alert(err.error?.message || 'Success');
+      this.closeeditmodel();
     }
   })
   }
