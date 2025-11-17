@@ -3,54 +3,57 @@
   <div class="row">
 
     <!-- =========================
-         LEFT FORM  (same height)
+         LEFT FORM  (Savings Account)
     ============================= -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100">
+      <div class="card shadow-sm">
 
-        <div class="card-header bg-primary text-white py-2">
-          <h5 class="mb-0">
+        <div class="card-header bg-primary text-white py-1">
+          <h5 class="mb-0" style="font-size: 14px;">
             {{ savingModel.id === 0 ? 'Add New Savings Account' : 'Update Savings Account' }}
           </h5>
         </div>
 
-        <div class="card-body d-flex flex-column">
+        <div class="card-body p-2">
 
+          <!-- =========================
+               Savings Account Form
+          ========================= -->
           <form>
 
-            <div class="form-group mb-2">
-              <label>Account Name</label>
-              <input type="text" class="form-control"
+            <div class="form-group mb-1">
+              <label style="font-size: 13px;">Account Name</label>
+              <input type="text" class="form-control form-control-sm"
                      [(ngModel)]="savingModel.accountName" name="accountName">
             </div>
 
-            <div class="form-group mb-2">
-              <label>Organization</label>
-              <input type="text" class="form-control"
+            <div class="form-group mb-1">
+              <label style="font-size: 13px;">Organization</label>
+              <input type="text" class="form-control form-control-sm"
                      [(ngModel)]="savingModel.organization" name="organization">
             </div>
 
-            <div class="form-group mb-2">
-              <label>Account No</label>
-              <input type="text" class="form-control"
+            <div class="form-group mb-1">
+              <label style="font-size: 13px;">Account No</label>
+              <input type="text" class="form-control form-control-sm"
                      [(ngModel)]="savingModel.accountNo" name="accountNo">
             </div>
 
-            <div class="form-group mb-3">
-              <label>Branch</label>
-              <input type="text" class="form-control"
+            <div class="form-group mb-2">
+              <label style="font-size: 13px;">Branch</label>
+              <input type="text" class="form-control form-control-sm"
                      [(ngModel)]="savingModel.branch" name="branch">
             </div>
 
-            <div class="d-flex justify-content-between mt-auto">
+            <div class="d-flex justify-content-between mt-2 mb-2">
               <button type="button"
-                      class="btn btn-success"
+                      class="btn btn-success btn-sm"
                       (click)="save()">
                 {{ savingModel.id === 0 ? 'Save' : 'Update' }}
               </button>
 
               <button type="button"
-                      class="btn btn-secondary"
+                      class="btn btn-secondary btn-sm"
                       (click)="resetForm()">
                 Reset
               </button>
@@ -64,18 +67,20 @@
 
 
     <!-- =========================
-         RIGHT LIST  (pagination)
+         RIGHT LIST  (Savings Account List + Account Operation)
     ============================= -->
     <div class="col-md-8">
-      <div class="card shadow-sm h-100">
 
-        <div class="card-header bg-dark text-white py-2">
-          <h5 class="mb-0">Savings Account List</h5>
+      <!-- Savings Account List -->
+      <div class="card shadow-sm mb-2">
+
+        <div class="card-header bg-dark text-white py-1">
+          <h5 class="mb-0" style="font-size: 14px;">Savings Account List</h5>
         </div>
 
-        <div class="card-body p-0">
+        <div class="card-body p-1">
           <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover mb-0">
+            <table class="table table-bordered table-striped table-hover mb-0 table-sm">
               <thead class="table-light text-center">
                 <tr>
                   <th>SL</th>
@@ -108,7 +113,7 @@
                 </tr>
 
                 <tr *ngIf="pagedList.length === 0">
-                  <td colspan="7" class="text-center text-muted py-3">
+                  <td colspan="7" class="text-center text-muted py-2">
                     No account found.
                   </td>
                 </tr>
@@ -119,14 +124,14 @@
         </div>
 
         <!-- Pagination -->
-        <div class="card-footer text-center bg-light">
+        <div class="card-footer text-center bg-light py-1">
           <button class="btn btn-sm btn-outline-primary me-2"
                   [disabled]="currentPage === 1"
                   (click)="prevPage()">
             Previous
           </button>
 
-          <span class="px-2">Page {{ currentPage }} of {{ totalPages }}</span>
+          <span class="px-2" style="font-size: 13px;">Page {{ currentPage }} of {{ totalPages }}</span>
 
           <button class="btn btn-sm btn-outline-primary ms-2"
                   [disabled]="currentPage === totalPages"
@@ -136,6 +141,67 @@
         </div>
 
       </div>
+
+      <!-- Account Operation Form -->
+      <div class="card shadow-sm">
+
+        <div class="card-header bg-info text-white py-1">
+          <h6 class="mb-0" style="font-size: 14px;">Account Operation</h6>
+        </div>
+
+        <div class="card-body p-2">
+
+          <form>
+
+            <div class="form-group mb-1">
+              <label style="font-size: 13px;">Select Account</label>
+              <select class="form-select form-select-sm" [(ngModel)]="opModel.parentId" name="parentId">
+                <option [ngValue]="null" disabled>Select an account</option>
+                <option *ngFor="let acc of savingsList" [ngValue]="acc.id">
+                  {{ acc.accountName }} - {{ acc.organization }} - {{ acc.accountNo }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group mb-1">
+              <label style="font-size: 13px;">Operation Type</label>
+              <select class="form-select form-select-sm" [(ngModel)]="opModel.tType" name="tType">
+                <option [value]="1">Deposit</option>
+                <option [value]="0">Withdraw</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-1">
+              <label style="font-size: 13px;">Amount</label>
+              <input type="number" class="form-control form-control-sm"
+                     [(ngModel)]="opModel.amount" name="amount">
+            </div>
+
+            <div class="form-group mb-2">
+              <label style="font-size: 13px;">Date</label>
+              <input type="date" class="form-control form-control-sm"
+                     [(ngModel)]="opModel.dates" name="dates">
+            </div>
+
+            <div class="d-flex justify-content-between mt-1">
+              <button type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="saveAccountOperation()"
+                      [disabled]="!opModel.parentId || !opModel.amount">
+                Submit Operation
+              </button>
+              <button type="button"
+                      class="btn btn-secondary btn-sm"
+                      (click)="opModel.amount=null">
+                Reset Operation
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
     </div>
 
   </div>

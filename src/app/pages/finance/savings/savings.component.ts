@@ -14,15 +14,28 @@ export class SavingsComponent implements OnInit {
   // Form model
   savingModel: any = {
     id: 0,
-    compId: 21,
+    compId: this.authService.getcompanyid(),
     accountName: '',
     organization: '',
     accountNo: '',
     branch: '',
-    balance: 0,        // backend ignores
+    balance: 0,
     createDate: '',
     createBy: ''
   };
+
+  // ============================================================
+  // NEW: Account Operation Model (Deposit / Withdraw)
+  // ============================================================
+opModel: any = {
+    compId: this.authService.getcompanyid(), // company id always set
+    parentId: null,                           // account select korle set hobe
+    tType: 1,                                 // default = Deposit
+    amount: null,                             // input field theke user set korbe
+    dates: new Date().toISOString().slice(0,10), // ajker date default
+    createBy: this.authService.getusername()     // backend user
+};
+
 
   // Pagination
   pageSize = 5;
@@ -108,7 +121,7 @@ export class SavingsComponent implements OnInit {
   edit(item: any) {
     this.savingModel = {
       id: item.id,
-      compId: 21,
+      compId: this.authService.getcompanyid(),
       accountName: item.accountName,
       organization: item.organization,
       accountNo: item.accountNo,
@@ -117,6 +130,9 @@ export class SavingsComponent implements OnInit {
       createDate: '',
       createBy: ''
     };
+
+    // NEW: set parentId for operation dropdown auto-select
+    this.opModel.parentId = item.id;
   }
 
   // ===============================
@@ -125,7 +141,7 @@ export class SavingsComponent implements OnInit {
   resetForm() {
     this.savingModel = {
       id: 0,
-      compId: 21,
+      compId: this.authService.getcompanyid(),
       accountName: '',
       organization: '',
       accountNo: '',
@@ -134,6 +150,36 @@ export class SavingsComponent implements OnInit {
       createDate: '',
       createBy: ''
     };
+  }
+
+  // ============================================================
+  // NEW FUNCTION: Save Account Operation (Deposit / Withdraw)
+  // ============================================================
+  saveAccountOperation() {
+
+    this.opModel.compId = this.authService.getcompanyid();
+    this.opModel.createBy = this.authService.getusername();
+    this.opModel.dates = new Date().toISOString().slice(0, 10);
+
+    if (!this.opModel.parentId) {
+      alert("Please select an account!");
+      return;
+    }
+
+    if (!this.opModel.amount || this.opModel.amount <= 0) {
+      alert("Amount must be greater than 0!");
+      return;
+    }
+
+    this.financeService.saveAccountOperation(this.opModel).subscribe(res => {
+      if (res.status === 1) {
+        alert(res.message);
+        this.opModel.amount = null;
+        this.loadSavingAccounts();
+      } else {
+        alert("Failed: " + res.message);
+      }
+    });
   }
 
 }

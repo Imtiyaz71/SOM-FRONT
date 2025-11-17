@@ -8,8 +8,7 @@ import { environment } from '../../environments/environment';
 })
 export class FinanceService {
 
-
- private baseUrl =environment.apiBaseUrl + '/FinanceCtrl';
+  private baseUrl = environment.apiBaseUrl + '/FinanceCtrl';
 
   constructor(private http: HttpClient) {}
 
@@ -19,6 +18,11 @@ export class FinanceService {
 
   saveSavingAccount(model: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/save-saving-account`, model);
+  }
+
+  // ⭐⭐⭐ New Method Added Below ⭐⭐⭐
+  saveAccountOperation(model: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/save-account-operation`, model);
   }
 
 }
