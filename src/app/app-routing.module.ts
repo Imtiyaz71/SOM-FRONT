@@ -55,6 +55,8 @@ import { PaidComponent } from './pages/recept/loan/paid/paid.component';
 import { KistisubsComponent } from './pages/recept/kistisubs/kistisubs.component';
 import { SubrecptComponent } from './pages/recept/subrecpt/subrecpt.component';
 import { RegsubsrecptComponent } from './pages/recept/regsubsrecpt/regsubsrecpt.component';
+import { ManagerevenueComponent } from './pages/finance/managerevenue/managerevenue.component';
+import { SavingsComponent } from './pages/finance/savings/savings.component';
 
 const routes: Routes = [
   {
@@ -131,6 +133,8 @@ const routes: Routes = [
 {path:'rpt/kistisubs/:brwId',component:KistisubsComponent},
 {path:'rpt/subrect/:brwId',component:SubrecptComponent},
 {path:'rpt/regsubrect/:brwId',component:RegsubsrecptComponent},
+{path:'finance/managerevenue',component:ManagerevenueComponent},
+{path:'finance/saving',component:SavingsComponent},
     ]
   }
 ];

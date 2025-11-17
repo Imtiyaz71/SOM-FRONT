@@ -1,0 +1,8 @@
+/* Ensure form and list card have same height */
+.h-100 {
+  height: 100%;
+}
+
+.table-hover tbody tr.table-warning {
+  background-color: #fff3cd;
+}
